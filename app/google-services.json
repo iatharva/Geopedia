@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1028081215952",
+    "project_id": "geopedia-f58b3",
+    "storage_bucket": "geopedia-f58b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028081215952:android:a93080fe9d9acc62a331d5",
+        "android_client_info": {
+          "package_name": "com.example.geopedia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1028081215952-dsj78gm2tlv9q7vgbv7mnp6tg65hs7kq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDulPEBCU8kqo0ztNJ8lW1z7JPnXqj12EQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1028081215952-dsj78gm2tlv9q7vgbv7mnp6tg65hs7kq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
