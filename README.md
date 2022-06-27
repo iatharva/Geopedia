@@ -4,6 +4,7 @@ Geopedia - Places &amp; Travel Itineraries. Android application which gives info
 ## Progress
 
 - [ ]  Create Splash screen
+- [x]  Create Intro screens
 - [ ] Create Login screen
 - [ ] Create SignUp screen
 - [ ] Create ForgetPassword screen
