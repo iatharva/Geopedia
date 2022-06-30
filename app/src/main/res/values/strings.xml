@@ -20,4 +20,19 @@
 
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
+    <string name="welcome">Welcome to Geopedia</string>
+    <string name="app_subtitle"><![CDATA[Places & Itineraries]]></string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log In</string>
+    <string name="forget_password">Forget password?</string>
+    <string name="create_a_new_account">Create a new account</string>
+    <string name="title_activity_home_admin">Home (Admin)</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="nav_header_desc">Administrator User</string>
+    <string name="nav_header_title">Admin</string>
+    <string name="action_settings">settings</string>
+
 </resources>
