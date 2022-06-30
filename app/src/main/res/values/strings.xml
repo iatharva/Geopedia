@@ -34,5 +34,8 @@
     <string name="nav_header_desc">Administrator User</string>
     <string name="nav_header_title">Admin</string>
     <string name="action_settings">settings</string>
+    <string name="reset_password">Reset password</string>
+    <string name="receive_reset_link_on_email">Receive reset link on email</string>
+    <string name="signingin">signing in...</string>
 
 </resources>

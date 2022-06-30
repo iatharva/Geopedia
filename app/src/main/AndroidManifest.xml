@@ -22,6 +22,9 @@
             android:name=".LogIn"
             android:exported="false" />
         <activity
+            android:name=".ForgetPassword"
+            android:exported="false" />
+        <activity
             android:name=".IntroActivity"
             android:exported="true">
             <intent-filter>
