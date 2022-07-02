@@ -2,24 +2,19 @@
     <string name="app_name">Geopedia</string>
 
     <string name="title_activity_welcome">LogIn</string>
-    <string name="next">NEXT</string>
-    <string name="skip">SKIP</string>
-    <string name="start">GOT IT</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="start">Got it</string>
 
-    <string name="slide_1_title">Hello Food!</string>
-    <string name="slide_1_desc">The easiest way to order food from your favourite restaurant!</string>
+    <string name="slide_1_title">New City, New Places!</string>
+    <string name="slide_1_desc">Explore the different interesting location in your city</string>
 
-    <string name="slide_2_title">Movie Tickets</string>
-    <string name="slide_2_desc">Book movie tickets for your family and friends!</string>
+    <string name="slide_2_title">New places around you!</string>
+    <string name="slide_2_desc">Find new places around you, wherever you are!</string>
 
-    <string name="slide_3_title">Great Discounts</string>
-    <string name="slide_3_desc">Best discounts on every single service we offer!</string>
+    <string name="slide_3_title">Wallet friendly app</string>
+    <string name="slide_3_desc">You can access most of the features of the app for free</string>
 
-    <string name="slide_4_title">World Travel</string>
-    <string name="slide_4_desc">Book tickets of any transportation and travel the world!</string>
-
-    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
-    <string name="play_again">Play Again</string>
     <string name="welcome">Welcome to Geopedia</string>
     <string name="app_subtitle"><![CDATA[Places & Itineraries]]></string>
     <string name="email">Email</string>
