@@ -81,16 +81,19 @@ public class LogIn extends AppCompatActivity {
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             if(documentSnapshot.exists()){
                                 String type= documentSnapshot.getString("IsAdmin");
-                                Toast.makeText(LogIn.this, "Logged in Successfully as "+type, Toast.LENGTH_SHORT).show();
+
                                 assert type != null;
                                 if(type.equals("1")){
                                     Intent intent = new Intent(LogIn.this, HomeAdmin.class);
                                     startActivity(intent);
+                                    Toast.makeText(LogIn.this, "Logged in Successfully as Admin", Toast.LENGTH_SHORT).show();
                                     finish();
                                 }else if(type.equals("0")){
                                     Intent intent = new Intent(LogIn.this, HomeAdmin.class);
                                     intent.putExtra("user_id" ,userid);
                                     startActivity(intent);
+                                    Toast.makeText(LogIn.this, "Logged in Successfully as User", Toast.LENGTH_SHORT).show();
+
                                     finish();
                                 }
                             }

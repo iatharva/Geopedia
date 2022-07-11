@@ -36,5 +36,6 @@
     <string name="date_of_birth">Date of birth</string>
     <string name="last_name">Last Name</string>
     <string name="first_name">First Name</string>
+    <string name="log_out">Log Out</string>
 
 </resources>

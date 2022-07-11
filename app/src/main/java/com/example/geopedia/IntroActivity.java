@@ -36,7 +36,7 @@ public class IntroActivity extends AppCompatActivity {
         // Checking for first time launch - before calling setContentView()
         prefManager = new PrefManager(this);
         //Added for testing of intro screen/ show be removed after testing
-        prefManager.setFirstTimeLaunch(true);
+        //prefManager.setFirstTimeLaunch(true);
         if (!prefManager.isFirstTimeLaunch()) {
             launchHomeScreen();
             finish();

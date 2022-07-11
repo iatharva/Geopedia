@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    String userid;
+    String userid,type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,26 +34,22 @@ public class MainActivity extends AppCompatActivity {
         mAuthStateListener = firebaseAuth -> {
             FirebaseUser mFirebaseUser = firebaseAuth.getCurrentUser();
             if (mFirebaseUser != null) {
-
                 //User of customer start
                 userid = mFirebaseUser.getUid();
                 DocumentReference typeref = db.collection("Users").document(userid);
-                typeref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            String type = documentSnapshot.getString("isAdmin");
-                            assert type != null;
-                            if (type.equals("1")) {
-                                Intent intent = new Intent(MainActivity.this, HomeAdmin.class);
-                                startActivity(intent);
-                                finish();
-                            } else if (type.equals("0")) {
-                                Intent intent = new Intent(MainActivity.this, HomeAdmin.class);
-                                intent.putExtra("user_id" ,userid);
-                                startActivity(intent);
-                                finish();
-                            }
+                typeref.get().addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        type = documentSnapshot.getString("IsAdmin");
+                        assert type != null;
+                        if (type.equals("1")) {
+                            Intent intent = new Intent(MainActivity.this, HomeAdmin.class);
+                            startActivity(intent);
+                            finish();
+                        } else if (type.equals("0")) {
+                            Intent intent = new Intent(MainActivity.this, HomeAdmin.class);
+                            intent.putExtra("user_id" ,userid);
+                            startActivity(intent);
+                            finish();
                         }
                     }
                 });

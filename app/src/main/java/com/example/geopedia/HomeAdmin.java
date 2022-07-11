@@ -1,12 +1,15 @@
 package com.example.geopedia;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
+import com.example.geopedia.extras.LogoutDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -54,6 +57,18 @@ public class HomeAdmin extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home_admin, menu);
         return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.logoutButtonHeader) {
+            openDialog();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    public void openDialog(){
+        LogoutDialog logoutdialog=new LogoutDialog();
+        logoutdialog.show(getSupportFragmentManager(),"Log out Dialog");
     }
 
     @Override
