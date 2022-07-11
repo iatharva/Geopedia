@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".CreateNewAccount">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_a_new_account"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30sp"/>
+
+    <EditText
+        android:id="@+id/EmailField"
+        android:hint="@string/email"
+        android:layout_width="230sp"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:autofillHints="Email"/>
+
+    <EditText
+        android:id="@+id/PasswordField"
+        android:paddingTop="20sp"
+        android:hint="@string/password"
+        android:layout_width="230sp"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:autofillHints="Password"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@android:color/black"/>
+
+    <EditText
+        android:id="@+id/FNameField"
+        android:paddingTop="20sp"
+        android:hint="@string/first_name"
+        android:layout_width="230sp"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/LNameField"
+        android:paddingTop="20sp"
+        android:hint="@string/last_name"
+        android:layout_width="230sp"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/DateField"
+        android:paddingTop="20sp"
+        android:hint="@string/date_of_birth"
+        android:layout_width="230sp"
+        android:layout_height="wrap_content"
+        android:editable="false"
+        android:ems="10"
+        android:inputType="date" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        tools:ignore="SmallSp" />
+    <Button
+        android:id="@+id/AddAccountBtn"
+        android:layout_width="250sp"
+        android:layout_height="50sp"
+        android:text="@string/create_account"
+        android:textAllCaps="false"
+        android:textSize="18sp" />
+
+</LinearLayout>

@@ -32,5 +32,9 @@
     <string name="reset_password">Reset password</string>
     <string name="receive_reset_link_on_email">Receive reset link on email</string>
     <string name="signingin">signing in...</string>
+    <string name="create_account">Create Account</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
 
 </resources>

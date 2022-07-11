@@ -10,7 +10,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
@@ -38,6 +41,13 @@ public class LogIn extends AppCompatActivity {
             startActivity(i);
         });
 
+        //To open Create account Activity
+        CreateAccountBtn.setOnClickListener(view -> {
+            Intent i = new Intent(LogIn.this,CreateNewAccount.class);
+            startActivity(i);
+        });
+
+
         //To log in
         LogInBtn.setOnClickListener(view -> {
             //Getting data from UI
@@ -64,8 +74,28 @@ public class LogIn extends AppCompatActivity {
                 if (task.isSuccessful())
                 {
                     //Success case (go to Home Screen) after checking for new user
-                    Intent i = new Intent(LogIn.this,HomeAdmin.class);
-                    startActivity(i);
+                    String userid = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
+                    DocumentReference typeref = db.collection("Users").document(userid);
+                    typeref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if(documentSnapshot.exists()){
+                                String type= documentSnapshot.getString("IsAdmin");
+                                Toast.makeText(LogIn.this, "Logged in Successfully as "+type, Toast.LENGTH_SHORT).show();
+                                assert type != null;
+                                if(type.equals("1")){
+                                    Intent intent = new Intent(LogIn.this, HomeAdmin.class);
+                                    startActivity(intent);
+                                    finish();
+                                }else if(type.equals("0")){
+                                    Intent intent = new Intent(LogIn.this, HomeAdmin.class);
+                                    intent.putExtra("user_id" ,userid);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        }
+                    });
                 }
                 else
                 {
