@@ -37,5 +37,15 @@
     <string name="last_name">Last Name</string>
     <string name="first_name">First Name</string>
     <string name="log_out">Log Out</string>
+    <string name="menu_approved_locations">Approved Locations</string>
+    <string name="menu_declined_locations">Declined Locations</string>
+    <string name="menu_info">Information</string>
+    <string name="menu_profiles">Profiles</string>
+    <string name="menu_locations">Locations</string>
+    <string name="menu_events">Events</string>
+    <string name="menu_others">Others</string>
+    <string name="menu_questions">Questions</string>
+    <string name="menu_feedback">Report Problem/Feedback</string>
+    <string name="menu_about">About our app</string>
 
 </resources>

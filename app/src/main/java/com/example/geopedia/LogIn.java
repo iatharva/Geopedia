@@ -1,7 +1,9 @@
 package com.example.geopedia;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.geopedia.extras.LogInAsDialog;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -76,26 +79,20 @@ public class LogIn extends AppCompatActivity {
                     //Success case (go to Home Screen) after checking for new user
                     String userid = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
                     DocumentReference typeref = db.collection("Users").document(userid);
-                    typeref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            if(documentSnapshot.exists()){
-                                String type= documentSnapshot.getString("IsAdmin");
-
-                                assert type != null;
-                                if(type.equals("1")){
-                                    Intent intent = new Intent(LogIn.this, HomeAdmin.class);
-                                    startActivity(intent);
-                                    Toast.makeText(LogIn.this, "Logged in Successfully as Admin", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                }else if(type.equals("0")){
-                                    Intent intent = new Intent(LogIn.this, HomeAdmin.class);
-                                    intent.putExtra("user_id" ,userid);
-                                    startActivity(intent);
-                                    Toast.makeText(LogIn.this, "Logged in Successfully as User", Toast.LENGTH_SHORT).show();
-
-                                    finish();
-                                }
+                    typeref.get().addOnSuccessListener(documentSnapshot -> {
+                        if(documentSnapshot.exists()){
+                            String type= documentSnapshot.getString("IsAdmin");
+                            assert type != null;
+                            if(type.equals("1")){
+                                //Show a dialog with radio buttons asking if user wanted to log in as admin or user
+                                openLogInAsDialog();
+                            }else if(type.equals("0")){
+                                openLogInAsDialog();
+                                //Intent intent = new Intent(LogIn.this, HomeAdmin.class);
+                                //intent.putExtra("user_id" ,userid);
+                                //startActivity(intent);
+                                //Toast.makeText(LogIn.this, "Welcome User", Toast.LENGTH_SHORT).show();
+                                //finish();
                             }
                         }
                     });
@@ -109,5 +106,32 @@ public class LogIn extends AppCompatActivity {
                 LogInBtn.setText(R.string.log_in);
             });
         });
+    }
+
+    //To login as admin or user
+    public void loginAs() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(LogIn.this);
+        builder.setTitle("Login As");
+        builder.setMessage("Choose your login type");
+        builder.setPositiveButton("Admin", (dialog, which) -> {
+            Intent intent = new Intent(LogIn.this, HomeAdmin.class);
+            intent.putExtra("user_id" ,UID);
+            startActivity(intent);
+            Toast.makeText(LogIn.this, "Logged in Successfully as Admin", Toast.LENGTH_SHORT).show();
+            finish();
+        });
+        builder.setNegativeButton("User", (dialog, which) -> {
+            Intent intent = new Intent(LogIn.this, HomeAdmin.class);
+            intent.putExtra("user_id" ,UID);
+            startActivity(intent);
+            Toast.makeText(LogIn.this, "Welcome User", Toast.LENGTH_SHORT).show();
+            finish();
+        });
+        builder.show();
+    }
+
+    public void openLogInAsDialog(){
+        LogInAsDialog logInAsDialog=new LogInAsDialog();
+        logInAsDialog.show(getSupportFragmentManager(),"Log in as");
     }
 }

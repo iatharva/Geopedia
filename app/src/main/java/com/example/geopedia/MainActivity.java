@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
+import com.example.geopedia.extras.LogInAsDialog;
+import com.example.geopedia.extras.LogoutDialog;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,9 +44,7 @@ public class MainActivity extends AppCompatActivity {
                         type = documentSnapshot.getString("IsAdmin");
                         assert type != null;
                         if (type.equals("1")) {
-                            Intent intent = new Intent(MainActivity.this, HomeAdmin.class);
-                            startActivity(intent);
-                            finish();
+                            openLogInAsDialog();
                         } else if (type.equals("0")) {
                             Intent intent = new Intent(MainActivity.this, HomeAdmin.class);
                             intent.putExtra("user_id" ,userid);
@@ -77,4 +77,8 @@ public class MainActivity extends AppCompatActivity {
         fAuth.addAuthStateListener(mAuthStateListener);
     }
 
+    public void openLogInAsDialog(){
+        LogInAsDialog logInAsDialog=new LogInAsDialog();
+        logInAsDialog.show(getSupportFragmentManager(),"Log in as");
+    }
 }
