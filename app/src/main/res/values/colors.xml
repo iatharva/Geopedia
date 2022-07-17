@@ -42,4 +42,7 @@
         <item>@color/dot_dark_screen3</item>
         <item>@color/dot_dark_screen4</item>
     </array>
+
+    <color name="colorPrimary">#43a047</color>
+    <color name="colorPrimaryDark">#265C28</color>
 </resources>

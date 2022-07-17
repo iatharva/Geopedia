@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Geopedia</string>
-
+    <string name="version_info">0.1.22</string>
     <string name="title_activity_welcome">LogIn</string>
     <string name="next">Next</string>
     <string name="skip">Skip</string>
@@ -47,5 +47,18 @@
     <string name="menu_questions">Questions</string>
     <string name="menu_feedback">Report Problem/Feedback</string>
     <string name="menu_about">About our app</string>
+    <string name="sendmail">Send Email</string>
+    <string name="detailaboutproblem">Details about the problem or feedback</string>
+    <string name="sevofproblem">Severity of the problem</string>
+    <string name="tellproblem">Tell me your problem</string>
+    <string name="release_logo">Release logo</string>
+    <string name="github_logo">Github logo</string>
+
+    <string name="about_description1">This app will give you information about locations around you but in a different way.</string>
+    <string name="about_description2">This application is developed as <b>MCA Semester IV college project</b>.</string>
+    <string name="about_description3">This app is developed by <b>Atharva Ikhar (AI)</b></string>
+    <string name="about_description4">This application is <b>currently in pre-release phase</b> with current version :</string>
+    <string name="about_us">About us</string>
+    <string name="no_profiles_present_in_the_app_database">No profiles present in the app/database</string>
 
 </resources>

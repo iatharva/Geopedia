@@ -1,4 +1,4 @@
-package com.example.geopedia;
+package com.example.geopedia.accounts;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,17 +8,17 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.geopedia.HomeAdmin;
+import com.example.geopedia.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 
 import java.util.Calendar;
 import java.util.HashMap;

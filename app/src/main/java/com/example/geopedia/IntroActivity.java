@@ -19,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.geopedia.extras.PrefManager;
+
 public class IntroActivity extends AppCompatActivity {
 
     private ViewPager viewPager;

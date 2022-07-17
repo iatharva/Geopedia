@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.geopedia.ui.home.HomeFragment"
+        android:name="com.example.geopedia.adminmenu.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_approvedl"
-        android:name="com.example.geopedia.ui.gallery.GalleryFragment"
+        android:name="com.example.geopedia.adminmenu.approvedl.GalleryFragment"
         android:label="@string/menu_approved_locations"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
         android:id="@+id/nav_declinedl"
-        android:name="com.example.geopedia.ui.slideshow.SlideshowFragment"
+        android:name="com.example.geopedia.adminmenu.declinedl.SlideshowFragment"
         android:label="@string/menu_declined_locations"
         tools:layout="@layout/fragment_slideshow" />
 
@@ -27,37 +27,37 @@
 
     <fragment
         android:id="@+id/nav_profiles"
-        android:name="com.example.geopedia.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_declined_locations"
+        android:name="com.example.geopedia.adminmenu.Information.profiles.ProfilesFragment"
+        android:label="@string/menu_profiles"
         tools:layout="@layout/fragment_slideshow" />
 
     <fragment
         android:id="@+id/nav_locations"
-        android:name="com.example.geopedia.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_declined_locations"
+        android:name="com.example.geopedia.adminmenu.Information.locations.LocationsFragment"
+        android:label="@string/menu_locations"
         tools:layout="@layout/fragment_slideshow" />
 
     <fragment
         android:id="@+id/nav_events"
-        android:name="com.example.geopedia.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_declined_locations"
+        android:name="com.example.geopedia.adminmenu.Information.events.EventsFragment"
+        android:label="@string/menu_events"
         tools:layout="@layout/fragment_slideshow" />
 
     <fragment
         android:id="@+id/nav_questions"
-        android:name="com.example.geopedia.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_declined_locations"
+        android:name="com.example.geopedia.adminmenu.Information.questions.QuestionsFragment"
+        android:label="@string/menu_questions"
         tools:layout="@layout/fragment_slideshow" />
 
     <fragment
         android:id="@+id/nav_feedback"
-        android:name="com.example.geopedia.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_declined_locations"
-        tools:layout="@layout/fragment_slideshow" />
+        android:name="com.example.geopedia.adminmenu.Others.feedback.FeedbackFragment"
+        android:label="@string/menu_feedback"
+        tools:layout="@layout/fragment_feedback" />
 
     <fragment
         android:id="@+id/nav_about"
-        android:name="com.example.geopedia.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_declined_locations"
-        tools:layout="@layout/fragment_slideshow" />
+        android:name="com.example.geopedia.adminmenu.Others.about.AboutFragment"
+        android:label="@string/menu_about"
+        tools:layout="@layout/fragment_about" />
 </navigation>

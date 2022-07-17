@@ -17,7 +17,7 @@
             android:name=".AddLocation"
             android:exported="false" />
         <activity
-            android:name=".CreateNewAccount"
+            android:name=".accounts.CreateNewAccount"
             android:exported="false" />
         <activity
             android:name=".HomeAdmin"
@@ -25,10 +25,10 @@
             android:label="@string/title_activity_home_admin"
             android:theme="@style/Theme.Geopedia.NoActionBar" />
         <activity
-            android:name=".LogIn"
+            android:name=".accounts.LogIn"
             android:exported="false" />
         <activity
-            android:name=".ForgetPassword"
+            android:name=".accounts.ForgetPassword"
             android:exported="false" />
         <activity
             android:name=".IntroActivity"

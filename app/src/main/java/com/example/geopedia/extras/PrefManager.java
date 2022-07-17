@@ -1,4 +1,4 @@
-package com.example.geopedia;
+package com.example.geopedia.extras;
 
 import android.content.Context;
 import android.content.SharedPreferences;
