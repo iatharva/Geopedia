@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.geopedia.HomeAdmin;
+import com.example.geopedia.HomeUser;
 import com.example.geopedia.R;
 import com.example.geopedia.extras.LogInAsDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -85,12 +86,10 @@ public class LogIn extends AppCompatActivity {
                                 //Show a dialog with radio buttons asking if user wanted to log in as admin or user
                                 openLogInAsDialog();
                             }else if(type.equals("0")){
-                                openLogInAsDialog();
-                                //Intent intent = new Intent(LogIn.this, HomeAdmin.class);
-                                //intent.putExtra("user_id" ,userid);
-                                //startActivity(intent);
-                                //Toast.makeText(LogIn.this, "Welcome User", Toast.LENGTH_SHORT).show();
-                                //finish();
+                                Intent intent = new Intent(LogIn.this, HomeUser.class);
+                                startActivity(intent);
+                                Toast.makeText(LogIn.this, "Welcome User", Toast.LENGTH_SHORT).show();
+                                finish();
                             }
                         }
                     });
@@ -119,7 +118,7 @@ public class LogIn extends AppCompatActivity {
             finish();
         });
         builder.setNegativeButton("User", (dialog, which) -> {
-            Intent intent = new Intent(LogIn.this, HomeAdmin.class);
+            Intent intent = new Intent(LogIn.this, HomeUser.class);
             intent.putExtra("user_id" ,UID);
             startActivity(intent);
             Toast.makeText(LogIn.this, "Welcome User", Toast.LENGTH_SHORT).show();

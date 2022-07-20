@@ -60,5 +60,8 @@
     <string name="about_description4">This application is <b>currently in pre-release phase</b> with current version :</string>
     <string name="about_us">About us</string>
     <string name="no_profiles_present_in_the_app_database">No profiles present in the app/database</string>
+    <string name="menu_settings">Settings</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
 
 </resources>

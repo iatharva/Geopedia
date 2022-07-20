@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeUser">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="620dp"
+        android:background="@color/white" />
+
+    <!--
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/frameLayout"
+        android:scaleType="fitXY"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="travelling_bottom.json"
+        app:lottie_loop="true" />
+-->
+    <Button
+        android:id="@+id/HomeBtn"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@color/black"
+        android:text="@string/home"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/EventsBtn"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="66dp"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@color/black"
+        android:text="@string/menu_events"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/QuestionsBtn"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="175dp"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@color/black"
+        android:text="@string/menu_questions"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/SettingsBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/settings_outline_31"
+        android:scaleType="fitXY" />
+
+</RelativeLayout>

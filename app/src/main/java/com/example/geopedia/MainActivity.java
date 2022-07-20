@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                         if (type.equals("1")) {
                             openLogInAsDialog();
                         } else if (type.equals("0")) {
-                            Intent intent = new Intent(MainActivity.this, HomeAdmin.class);
+                            Intent intent = new Intent(MainActivity.this, HomeUser.class);
                             intent.putExtra("user_id" ,userid);
                             startActivity(intent);
                             finish();
