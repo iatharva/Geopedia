@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.geopedia">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Geopedia"
         tools:targetApi="31">
+        <activity
+            android:name=".AddEvents"
+            android:exported="false" />
+        <activity
+            android:name=".AddQuestions"
+            android:exported="false" />
         <activity
             android:name=".HomeUser"
             android:exported="false" />

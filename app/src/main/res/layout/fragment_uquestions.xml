@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:text="User question of the customer"
-        />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <EditText
+                android:id="@+id/SearchQuestionFld"
+                android:hint="Keywords to search..."
+                android:layout_width="230sp"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/LogInBtn"
+                android:layout_width="120sp"
+                android:layout_height="50sp"
+                android:text="@string/search"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/addQuestionFab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_marginEnd="@dimen/fab_margin"
+    android:layout_marginBottom="16dp"
+    app:srcCompat="@android:drawable/ic_input_add" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

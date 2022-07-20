@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                             openLogInAsDialog();
                         } else if (type.equals("0")) {
                             Intent intent = new Intent(MainActivity.this, HomeUser.class);
-                            intent.putExtra("user_id" ,userid);
+                            //intent.putExtra("user_id" ,userid);
                             startActivity(intent);
                             finish();
                         }

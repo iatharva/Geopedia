@@ -15,7 +15,10 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.example.geopedia.extras.LogoutDialog;
+import com.example.geopedia.usermenu.Uevents;
 import com.example.geopedia.usermenu.Uhome;
+import com.example.geopedia.usermenu.Uquestions;
+import com.example.geopedia.usermenu.Usettings;
 
 public class HomeUser extends AppCompatActivity {
 
@@ -31,9 +34,10 @@ public class HomeUser extends AppCompatActivity {
         //Set by default Home fragment
         replaceFragment(new Uhome());
         //Setting respective fragment on selection
-        //ProfileBtn.setOnClickListener(v -> replaceFragment(new Profile()));
-        //HomeBtn.setOnClickListener(view -> replaceFragment(new Uhome()));
-        //SettingsBtn.setOnClickListener(view -> replaceFragment(new Settings()));
+        HomeBtn.setOnClickListener(v -> replaceFragment(new Uhome()));
+        QuestionsBtn.setOnClickListener(v -> replaceFragment(new Uquestions()));
+        EventsBtn.setOnClickListener(view -> replaceFragment(new Uevents()));
+        SettingsBtn.setOnClickListener(view -> replaceFragment(new Usettings()));
     }
 
     /**
@@ -72,11 +76,8 @@ public class HomeUser extends AppCompatActivity {
     public void onResume()
     {
         super.onResume();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getUserLocationPermission();
-        }
+        getUserLocationPermission();
     }
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public void getUserLocationPermission()
     {
         //fAuth = FirebaseAuth.getInstance();
@@ -84,19 +85,5 @@ public class HomeUser extends AppCompatActivity {
         //Date currDate = new Date(Objects.requireNonNull(fAuth.getCurrentUser().getMetadata().getCreationTimestamp()));
         //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //String date = dateFormat.format(currDate);
-        
-        //Get the user permission for getting location
-        if(getApplicationContext().checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED)
-        {
-            requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},1);
-        }
-
-        //Check if permission is received, if not then exit the app
-        if(getApplicationContext().checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED)
-        {
-            finish();
-        }
     }
 }

@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.geopedia.HomeAdmin;
+import com.example.geopedia.HomeUser;
 
 public class LogInAsDialog extends AppCompatDialogFragment {
     @NonNull
@@ -25,7 +26,7 @@ public class LogInAsDialog extends AppCompatDialogFragment {
             Toast.makeText(getActivity(), "Logged in Successfully as Admin", Toast.LENGTH_SHORT).show();
         });
         builder.setNegativeButton("User", (dialog, which) -> {
-            Intent intent = new Intent(getActivity(), HomeAdmin.class);
+            Intent intent = new Intent(getActivity(), HomeUser.class);
             startActivity(intent);
             Toast.makeText(getActivity(), "Welcome User", Toast.LENGTH_SHORT).show();
         });

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddQuestions">
+
+    <TextView
+        android:id="@+id/T1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:text="Ask a question"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/T1Desc1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/T1"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="5dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="60dp"
+        android:text="Here you can submit your question, which will saved with location so that relavant people can see the question and respond"
+        android:textColor="@color/defaultTextColor" />
+
+    <EditText
+        android:id="@+id/questionTitleFld"
+        android:layout_width="300dp"
+        android:hint="Question/Title"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/T1Desc1"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="20dp" />
+
+    <EditText
+        android:id="@+id/questionDescFld"
+        android:layout_width="300dp"
+        android:layout_height="221dp"
+        android:layout_below="@id/questionTitleFld"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/round_corner_hollow"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Description (If any)"
+        android:inputType="textMultiLine"
+        android:paddingLeft="20dp"
+        android:paddingTop="18dp"
+        android:paddingRight="20dp" />
+
+    <Button
+        android:id="@+id/submitQuestionBtn"
+        android:layout_width="300dp"
+        android:layout_height="50sp"
+        android:text="@string/search"
+        android:textSize="18sp"
+        android:layout_below="@id/questionDescFld"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"/>
+
+</RelativeLayout>
