@@ -19,8 +19,8 @@
         android:theme="@style/Theme.Geopedia"
         tools:targetApi="31">
 
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AAIzaSyC-4IfxORypoNPw0EzxhSkEyT8RILUbMOA"/>
+        <!--<meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AAIzaSyC-4IfxORypoNPw0EzxhSkEyT8RILUbMOA"/>-->
 
         <activity
             android:name=".AddEvents"

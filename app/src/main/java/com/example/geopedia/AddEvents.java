@@ -1,129 +1,100 @@
 package com.example.geopedia;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.sucho.placepicker.Constants;
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.plugins.places.picker.PlacePicker;
+import com.mapbox.mapboxsdk.plugins.places.picker.model.PlacePickerOptions;
 
 public class AddEvents extends AppCompatActivity {
 
     EditText eventTitleFld, eventDescFld;
     CheckBox customLocationCheckbox;
     Button submitEventBtn;
-    int PLACE_PICKER_REQUEST=1;
+    private static final int REQUEST_CODE = 56789;
+    private static final int PLACE_SELECTION_REQUEST_CODE = 56789;
     String eventLatitude,eventLongitude;
-    private GoogleApiClient mGoogleApiClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Mapbox.getInstance(this,getString(R.string.mapbox_private_token));
         setContentView(R.layout.activity_add_events);
         eventTitleFld = findViewById(R.id.eventTitleFld);
         eventDescFld = findViewById(R.id.eventDescFld);
         customLocationCheckbox = findViewById(R.id.customLocationCheckbox);
         submitEventBtn = findViewById(R.id.submitEventBtn);
 
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .build();
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        @SuppressLint("MissingPermission")
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double currentLatitude = location.getLatitude();
+        double currentLongitude = location.getLongitude();
 
         //if custom location is checked, open maps app to select location
         customLocationCheckbox.setOnClickListener(v -> {
             if(customLocationCheckbox.isChecked()){
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                try {
-                    startActivityForResult(builder.build(AddEvents.this), PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                }
+                //Launch Placepicker activity
+                goToPickerActivity(currentLatitude,currentLongitude);
             }
+        });
+
+        //Save the event request and save to database.
+        submitEventBtn.setOnClickListener(v -> {
+
         });
     }
 
-    /*v1
+    /**
+     * Set up the PlacePickerOptions and startActivityForResult
+     */
+    private void goToPickerActivity(double currentLatitude, double currentLongitude) {
+        Intent intent = new PlacePicker.IntentBuilder()
+                .accessToken(getString(R.string.mapbox_public_token))
+                .placeOptions(
+                        PlacePickerOptions.builder()
+                                .statingCameraPosition(
+                                        new CameraPosition.Builder()
+                                                .target(new LatLng(currentLatitude, currentLongitude))
+                                                .zoom(16)
+                                                .build())
+                                .build())
+                .build(this);
+        startActivityForResult(intent, PLACE_SELECTION_REQUEST_CODE);
+    }
+
+    /**
+    * This fires after a location is selected in the Places Plugin's PlacePickerActivity.
+    * @param requestCode code that is a part of the return to this activity
+    * @param resultCode code that is a part of the return to this activity
+    * @param data the data that is a part of the return to this activity
+    */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place place = (Place) PlacePicker.getPlace(data, this);
-                String toastMsg = String.format("Place: %s", place.getName());
-                eventLatitude = String.valueOf(place.getLatLng().latitude);
-                eventLongitude = String.valueOf(place.getLatLng().longitude);
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            // Retrieve the information from the selected location's CarmenFeature
+            CarmenFeature carmenFeature = PlacePicker.getPlace(data);
+
+            // Set the TextView text to the entire CarmenFeature. The CarmenFeature
+            // also be parsed through to grab and display certain information such as
+            // its placeName, text, or coordinates.
+            if (carmenFeature != null) {
+                eventDescFld.setText(carmenFeature.toJson());
             }
         }
     }
-     */
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
-    /*
-    @Override
-    protected void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        View parentLayout = findViewById(android.R.id.content);
-        Snackbar.make(parentLayout, connectionResult.getErrorMessage(), Snackbar.LENGTH_LONG)
-                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
-                .show();
-    }
-     */
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place place = (Place) PlacePicker.getPlace(data, this);
-                StringBuilder stBuilder = new StringBuilder();
-                String placename = String.format("%s", place.getName());
-                String latitude = String.valueOf(place.getLatLng().latitude);
-                String longitude = String.valueOf(place.getLatLng().longitude);
-                String address = String.format("%s", place.getAddress());
-                stBuilder.append("Name: ");
-                stBuilder.append(placename);
-                stBuilder.append("\n");
-                stBuilder.append("Latitude: ");
-                stBuilder.append(latitude);
-                stBuilder.append("\n");
-                stBuilder.append("Logitude: ");
-                stBuilder.append(longitude);
-                stBuilder.append("\n");
-                stBuilder.append("Address: ");
-                stBuilder.append(address);
-                eventDescFld.setText(stBuilder.toString());
-            }
-        }
-    }
 }
