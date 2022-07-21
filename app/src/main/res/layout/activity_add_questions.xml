@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
-        android:text="Ask a question"
+        android:text="@string/ask_a_question"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -26,13 +26,13 @@
         android:layout_marginTop="5dp"
         android:paddingStart="0dp"
         android:paddingEnd="60dp"
-        android:text="Here you can submit your question, which will saved with location so that relavant people can see the question and respond"
+        android:text="@string/here_you_can_submit_your_question_which_will_saved_with_location_so_that_relavant_people_can_see_the_question_and_respond"
         android:textColor="@color/defaultTextColor" />
 
     <EditText
         android:id="@+id/questionTitleFld"
         android:layout_width="300dp"
-        android:hint="Question/Title"
+        android:hint="@string/question_title"
         android:layout_height="wrap_content"
         android:layout_below="@id/T1Desc1"
         android:layout_marginStart="40dp"
@@ -50,7 +50,7 @@
         android:background="@drawable/round_corner_hollow"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Description (If any)"
+        android:hint="@string/description_if_any"
         android:inputType="textMultiLine"
         android:paddingLeft="20dp"
         android:paddingTop="18dp"
@@ -60,11 +60,11 @@
         android:id="@+id/submitQuestionBtn"
         android:layout_width="300dp"
         android:layout_height="50sp"
-        android:text="@string/search"
-        android:textSize="18sp"
         android:layout_below="@id/questionDescFld"
         android:layout_marginStart="40dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"/>
+        android:layout_marginEnd="20dp"
+        android:text="@string/submit_question"
+        android:textSize="18sp" />
 
 </RelativeLayout>

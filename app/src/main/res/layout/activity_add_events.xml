@@ -26,45 +26,63 @@
         android:layout_marginTop="5dp"
         android:paddingStart="0dp"
         android:paddingEnd="60dp"
-        android:text="Here you can submit your question, which will saved with location so that relavant people can see the question and respond"
+        android:text="@string/want_to_arrange_an_event_and_invite_all_the_local_community_you_are_in_right_place_submit_a_request_and_invite_the_people"
         android:textColor="@color/defaultTextColor" />
 
     <EditText
-        android:id="@+id/questionTitleFld"
+        android:id="@+id/eventTitleFld"
         android:layout_width="300dp"
-        android:hint="Event/Title"
         android:layout_height="wrap_content"
         android:layout_below="@id/T1Desc1"
         android:layout_marginStart="40dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="20dp" />
+        android:layout_marginEnd="20dp"
+        android:hint="@string/event_name" />
 
     <EditText
-        android:id="@+id/questionDescFld"
+        android:id="@+id/eventDescFld"
         android:layout_width="300dp"
         android:layout_height="221dp"
-        android:layout_below="@id/questionTitleFld"
+        android:layout_below="@id/eventTitleFld"
         android:layout_marginStart="40dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/round_corner_hollow"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Description (If any)"
+        android:hint="@string/description"
         android:inputType="textMultiLine"
         android:paddingLeft="20dp"
         android:paddingTop="18dp"
         android:paddingRight="20dp" />
 
-    <Button
-        android:id="@+id/submitQuestionBtn"
+    <TextView
+        android:id="@+id/eventNote"
         android:layout_width="300dp"
         android:layout_height="50sp"
-        android:text="@string/search"
-        android:textSize="18sp"
-        android:layout_below="@id/questionDescFld"
+        android:layout_below="@id/eventDescFld"
         android:layout_marginStart="40dp"
         android:layout_marginTop="20dp"
+        android:text="@string/event_note" />
+
+    <!--Checkbox for use custom location-->
+    <CheckBox
+        android:id="@+id/customLocationCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_below="@id/eventNote"
+        android:layout_marginStart="40dp"
+        android:text="@string/use_custom_location"
+        android:textColor="@color/defaultTextColor" />
+
+    <Button
+        android:id="@+id/submitEventBtn"
+        android:layout_width="300dp"
+        android:layout_height="50sp"
+        android:text="@string/submit_request"
+        android:textSize="18sp"
+        android:layout_below="@id/customLocationCheckbox"
+        android:layout_marginStart="40dp"
         android:layout_marginEnd="20dp"/>
 
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.example.geopedia;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openLogInAsDialog(){
+
         LogInAsDialog logInAsDialog=new LogInAsDialog();
         logInAsDialog.show(getSupportFragmentManager(),"Log in as");
     }
