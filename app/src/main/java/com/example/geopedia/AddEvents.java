@@ -11,13 +11,20 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.plugins.places.picker.PlacePicker;
 import com.mapbox.mapboxsdk.plugins.places.picker.model.PlacePickerOptions;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class AddEvents extends AppCompatActivity {
 
@@ -27,6 +34,7 @@ public class AddEvents extends AppCompatActivity {
     private static final int REQUEST_CODE = 56789;
     private static final int PLACE_SELECTION_REQUEST_CODE = 56789;
     String eventLatitude,eventLongitude;
+    final FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +61,23 @@ public class AddEvents extends AppCompatActivity {
 
         //Save the event request and save to database.
         submitEventBtn.setOnClickListener(v -> {
+            if(eventTitleFld.getText().toString().isEmpty() || eventDescFld.getText().toString().isEmpty()){
+                Toast.makeText(getApplicationContext(),"Please enter the Question to submit",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            String eventTitle = eventTitleFld.getText().toString();
+            String eventDesc = eventDescFld.getText().toString();
+            if(customLocationCheckbox.isChecked()){
+                eventLatitude = eventLatitude;
+                eventLongitude = eventLongitude;
+            }
+            else{
+                eventLatitude = String.valueOf(currentLatitude);
+                eventLongitude = String.valueOf(currentLongitude);
+            }
 
+            saveTheEvent(userId,eventTitle,eventDesc,eventLatitude,eventLongitude);
         });
     }
 
@@ -85,16 +109,80 @@ public class AddEvents extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            // Retrieve the information from the selected location's CarmenFeature
             CarmenFeature carmenFeature = PlacePicker.getPlace(data);
-
-            // Set the TextView text to the entire CarmenFeature. The CarmenFeature
-            // also be parsed through to grab and display certain information such as
-            // its placeName, text, or coordinates.
             if (carmenFeature != null) {
-                eventDescFld.setText(carmenFeature.toJson());
+                //get the json response
+                String json = carmenFeature.toJson();
+                //get the latitude and longitude from the json response
+                //demo rponse "center":[73.782179,18.512556]
+                String[] latLong = json.split("center");
+
+                //get other locat ion info
+                //demo response "context":[{"id":"neighborhood.6629186566756840","text":"Shindenagar"},{"id":"locality.17205840760903160","text":"Bavdhan"},{"id":"place.10600147661377950","text":"Mulshi","wikidata":"Q17075340"},{"id":"district.8996689917444500","text":"Pune","wikidata":"Q1797336"},{"id":"region.11712446254386080","text":"Maharashtra","short_code":"IN-MH","wikidata":"Q1191"},{"id":"country.14770391688208260","text":"India","short_code":"in","wikidata":"Q668"}]
+                //get the locality name from th econtext array
+                String[] context = json.split("context");
+                String[] locality = context[1].split("text");
+                
+                //get current data in eventDescFld
+                String eventDesc = eventDescFld.getText().toString();
+                if(eventDesc.isEmpty()){
+                    eventDescFld.setText("Event is in " + locality[1]);
+                }
+                else{
+                    //append the location info to the eventDescFld
+                    eventDescFld.setText(eventDesc + "\nEvent is in " + locality[1]);
+                }
             }
         }
+    }
+
+    /**
+     * Save the event to the database
+     */
+    private void saveTheEvent(String userId, String eventTitle, String eventDesc, String eventLatitude, String eventLongitude) {
+        //Generate a random 28 character string
+        String randomString = "";
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (int i = 0; i < 28; i++) {
+            randomString += characters.charAt((int) Math.floor(Math.random() * characters.length()));
+        }
+        //get current date and time
+        java.util.Date date = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        String currentDate = sdf.format(date);
+        java.text.SimpleDateFormat sdf2 = new java.text.SimpleDateFormat("hh:mm a");
+        String currentTime = sdf2.format(date);
+
+        //Create a new event object
+        Map<String, Object> event = new HashMap<>();
+        event.put("eventId", randomString);
+        event.put("eventTitle", eventTitle);
+        event.put("eventDesc", eventDesc);
+        event.put("eventLatitude", eventLatitude);
+        event.put("eventLongitude", eventLongitude);
+        event.put("userId", userId);
+        event.put("date", currentDate);
+        event.put("time", currentTime);
+        event.put("eventStatus", "pending");
+        event.put("isActive", 1);
+        event.put("isDeleted", 0);
+        //need to add fields organizer, eventType, oneTime, eventDate, eventTime, allStepsCompleted.
+
+        //Add question to database
+        db.collection("Questions").document(randomString).set(event).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                Toast.makeText(AddEvents.this, "Request submitted successfully", Toast.LENGTH_SHORT).show();
+                //Go back to home screen
+                Intent intent = new Intent(AddEvents.this, HomeUser.class);
+                startActivity(intent);
+                finish();
+            }
+            else 
+            {
+                //Exception Case
+                Toast.makeText(AddEvents.this, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

@@ -81,24 +81,26 @@ final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         //Create a new question object
         Map<String, Object> question = new HashMap<>();
-        question.put("questionTitle", questionTitle);
-        question.put("questionDesc", questionDesc);
         question.put("userId", userId);
-        question.put("Email", Email);
-        question.put("FName", FName);
-        question.put("LName", LName);
-        question.put("date", currentDate);
-        question.put("time", currentTime);
         question.put("latitude", currentLatitude);
         question.put("longitude", currentLongitude);
         question.put("questionId", randomString);
+        question.put("questionTitle", questionTitle);
+        question.put("questionDesc", questionDesc);
+        question.put("email", Email);
+        question.put("fname", FName);
+        question.put("lname", LName);
+        question.put("date", currentDate);
+        question.put("time", currentTime);
+        
         question.put("isDeleted",0);
 
         //Add question to database
-         db.collection("Questions").document(randomString).set(question).addOnCompleteListener(task -> {
+        String finalRandomString = randomString;
+        db.collection("Questions").document(randomString).set(question).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
-                Toast.makeText(AddQuestions.this, "Question added successfully", Toast.LENGTH_SHORT).show();
                 //Go back to home screen
+                initiateRequiredStructure(finalRandomString,userId);
                 Intent intent = new Intent(AddQuestions.this, HomeUser.class);
                 startActivity(intent);
                 finish();
@@ -108,10 +110,41 @@ final FirebaseFirestore db = FirebaseFirestore.getInstance();
                 //Exception Case
                 Toast.makeText(AddQuestions.this, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
             }
+        });    
+    }
+
+    /*
+     * This function is used to initiate the required structure for the user to be able to answer/upvote the question
+     */
+    private void initiateRequiredStructure(String questionId,String userId) {
+        
+        //Initiate Upvote structure
+        Map<String, Object> upvote = new HashMap<>();
+        upvote.put(userId, 1);
+        db.collection("Upvotes").document(questionId).set(upvote).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                //Initiate comments structure
+                Map<String, Object> comments = new HashMap<>();
+                comments.put("aWuD6jzhCRgTwNzOcOBDywZBvR42", "Hello I am the creator of the App, Just wanted to give heads up to keep comments meaningful and respectful. Thanks");
+                db.collection("Comments").document(questionId).set(comments).addOnCompleteListener(task1 -> {
+                if(task1.isSuccessful()) {
+                    Toast.makeText(AddQuestions.this, "Question submitted successfully", Toast.LENGTH_SHORT).show();
+                }
+                else 
+                {
+                    //Exception Case
+                    Toast.makeText(AddQuestions.this, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                }
+        });
+            }
+            else 
+            {
+                //Exception Case
+                Toast.makeText(AddQuestions.this, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
 
-
-
+        
 
     }
 }

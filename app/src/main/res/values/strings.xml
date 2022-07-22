@@ -75,4 +75,8 @@
     <string name="submit_question">Submit Question</string>
     <string name="submit_request">Submit request</string>
     <string name="use_custom_location">Use Custom Location</string>
+    <string name="upvote">Upvote</string>
+    <string name="zero">0</string>
+    <string name="no_questions_present">No questions present</string>
+    <string name="add_question">Add question</string>
 </resources>
