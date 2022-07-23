@@ -15,15 +15,27 @@
 
             <EditText
                 android:id="@+id/SearchEventFld"
-                android:hint="Search Event"
-                android:layout_width="230sp"
-                android:layout_height="wrap_content"/>
-            <Button
-                android:id="@+id/LogInBtn"
-                android:layout_width="120sp"
-                android:layout_height="50sp"
-                android:text="@string/search"
-                android:textSize="18sp" />
+                android:hint="@string/search_event_name"
+                android:layout_width="350dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="10sp"
+                android:background="@drawable/round_corner_highlight"
+                android:paddingLeft="20dp"
+                android:paddingTop="10sp"
+                android:paddingBottom="5sp"
+                android:textColorHint="#999999"
+                android:textSize="20sp"
+                android:focusable="true"
+                />
+            <ImageButton
+                android:id="@+id/searchEButton"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10sp"
+                android:background="@color/White"
+                android:scaleType="fitCenter"
+                android:src="@drawable/search_60" />
 
         </LinearLayout>
     </LinearLayout>

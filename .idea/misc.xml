@@ -6,10 +6,13 @@
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/drawable-v21/round_corner_hollow.xml" value="0.157" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.124" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/drawable-v24/round_corner.xml" value="0.1645" />
+        <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/drawable-v24/round_corner_highlight.xml" value="0.1645" />
+        <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/drawable/loadinganimation.xml" value="0.1645" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/drawable/side_nav_bar.xml" value="0.157" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/activity_add_events.xml" value="0.24010416666666667" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/activity_add_location.xml" value="0.25416666666666665" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/activity_add_questions.xml" value="0.25416666666666665" />
+        <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/activity_comment_feed.xml" value="0.25416666666666665" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/activity_create_new_account.xml" value="0.25416666666666665" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/activity_forget_password.xml" value="0.11302083333333333" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/activity_home_admin.xml" value="0.25416666666666665" />
@@ -31,13 +34,14 @@
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/fragment_slideshow.xml" value="0.25416666666666665" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/fragment_uevents.xml" value="0.253125" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/fragment_uhome.xml" value="0.25416666666666665" />
-        <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/fragment_uquestions.xml" value="0.25416666666666665" />
+        <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/fragment_uquestions.xml" value="0.2" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/fragment_usettings.xml" value="0.253125" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/intro_screen0.xml" value="0.176" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/intro_screen1.xml" value="0.253125" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/intro_screen2.xml" value="0.12" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/nav_header_home_admin.xml" value="0.264" />
-        <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/row_question_user.xml" value="0.253125" />
+        <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/row_comment.xml" value="0.253125" />
+        <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/row_question_user.xml" value="0.4" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/row_user_list.xml" value="0.25416666666666665" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/menu/activity_main_drawer.xml" value="0.72" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/menu/home_admin.xml" value="0.2" />

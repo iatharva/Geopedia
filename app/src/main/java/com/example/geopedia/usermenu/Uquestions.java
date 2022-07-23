@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.geopedia.AddQuestions;
+import com.example.geopedia.CommentFeed;
 import com.example.geopedia.R;
 import com.example.geopedia.extras.Question;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -112,6 +113,7 @@ public class Uquestions extends Fragment {
                 viewHolder.tv_name.setText(model.getFname()+" "+model.getLname());
                 viewHolder.tv_status.setText(model.getQuestionTitle());
                 viewHolder.tv_description.setText(model.getQuestionDesc());
+                viewHolder.tv_time.setText(model.getDate()+" "+model.getTime());
                 if(model.getQuestionDesc().isEmpty())
                     viewHolder.tv_description.setText("No Description");
                 AtomicBoolean isLiked= new AtomicBoolean(false);
@@ -119,8 +121,6 @@ public class Uquestions extends Fragment {
                 //get the count of upvotes
                 db.collection("Upvotes").get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        List<String> usersList = new ArrayList<>();
-                        List<String> usersNameList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             if(document.getId().equals(model.getQuestionId()))
                             {
@@ -132,16 +132,12 @@ public class Uquestions extends Fragment {
                                 viewHolder.tv_like.setText(String.valueOf(count));
                             }
                         }
-                    } else {
-                        Timber.d(task.getException(), "Error getting documents: ");
                     }
                 });
 
                 //get the count of comments
                 db.collection("Comments").get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        List<String> usersList = new ArrayList<>();
-                        List<String> usersNameList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             if(document.getId().equals(model.getQuestionId()))
                             {
@@ -153,8 +149,6 @@ public class Uquestions extends Fragment {
                                 viewHolder.tv_comment.setText(String.valueOf(count));
                             }
                         }
-                    } else {
-                        Timber.d(task.getException(), "Error getting documents: ");
                     }
                 });
                
@@ -197,13 +191,15 @@ public class Uquestions extends Fragment {
                         //Add a field with key=current_user_id and value=1 to the document model.getQuestionId() in collection upvoteswashingtonRef
                         db.collection("Upvotes").document(model.getQuestionId())
                         .update(current_user_id, 1)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(getActivity(), "Upvoted", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                            .addOnSuccessListener(aVoid -> Toast.makeText(getActivity(), "Upvoted", Toast.LENGTH_SHORT).show());
                     }
+                });
+
+                viewHolder.commentfeedlayout.setOnClickListener(view -> {
+                    //Open the comment feed
+                    Intent intent = new Intent(getActivity(), CommentFeed.class);
+                    intent.putExtra("questionid",model.getQuestionId());
+                    startActivity(intent);
                 });
 
                 if(isLiked.get())
@@ -220,7 +216,7 @@ public class Uquestions extends Fragment {
 
     public static class FiltersViewHolder extends RecyclerView.ViewHolder {
         View mView;
-        TextView tv_name,tv_status,tv_description,tv_like,tv_comment;
+        TextView tv_name,tv_status,tv_description,tv_like,tv_comment,tv_time;
         RelativeLayout likelayout,commentfeedlayout,sharelayout;
         ImageView imgView_propic,likee;
 
@@ -237,6 +233,7 @@ public class Uquestions extends Fragment {
             sharelayout = mView.findViewById(R.id.sharelayout);
             imgView_propic = mView.findViewById(R.id.imgView_propic);
             likee = mView.findViewById(R.id.likee);
+            tv_time = mView.findViewById(R.id.tv_time);
         }
     }
 

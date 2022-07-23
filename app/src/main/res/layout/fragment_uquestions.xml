@@ -16,15 +16,27 @@
 
             <EditText
                 android:id="@+id/SearchQuestionFld"
-                android:hint="Keywords to search..."
-                android:layout_width="230sp"
-                android:layout_height="wrap_content"/>
-            <Button
-                android:id="@+id/LogInBtn"
-                android:layout_width="120sp"
-                android:layout_height="50sp"
-                android:text="@string/search"
-                android:textSize="18sp" />
+                android:hint="@string/keywords_to_search"
+                android:layout_width="350dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="10sp"
+                android:background="@drawable/round_corner_highlight"
+                android:paddingLeft="20dp"
+                android:paddingTop="10sp"
+                android:paddingBottom="5sp"
+                android:textColorHint="#999999"
+                android:textSize="20sp"
+                android:focusable="true"
+                />
+            <ImageButton
+                android:id="@+id/search_people_btn"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10sp"
+                android:background="@color/White"
+                android:scaleType="fitCenter"
+                android:src="@drawable/search_60" />
 
         </LinearLayout>
 
