@@ -63,7 +63,7 @@ public class Uhome extends Fragment implements OnMapReadyCallback, PermissionsLi
     private MapView mapView;
     private MapboxMap mapboxMap;
     private PermissionsManager permissionsManager;
-    private TextView weatherTemp,weatherMain,weatherDesc,readMore;
+    private TextView weatherTemp,weatherMain,weatherDesc,readMore,readMore1;
     private ImageView weatherPic;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,6 +76,7 @@ public class Uhome extends Fragment implements OnMapReadyCallback, PermissionsLi
         weatherDesc = view.findViewById(R.id.weatherDesc);
         weatherPic = view.findViewById(R.id.weatherPic);
         readMore = view.findViewById(R.id.readMore);
+        readMore1 = view.findViewById(R.id.readMore1);
         getUserLocation();
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -104,9 +105,16 @@ public class Uhome extends Fragment implements OnMapReadyCallback, PermissionsLi
         //for making link clickable
         readMore.setMovementMethod(LinkMovementMethod.getInstance());
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            readMore.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Pune'>- Read more</a>", Html.FROM_HTML_MODE_LEGACY));
+            readMore.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Maharashtra'>- Read more</a>", Html.FROM_HTML_MODE_LEGACY));
         } else {
-            readMore.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Pune'>- Read more</a>"));
+            readMore.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Maharashtra'>- Read more</a>"));
+        }
+
+        readMore.setMovementMethod(LinkMovementMethod.getInstance());
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            readMore1.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Pune'>- Read more</a>", Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            readMore1.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Pune'>- Read more</a>"));
         }
     }
 

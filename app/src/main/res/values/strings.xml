@@ -86,4 +86,7 @@
     <string name="keywords_to_search">Keywords to search...</string>
     <string name="weather_pic">weather Pic</string>
     <string name="search_event_name">Search Event Name</string>
+    <string name="what_to_read_more_about_about_your_city">What to read more about your city?</string>
+    <string name="what_to_read_more_about_about_your_state">What to read more about your state?</string>
+    <string name="no_events_present">No events present</string>
 </resources>
