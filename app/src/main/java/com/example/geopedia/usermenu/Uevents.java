@@ -34,6 +34,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
@@ -70,10 +72,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Uevents extends Fragment implements OnMapReadyCallback, PermissionsListener {
 
-    private RecyclerView recycler_events_user;
     private FirebaseFirestore firebaseFirestore;
     private FirestoreRecyclerAdapter adapter;
-    private TextView empty_message;
     private MapView mapView;
     private MapboxMap mapboxMap;
     private PermissionsManager permissionsManager;
@@ -89,19 +89,18 @@ public class Uevents extends Fragment implements OnMapReadyCallback, Permissions
         FloatingActionButton addEventFab = view.findViewById(R.id.addEventFab);
 
         final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefreshEvents);
-        recycler_events_user = view.findViewById(R.id.recycler_events_user);
-        empty_message = view.findViewById(R.id.empty_message);
+        RecyclerView recycler_events_user = view.findViewById(R.id.recycler_events_user);
+        TextView empty_message = view.findViewById(R.id.empty_message);
         empty_message.setVisibility(View.VISIBLE);
         firebaseFirestore = FirebaseFirestore.getInstance();
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync((OnMapReadyCallback) this);
+        mapView.getMapAsync( this);
 
         showEvents();
         recycler_events_user.setHasFixedSize(true);
         recycler_events_user.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler_events_user.setAdapter(adapter);
-        //showEvents("All",current_user_id);
 
         addEventFab.setOnClickListener(view -> {
             Intent intent = new Intent(getActivity(), AddEvents.class);
@@ -112,7 +111,6 @@ public class Uevents extends Fragment implements OnMapReadyCallback, Permissions
             showEvents();
             pullToRefresh.setRefreshing(false);
         });
-
         return view;
     }
 
@@ -179,16 +177,18 @@ public class Uevents extends Fragment implements OnMapReadyCallback, Permissions
             locationComponent.setCameraMode(CameraMode.TRACKING);
             locationComponent.setRenderMode(RenderMode.NORMAL);
 
-            //get last know location
+            //get the location of the clicked Event from model object.
             Location lastKnownLocation = locationComponent.getLastKnownLocation();
-
             if (lastKnownLocation != null)
             {
+                mapboxMap.addMarker(new MarkerOptions().position(new LatLng(18.508486, 73.817409)).setIcon(
+                        IconFactory.getInstance(getActivity()).fromResource(R.drawable.place_marker_green60)));
                 mapboxMap.easeCamera(CameraUpdateFactory.newLatLngZoom(
-                        new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), 15), 7000);
+                        new LatLng(18.508486, 73.817409), 15), 7000);
             }
+
         } else {
-            permissionsManager = new PermissionsManager((PermissionsListener) this);
+            permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(getActivity());
         }
     }
@@ -206,7 +206,7 @@ public class Uevents extends Fragment implements OnMapReadyCallback, Permissions
     @Override
     public void onPermissionResult(boolean granted) {
         if (granted) {
-            mapboxMap.getStyle(style -> enableLocationComponent(style));
+            mapboxMap.getStyle(this::enableLocationComponent);
         } else {
             Toast.makeText(getActivity(), "User permission is not given", Toast.LENGTH_LONG).show();
         }
@@ -219,6 +219,7 @@ public class Uevents extends Fragment implements OnMapReadyCallback, Permissions
         adapter.startListening();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onResume() {
         super.onResume();
