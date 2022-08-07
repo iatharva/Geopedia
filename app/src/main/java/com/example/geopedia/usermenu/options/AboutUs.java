@@ -1,4 +1,4 @@
-package com.example.geopedia;
+package com.example.geopedia.usermenu.options;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
+
+import com.example.geopedia.R;
 
 public class AboutUs extends AppCompatActivity {
 

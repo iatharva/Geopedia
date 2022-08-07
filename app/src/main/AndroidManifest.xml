@@ -19,16 +19,16 @@
         android:theme="@style/Theme.Geopedia"
         tools:targetApi="31">
         <activity
-            android:name=".UpdateProfile"
+            android:name=".accounts.UpdateProfile"
             android:exported="false" />
         <activity
-            android:name=".AboutUs"
+            android:name=".usermenu.options.AboutUs"
             android:exported="false" />
         <activity
-            android:name=".TermsAndConditions"
+            android:name=".usermenu.options.TermsAndConditions"
             android:exported="false" />
         <activity
-            android:name=".PrivacyPolicy"
+            android:name=".usermenu.options.PrivacyPolicy"
             android:exported="false" />
         <activity
             android:name=".CommentFeed"

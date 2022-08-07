@@ -11,12 +11,11 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.geopedia.AboutUs;
-import com.example.geopedia.HomeAdmin;
-import com.example.geopedia.PrivacyPolicy;
+import com.example.geopedia.usermenu.options.AboutUs;
+import com.example.geopedia.usermenu.options.PrivacyPolicy;
 import com.example.geopedia.R;
-import com.example.geopedia.TermsAndConditions;
-import com.example.geopedia.UpdateProfile;
+import com.example.geopedia.usermenu.options.TermsAndConditions;
+import com.example.geopedia.accounts.UpdateProfile;
 
 public class Usettings extends Fragment {
 

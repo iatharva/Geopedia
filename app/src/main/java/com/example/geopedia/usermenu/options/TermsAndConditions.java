@@ -1,8 +1,10 @@
-package com.example.geopedia;
+package com.example.geopedia.usermenu.options;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.geopedia.R;
 
 public class TermsAndConditions extends AppCompatActivity {
 

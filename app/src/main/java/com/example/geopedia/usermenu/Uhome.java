@@ -218,9 +218,6 @@ public class Uhome extends Fragment implements OnMapReadyCallback, PermissionsLi
             mapboxMap.easeCamera(CameraUpdateFactory.newLatLngZoom(
                         new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), 15), 7000);
         }
-
-
-
         } else {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(getActivity());

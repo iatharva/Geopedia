@@ -1,4 +1,4 @@
-package com.example.geopedia;
+package com.example.geopedia.accounts;
 
 import static android.content.ContentValues.TAG;
 
@@ -7,14 +7,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.airbnb.lottie.L;
-import com.example.geopedia.accounts.CreateNewAccount;
+import com.example.geopedia.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;

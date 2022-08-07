@@ -1,11 +1,14 @@
 package com.example.geopedia.usermenu;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +23,7 @@ import com.example.geopedia.AddEvents;
 import com.example.geopedia.AddQuestions;
 import com.example.geopedia.CommentFeed;
 import com.example.geopedia.R;
+import com.example.geopedia.extras.Events;
 import com.example.geopedia.extras.Question;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -28,18 +32,51 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.LocationComponentOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.LocationComponentOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Uevents extends Fragment {
+public class Uevents extends Fragment implements OnMapReadyCallback, PermissionsListener {
 
     private RecyclerView recycler_events_user;
     private FirebaseFirestore firebaseFirestore;
     private FirestoreRecyclerAdapter adapter;
     private TextView empty_message;
+    private MapView mapView;
+    private MapboxMap mapboxMap;
+    private PermissionsManager permissionsManager;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
     final String current_user_id = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
@@ -51,183 +88,174 @@ public class Uevents extends Fragment {
         view = inflater.inflate(R.layout.fragment_uevents, container, false);
         FloatingActionButton addEventFab = view.findViewById(R.id.addEventFab);
 
-        final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefreshQuestions);
-        //recycler_events_user = view.findViewById(R.id.recycler_questions_user);
+        final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefreshEvents);
+        recycler_events_user = view.findViewById(R.id.recycler_events_user);
         empty_message = view.findViewById(R.id.empty_message);
         empty_message.setVisibility(View.VISIBLE);
         firebaseFirestore = FirebaseFirestore.getInstance();
+        mapView = view.findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync((OnMapReadyCallback) this);
 
-        //recycler_events_user.setHasFixedSize(true);
-        //recycler_events_user.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //recycler_events_user.setAdapter(adapter);
+        showEvents();
+        recycler_events_user.setHasFixedSize(true);
+        recycler_events_user.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recycler_events_user.setAdapter(adapter);
         //showEvents("All",current_user_id);
 
         addEventFab.setOnClickListener(view -> {
             Intent intent = new Intent(getActivity(), AddEvents.class);
             startActivity(intent);
         });
+
+        pullToRefresh.setOnRefreshListener(() -> {
+            showEvents();
+            pullToRefresh.setRefreshing(false);
+        });
+
         return view;
     }
-    /*
-    private void showEvents(String filter,String userid)
-    {
-        Query query = null;
-        if(filter.equals("All"))
-        {
-            query = firebaseFirestore.collection("Events");
-        }
 
-        FirestoreRecyclerOptions<Question> options = new FirestoreRecyclerOptions.Builder<Question>()
-                .setQuery(query, Question.class)
+    private void showEvents() {
+        Query query = firebaseFirestore.collection("Events");
+
+        FirestoreRecyclerOptions<Events> options = new FirestoreRecyclerOptions.Builder<Events>()
+                .setQuery(query, Events.class)
                 .build();
 
-        adapter = new FirestoreRecyclerAdapter<Question, Uquestions.FiltersViewHolder>(options) {
+        adapter = new FirestoreRecyclerAdapter<Events, EventsViewHolder>(options) {
             @NotNull
             @Override
-            public Uquestions.FiltersViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
+            public EventsViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.row_question_user, parent, false);
-
-                return new Uquestions.FiltersViewHolder(view);
+                        .inflate(R.layout.row_event_user, parent, false);
+                return new EventsViewHolder(view);
             }
 
+            @SuppressLint("DefaultLocale")
             @Override
-            protected void onBindViewHolder(@NotNull Uquestions.FiltersViewHolder viewHolder, int position, @NotNull Question model) {
-
-                viewHolder.tv_name.setText(model.getFname()+" "+model.getLname());
-                viewHolder.tv_status.setText(model.getQuestionTitle());
-                viewHolder.tv_description.setText(model.getQuestionDesc());
-                viewHolder.tv_time.setText(model.getDate()+" "+model.getTime());
-                if(model.getQuestionDesc().isEmpty())
-                    viewHolder.tv_description.setText("No Description");
-                AtomicBoolean isLiked= new AtomicBoolean(false);
-
-                //get the count of upvotes
-                db.collection("Upvotes").get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if(document.getId().equals(model.getQuestionId()))
-                            {
-                                int count=0;
-                                for(String key: document.getData().keySet())
-                                {
-                                    count++;
-                                }
-                                viewHolder.tv_like.setText(String.valueOf(count));
-                            }
-                        }
-                    }
-                });
-
-                //get the count of comments
-                db.collection("Comments").get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if(document.getId().equals(model.getQuestionId()))
-                            {
-                                int count=0;
-                                for(String key: document.getData().keySet())
-                                {
-                                    count++;
-                                }
-                                viewHolder.tv_comment.setText(String.valueOf(count));
-                            }
-                        }
-                    }
-                });
-
-
-                firebaseFirestore.collection("Upvotes").orderBy(model.getQuestionId()).whereEqualTo("userid",current_user_id).get().addOnCompleteListener(task -> {
-                    if(task.isSuccessful())
-                    {
-                        for(int i = 0;i<task.getResult().size();i++)
-                        {
-                            if(task.getResult().getDocuments().get(i).get("value").equals(1))
-                            {
-                                isLiked.set(true);
-                                if(isLiked.get())
-                                    viewHolder.likee.setBackgroundResource(R.drawable.upvote_color_50);
-                                else
-                                    viewHolder.likee.setBackgroundResource(R.drawable.upvot_black_50);
-                            }
-                        }
-                    }
-                });
-
-                viewHolder.likelayout.setOnClickListener(v -> {
-                    if(isLiked.get())
-                    {
-                        isLiked.set(false);
-                        viewHolder.likee.setBackgroundResource(R.drawable.upvot_black_50);
-                        firebaseFirestore.collection("Upvotes").orderBy(model.getQuestionId()).whereEqualTo("userid",current_user_id).get().addOnCompleteListener(task -> {
-                            if(task.isSuccessful())
-                            {
-                                for(int i = 0;i<task.getResult().size();i++)
-                                {
-                                    firebaseFirestore.collection("Upvotes").document(task.getResult().getDocuments().get(i).getId()).delete();
-                                    Toast.makeText(getActivity(), "Upvote removed", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }else{
-                        isLiked.set(true);
-                        viewHolder.likee.setBackgroundResource(R.drawable.upvote_color_50);
-                        //Add a field with key=current_user_id and value=1 to the document model.getQuestionId() in collection upvoteswashingtonRef
-                        db.collection("Upvotes").document(model.getQuestionId())
-                                .update(current_user_id, 1)
-                                .addOnSuccessListener(aVoid -> Toast.makeText(getActivity(), "Upvoted", Toast.LENGTH_SHORT).show());
-                    }
-                });
-
-                viewHolder.commentfeedlayout.setOnClickListener(view -> {
-                    //Open the comment feed
-                    Intent intent = new Intent(getActivity(), CommentFeed.class);
-                    intent.putExtra("questionid",model.getQuestionId());
-                    startActivity(intent);
-                });
-
-                if(isLiked.get())
-                    viewHolder.likee.setBackgroundResource(R.drawable.upvote_color_50);
-                else
-                    viewHolder.likee.setBackgroundResource(R.drawable.upvot_black_50);
+            protected void onBindViewHolder(@NotNull EventsViewHolder viewHolder, int position, @NotNull final Events model) {
+                final String event_id= model.getEventId();
+                viewHolder.eventName.setText(model.getEventTitle());
+                viewHolder.eventDescription.setText(model.getEventDesc());
             }
         };
-        adapter.startListening();
-        recycler_questions_user.setAdapter(adapter);
-        if(adapter.getItemCount()==0)
-            empty_message.setVisibility(View.VISIBLE);
     }
 
-    public static class FiltersViewHolder extends RecyclerView.ViewHolder {
+    private static class EventsViewHolder extends RecyclerView.ViewHolder {
         View mView;
-        TextView tv_name,tv_status,tv_description,tv_like,tv_comment,tv_time;
-        RelativeLayout likelayout,commentfeedlayout,sharelayout;
-        ImageView imgView_propic,likee;
-
-        FiltersViewHolder(@NonNull View itemView) {
+        RelativeLayout cardLayout;
+        TextView eventName,eventDescription;
+        EventsViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
-            tv_name = mView.findViewById(R.id.tv_name);
-            tv_status = mView.findViewById(R.id.tv_status);
-            tv_description = mView.findViewById(R.id.tv_description);
-            tv_like = mView.findViewById(R.id.tv_like);
-            tv_comment = mView.findViewById(R.id.tv_comment);
-            likelayout = mView.findViewById(R.id.likelayout);
-            commentfeedlayout = mView.findViewById(R.id.commentfeedlayout);
-            sharelayout = mView.findViewById(R.id.sharelayout);
-            imgView_propic = mView.findViewById(R.id.imgView_propic);
-            likee = mView.findViewById(R.id.likee);
-            tv_time = mView.findViewById(R.id.tv_time);
+            cardLayout=mView.findViewById(R.id.cardLayout);
+            eventName= mView.findViewById(R.id.eventName);
+            eventDescription=mView.findViewById(R.id.eventDescription);
+        }
+    }
+
+    //All required methods for map
+    @Override
+    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+        Uevents.this.mapboxMap = mapboxMap;
+        mapboxMap.setStyle(Style.MAPBOX_STREETS, style -> enableLocationComponent(style));
+    }
+
+    @SuppressWarnings( {"MissingPermission"})
+    private void enableLocationComponent(@NonNull Style loadedMapStyle) {
+
+        if (PermissionsManager.areLocationPermissionsGranted(getActivity())) {
+
+            LocationComponentOptions customLocationComponentOptions = LocationComponentOptions.builder(getActivity())
+                    .build();
+            LocationComponent locationComponent = mapboxMap.getLocationComponent();
+            locationComponent.activateLocationComponent(
+                    LocationComponentActivationOptions.builder(getActivity(), loadedMapStyle)
+                            .locationComponentOptions(customLocationComponentOptions)
+                            .build());
+            locationComponent.setLocationComponentEnabled(true);
+            locationComponent.zoomWhileTracking(200,0);
+            locationComponent.setCameraMode(CameraMode.TRACKING);
+            locationComponent.setRenderMode(RenderMode.NORMAL);
+
+            //get last know location
+            Location lastKnownLocation = locationComponent.getLastKnownLocation();
+
+            if (lastKnownLocation != null)
+            {
+                mapboxMap.easeCamera(CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()), 15), 7000);
+            }
+        } else {
+            permissionsManager = new PermissionsManager((PermissionsListener) this);
+            permissionsManager.requestLocationPermissions(getActivity());
         }
     }
 
     @Override
-    public void onResume()
-    {
-        super.onResume();
-        final String current_user_id = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
-        showquestions("All",current_user_id);
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-     */
+    @Override
+    public void onExplanationNeeded(List<String> permissionsToExplain) {
+        Toast.makeText(getActivity(), "We need user permission in order to function the app properly", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onPermissionResult(boolean granted) {
+        if (granted) {
+            mapboxMap.getStyle(style -> enableLocationComponent(style));
+        } else {
+            Toast.makeText(getActivity(), "User permission is not given", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapView.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+        adapter.notifyDataSetChanged();
+        //getUserLocation();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+        adapter.stopListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStop();
+        adapter.stopListening();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
 }
