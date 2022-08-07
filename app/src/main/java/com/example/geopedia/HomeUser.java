@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.geopedia.extras.LogoutDialog;
 import com.example.geopedia.usermenu.Uevents;
@@ -22,7 +23,8 @@ import com.example.geopedia.usermenu.Usettings;
 
 public class HomeUser extends AppCompatActivity {
 
-    Button HomeBtn,QuestionsBtn,EventsBtn,SettingsBtn;
+    Button HomeBtn,QuestionsBtn,EventsBtn;
+    ImageButton SettingsBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

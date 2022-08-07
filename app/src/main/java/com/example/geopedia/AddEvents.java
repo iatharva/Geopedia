@@ -114,10 +114,9 @@ public class AddEvents extends AppCompatActivity {
                 //get the json response
                 String json = carmenFeature.toJson();
                 //get the latitude and longitude from the json response
-                //demo rponse "center":[73.782179,18.512556]
+                //demo response "center":[73.782179,18.512556]
                 String[] latLong = json.split("center");
-
-                //get other locat ion info
+                //get other location info
                 //demo response "context":[{"id":"neighborhood.6629186566756840","text":"Shindenagar"},{"id":"locality.17205840760903160","text":"Bavdhan"},{"id":"place.10600147661377950","text":"Mulshi","wikidata":"Q17075340"},{"id":"district.8996689917444500","text":"Pune","wikidata":"Q1797336"},{"id":"region.11712446254386080","text":"Maharashtra","short_code":"IN-MH","wikidata":"Q1191"},{"id":"country.14770391688208260","text":"India","short_code":"in","wikidata":"Q668"}]
                 //get the locality name from th econtext array
                 String[] context = json.split("context");
@@ -140,7 +139,6 @@ public class AddEvents extends AppCompatActivity {
      * Save the event to the database
      */
     private void saveTheEvent(String userId, String eventTitle, String eventDesc, String eventLatitude, String eventLongitude) {
-        //Generate a random 28 character string
         String randomString = "";
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         for (int i = 0; i < 28; i++) {
@@ -169,7 +167,7 @@ public class AddEvents extends AppCompatActivity {
         //need to add fields organizer, eventType, oneTime, eventDate, eventTime, allStepsCompleted.
 
         //Add question to database
-        db.collection("Questions").document(randomString).set(event).addOnCompleteListener(task -> {
+        db.collection("Events").document(randomString).set(event).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 Toast.makeText(AddEvents.this, "Request submitted successfully", Toast.LENGTH_SHORT).show();
                 //Go back to home screen
