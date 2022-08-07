@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,8 +9,102 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
-        android:text="Settings"
+        android:text="@string/settings"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold" />
-</LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="185dp"
+        android:layout_marginTop="65dp"
+        android:text="@string/version_info"
+        android:textColor="@color/defaultTextColor"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/profileBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="150dp"
+        android:text="Profile settings"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="230dp"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_marginTop="200dp"
+        android:layout_marginStart="50dp" />
+
+    <TextView
+        android:id="@+id/additionalBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="250dp"
+        android:text="@string/additional_settings"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="230dp"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_marginTop="300dp"
+        android:layout_marginStart="50dp" />
+
+    <TextView
+        android:id="@+id/tncBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="350dp"
+        android:text="@string/terms_and_conditions"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="230dp"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_marginTop="400dp"
+        android:layout_marginStart="50dp" />
+
+    <TextView
+        android:id="@+id/privacyBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="450dp"
+        android:text="@string/privacy_policy"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="230dp"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_marginTop="500dp"
+        android:layout_marginStart="50dp" />
+
+    <TextView
+        android:id="@+id/aboutUsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="550dp"
+        android:text="@string/about_us"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="230dp"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_marginTop="600dp"
+        android:layout_marginStart="50dp" />
+</RelativeLayout>

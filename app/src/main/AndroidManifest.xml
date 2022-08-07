@@ -19,6 +19,15 @@
         android:theme="@style/Theme.Geopedia"
         tools:targetApi="31">
         <activity
+            android:name=".AboutUs"
+            android:exported="false" />
+        <activity
+            android:name=".TermsAndConditions"
+            android:exported="false" />
+        <activity
+            android:name=".PrivacyPolicy"
+            android:exported="false" />
+        <activity
             android:name=".CommentFeed"
             android:exported="false" />
         <!--

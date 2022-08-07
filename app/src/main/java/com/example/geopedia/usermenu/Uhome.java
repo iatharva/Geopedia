@@ -89,6 +89,7 @@ public class Uhome extends Fragment implements OnMapReadyCallback, PermissionsLi
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        //18.512608; 433.780374;
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
         String url = "http://dev.virtualearth.net/REST/v1/Locations/" + currentLatitude + "," + currentLongitude + "?includeEntityTypes=Address&includeNeighborhood=1&key=AsfRPflcWB10ZLk1CpTZxq3MEItpjodmsZ1VhhpUSgZjPEHHHKAlY93bL5e5GdtR";
@@ -105,16 +106,16 @@ public class Uhome extends Fragment implements OnMapReadyCallback, PermissionsLi
         //for making link clickable
         readMore.setMovementMethod(LinkMovementMethod.getInstance());
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            readMore.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Maharashtra'>- Read more</a>", Html.FROM_HTML_MODE_LEGACY));
+            readMore.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Pune'>- Read more</a>", Html.FROM_HTML_MODE_LEGACY));
         } else {
-            readMore.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Maharashtra'>- Read more</a>"));
+            readMore.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Pune'>- Read more</a>"));
         }
 
-        readMore.setMovementMethod(LinkMovementMethod.getInstance());
+        readMore1.setMovementMethod(LinkMovementMethod.getInstance());
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            readMore1.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Pune'>- Read more</a>", Html.FROM_HTML_MODE_LEGACY));
+            readMore1.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Maharashtra'>- Read more</a>", Html.FROM_HTML_MODE_LEGACY));
         } else {
-            readMore1.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Pune'>- Read more</a>"));
+            readMore1.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Maharashtra'>- Read more</a>"));
         }
     }
 
