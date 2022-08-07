@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
-        android:text="@string/settings"
+        android:text="@string/other_options"
         android:textColor="@color/black"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -17,7 +17,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="185dp"
+        android:layout_marginStart="270dp"
         android:layout_marginTop="65dp"
         android:text="@string/version_info"
         android:textColor="@color/defaultTextColor"
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="150dp"
-        android:text="Profile settings"
+        android:text="@string/profile_settings"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp" />
 

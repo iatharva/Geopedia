@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Geopedia</string>
-    <string name="version_info">0.1.60</string>
+    <string name="version_info">(0.1.60)</string>
     <string name="title_activity_welcome">LogIn</string>
     <string name="next">Next</string>
     <string name="skip">Skip</string>
@@ -114,4 +114,11 @@
     </string>
     <string name="contact_us">Contact Us</string>
     <string name="changes_to_this_terms_and_conditions">Changes to This Terms and Conditions</string>
+    <string name="other_options">Other Options</string>
+    <string name="profile_settings">Profile settings</string>
+    <string name="profile_info">Profile Info</string>
+    <string name="account_type">Account Type</string>
+    <string name="accounttype_user">User (Free)</string>
+    <string name="born_on">Born on</string>
+    <string name="update_name">Update Name</string>
 </resources>

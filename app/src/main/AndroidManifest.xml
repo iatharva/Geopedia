@@ -19,6 +19,9 @@
         android:theme="@style/Theme.Geopedia"
         tools:targetApi="31">
         <activity
+            android:name=".UpdateProfile"
+            android:exported="false" />
+        <activity
             android:name=".AboutUs"
             android:exported="false" />
         <activity

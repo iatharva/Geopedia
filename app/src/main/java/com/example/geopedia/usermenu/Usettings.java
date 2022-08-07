@@ -16,6 +16,7 @@ import com.example.geopedia.HomeAdmin;
 import com.example.geopedia.PrivacyPolicy;
 import com.example.geopedia.R;
 import com.example.geopedia.TermsAndConditions;
+import com.example.geopedia.UpdateProfile;
 
 public class Usettings extends Fragment {
 
@@ -34,7 +35,7 @@ public class Usettings extends Fragment {
         aboutUsBtn = view.findViewById(R.id.aboutUsBtn);
 
         profileBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), TermsAndConditions.class);
+            Intent intent = new Intent(getApplicationContext(), UpdateProfile.class);
             startActivity(intent);
         });
 

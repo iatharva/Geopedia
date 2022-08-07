@@ -96,11 +96,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/design_default_color_primary"
-            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
             android:text="@string/sendmail"
-            android:textSize="18sp"
             android:textAllCaps="false"
-            android:fontFamily="sans-serif"/>
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
     </RelativeLayout>
 
