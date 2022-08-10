@@ -83,7 +83,13 @@
                 android:text="---------"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
+            <Button
+                android:id="@+id/viewLocations"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="@string/view_locations_near_you"/>
             <LinearLayout
+                android:id="@+id/questionSection"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,7 +122,6 @@
                     android:textColor="@color/black"
                     android:textSize="15sp" />
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 

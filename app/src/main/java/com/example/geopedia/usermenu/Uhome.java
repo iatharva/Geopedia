@@ -13,7 +13,9 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +67,9 @@ public class Uhome extends Fragment implements OnMapReadyCallback, PermissionsLi
     private PermissionsManager permissionsManager;
     private TextView weatherTemp,weatherMain,weatherDesc,readMore,readMore1;
     private ImageView weatherPic;
+    private LinearLayout questionSection;
+    private Button viewLocations;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,8 +80,11 @@ public class Uhome extends Fragment implements OnMapReadyCallback, PermissionsLi
         weatherMain = view.findViewById(R.id.weatherMain);
         weatherDesc = view.findViewById(R.id.weatherDesc);
         weatherPic = view.findViewById(R.id.weatherPic);
+        questionSection = view.findViewById(R.id.questionSection);
         readMore = view.findViewById(R.id.readMore);
         readMore1 = view.findViewById(R.id.readMore1);
+        questionSection.setVisibility(View.INVISIBLE);
+        viewLocations = view.findViewById(R.id.viewLocations);
         getUserLocation();
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -104,6 +112,7 @@ public class Uhome extends Fragment implements OnMapReadyCallback, PermissionsLi
         parseJson2(builder2.toString());
 
         //for making link clickable
+        /*
         readMore.setMovementMethod(LinkMovementMethod.getInstance());
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             readMore.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Pune'>- Read more</a>", Html.FROM_HTML_MODE_LEGACY));
@@ -117,6 +126,7 @@ public class Uhome extends Fragment implements OnMapReadyCallback, PermissionsLi
         } else {
             readMore1.setText(Html.fromHtml("<a href='https://en.wikipedia.org/wiki/Maharashtra'>- Read more</a>"));
         }
+         */
     }
 
     public void parseJson2(String url)

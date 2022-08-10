@@ -1,45 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pullToRefresh"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="#f4f4f4"
-xmlns:tools="http://schemas.android.com/tools"
-android:orientation="vertical"
-tools:context=".adminmenu.Information.profiles.ProfilesFragment">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f4f4f4"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".adminmenu.Information.profiles.ProfilesFragment">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/empty_message"
-                android:visibility="invisible"
-                android:layout_centerHorizontal="true"
-                android:text="@string/no_profiles_present_in_the_app_database"
-                android:textColor="@color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/admin_profiles_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/admin_profiles_list"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent">
-            </androidx.recyclerview.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
 
-        </RelativeLayout>
-
-    </LinearLayout>
+        </LinearLayout>
 
     </ScrollView>
 

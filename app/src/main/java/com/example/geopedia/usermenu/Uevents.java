@@ -90,8 +90,6 @@ public class Uevents extends Fragment implements OnMapReadyCallback, Permissions
 
         final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefreshEvents);
         RecyclerView recycler_events_user = view.findViewById(R.id.recycler_events_user);
-        TextView empty_message = view.findViewById(R.id.empty_message);
-        empty_message.setVisibility(View.VISIBLE);
         firebaseFirestore = FirebaseFirestore.getInstance();
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);

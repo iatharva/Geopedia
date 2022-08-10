@@ -121,4 +121,9 @@
     <string name="accounttype_user">User (Free)</string>
     <string name="born_on">Born on</string>
     <string name="update_name">Update Name</string>
+    <string name="Location_request_description">Know a location which you want to share with others? Submit a request so that we can very the place and add on our list</string>
+    <string name="location_name">Location Name</string>
+    <string name="about_the_location">About the location</string>
+    <string name="category">Category</string>
+    <string name="view_locations_near_you">View LOCATIONS NEAR YOU</string>
 </resources>

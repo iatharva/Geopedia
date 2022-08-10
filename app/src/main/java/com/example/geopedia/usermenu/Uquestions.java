@@ -47,7 +47,6 @@ public class Uquestions extends Fragment {
     private RecyclerView recycler_questions_user;
     private FirebaseFirestore firebaseFirestore;
     private FirestoreRecyclerAdapter adapter;
-    private TextView empty_message;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
     final String current_user_id = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
@@ -60,7 +59,6 @@ public class Uquestions extends Fragment {
         FloatingActionButton addQuestionFab = view.findViewById(R.id.addQuestionFab);
         final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefreshQuestions);
         recycler_questions_user = view.findViewById(R.id.recycler_questions_user);
-        empty_message = view.findViewById(R.id.empty_message);
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         recycler_questions_user.setHasFixedSize(true);
@@ -210,8 +208,6 @@ public class Uquestions extends Fragment {
         };
         adapter.startListening();
         recycler_questions_user.setAdapter(adapter);
-        if(adapter.getItemCount()==0)
-            empty_message.setVisibility(View.VISIBLE);
     }
 
     public static class FiltersViewHolder extends RecyclerView.ViewHolder {
