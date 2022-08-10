@@ -15,6 +15,7 @@ public class Events {
 
     //additional details
     private String eventStatus;
+    private String date;
     private String time;
     private int isDeleted;
     private int isActive;
@@ -100,4 +101,12 @@ public class Events {
     public void setIsActive(int isActive) {
         this.isActive = isActive;
     }
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
 }
