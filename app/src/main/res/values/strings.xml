@@ -126,4 +126,7 @@
     <string name="about_the_location">About the location</string>
     <string name="category">Category</string>
     <string name="view_locations_near_you">View LOCATIONS NEAR YOU</string>
+    <string name="delete">Delete</string>
+    <string name="view_comments">View Comments</string>
+    <string name="view_details">View details</string>
 </resources>
