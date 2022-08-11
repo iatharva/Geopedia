@@ -22,24 +22,31 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.Objects;
+
 public class ProfilesFragment extends Fragment {
-    private RecyclerView recyclerView;
+    private RecyclerView recycler_profiles_admin;
     private FirebaseFirestore firebaseFirestore;
     private FirestoreRecyclerAdapter adapter;
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    final String current_user_id = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
     private FragmentProfilesBinding binding;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentProfilesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        final SwipeRefreshLayout pullToRefresh = root.findViewById(R.id.pullToRefresh);
-        recyclerView=root.findViewById(R.id.admin_profiles_list);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adapter);
+        final SwipeRefreshLayout pullToRefresh = root.findViewById(R.id.pullToRefreshProfileAdmin);
+        recycler_profiles_admin = root.findViewById(R.id.recycler_profiles_admin);
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        recycler_profiles_admin.setHasFixedSize(true);
+        recycler_profiles_admin.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recycler_profiles_admin.setAdapter(adapter);
         LoadList();
-        //Refresh and reload the data
+        //End of adapter code
+
         pullToRefresh.setOnRefreshListener(() -> {
             LoadList();
             pullToRefresh.setRefreshing(false);
@@ -72,16 +79,16 @@ public class ProfilesFragment extends Fragment {
                 String usertype=model.getIsAdmin();
                 if(usertype.equals("1"))
                 {
-                    viewHolder.row_usertype.setText("User");
+                    viewHolder.row_usertype.setText("Admin and User");
                 }
                 else if (usertype.equals("0"))
                 {
-                    viewHolder.row_username.setText("Admin and User");
+                    viewHolder.row_usertype.setText("User");
                 }
             }
         };
         adapter.startListening();
-        recyclerView.setAdapter(adapter);
+        recycler_profiles_admin.setAdapter(adapter);
     }
 
     private static class UsersViewHolder extends RecyclerView.ViewHolder {
@@ -97,8 +104,15 @@ public class ProfilesFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
+        final String current_user_id = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
         LoadList();
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

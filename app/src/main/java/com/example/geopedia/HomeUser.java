@@ -7,11 +7,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -20,6 +22,7 @@ import com.example.geopedia.usermenu.Uevents;
 import com.example.geopedia.usermenu.Uhome;
 import com.example.geopedia.usermenu.Uquestions;
 import com.example.geopedia.usermenu.Usettings;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HomeUser extends AppCompatActivity {
 
@@ -33,6 +36,7 @@ public class HomeUser extends AppCompatActivity {
         QuestionsBtn = findViewById(R.id.QuestionsBtn);
         EventsBtn = findViewById(R.id.EventsBtn);
         SettingsBtn = findViewById(R.id.SettingsBtn);
+
         //Set by default Home fragment
         replaceFragment(new Uhome());
         //Setting respective fragment on selection

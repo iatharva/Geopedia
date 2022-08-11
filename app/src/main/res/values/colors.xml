@@ -9,6 +9,7 @@
     <color name="black">#FF000000</color>
     <color name="grey">#DDDDDD</color>
     <color name="light_grey">#e4e4e4</color>
+    <color name="off_white">#F3F3F3</color>
     <color name="darkGrey">#535353</color>
     <color name="defaultTextColor">#757575</color>
     <color name="white">#FFFFFFFF</color>

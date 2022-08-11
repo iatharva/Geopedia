@@ -1,8 +1,11 @@
 package com.example.geopedia.usermenu;
 
+import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
+
 import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
@@ -29,8 +32,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.geopedia.AddLocation;
 import com.example.geopedia.HomeUser;
 import com.example.geopedia.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -69,6 +74,7 @@ public class Uhome extends Fragment implements OnMapReadyCallback, PermissionsLi
     private ImageView weatherPic;
     private LinearLayout questionSection;
     private Button viewLocations;
+    FloatingActionButton addLocationFab;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,6 +91,11 @@ public class Uhome extends Fragment implements OnMapReadyCallback, PermissionsLi
         readMore1 = view.findViewById(R.id.readMore1);
         questionSection.setVisibility(View.INVISIBLE);
         viewLocations = view.findViewById(R.id.viewLocations);
+        addLocationFab = view.findViewById(R.id.addLocationFab);
+        addLocationFab.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), AddLocation.class);
+            startActivity(intent);
+        });
         getUserLocation();
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);

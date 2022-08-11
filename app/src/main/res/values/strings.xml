@@ -129,4 +129,7 @@
     <string name="delete">Delete</string>
     <string name="view_comments">View Comments</string>
     <string name="view_details">View details</string>
+    <string name="add_location">Add Location</string>
+    <string name="location_note">By default your current location will be taken for the location request</string>
+    <string name="pending_location_requests">Pending Location requests</string>
 </resources>
