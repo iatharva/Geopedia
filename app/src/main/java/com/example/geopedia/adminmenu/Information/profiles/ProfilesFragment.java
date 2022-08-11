@@ -1,10 +1,12 @@
 package com.example.geopedia.adminmenu.Information.profiles;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.geopedia.R;
+import com.example.geopedia.UserInfo;
 import com.example.geopedia.databinding.FragmentProfilesBinding;
 import com.example.geopedia.extras.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -85,6 +88,12 @@ public class ProfilesFragment extends Fragment {
                 {
                     viewHolder.row_usertype.setText("User");
                 }
+
+                viewHolder.container.setOnClickListener(view -> {
+                    Intent i = new Intent(getActivity(), UserInfo.class);
+                    i.putExtra("userid", model.getUid());
+                    startActivity(i);
+                });
             }
         };
         adapter.startListening();
@@ -94,12 +103,14 @@ public class ProfilesFragment extends Fragment {
     private static class UsersViewHolder extends RecyclerView.ViewHolder {
         View mView;
         TextView row_username,row_usertype,row_email;
+        LinearLayout container;
         UsersViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
             row_username=mView.findViewById(R.id.row_username);
             row_usertype=mView.findViewById(R.id.row_usertype);
             row_email=mView.findViewById(R.id.row_email);
+            container = mView.findViewById(R.id.container);
         }
     }
 

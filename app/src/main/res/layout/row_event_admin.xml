@@ -20,8 +20,8 @@
 
         <ImageView
             android:id="@+id/imgView_propic"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/nav_header_desc"
             android:scaleType="fitCenter"
@@ -50,6 +50,15 @@
                 android:textSize="13sp" />
 
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/eventPopupMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="@color/white"
+            android:src="@drawable/baseline_more_horiz_36" />
+
     </RelativeLayout>
 
     <TextView
