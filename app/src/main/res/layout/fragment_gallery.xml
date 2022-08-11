@@ -9,31 +9,15 @@
     tools:context=".adminmenu.approvedl.GalleryFragment"
     android:id="@+id/approvedlayout">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Filter by Country"
-        android:layout_gravity="start"
-        android:layout_marginStart="20dp"/>
-    <Spinner
-        android:id="@+id/locationsfilter"
-        android:layout_width="350dp"
-        android:layout_height="40dp"/>
-    <View
-        android:id="@+id/SplitLine_hor1"
-        android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_height= "2dp"
-        android:background="@color/grey" />
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/pullToRefreshfilter"
+        android:id="@+id/pullToRefreshApprovedLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyler_locations_filter_s"
+            android:id="@+id/recyler_locations_approved"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"/>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </LinearLayout>

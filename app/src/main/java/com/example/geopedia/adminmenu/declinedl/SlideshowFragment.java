@@ -26,17 +26,6 @@ public class SlideshowFragment extends Fragment {
         View root = binding.getRoot();
         //Show option to go to ALl locations
         Toast.makeText(getActivity(),"You can view all at Locations option",Toast.LENGTH_SHORT).show();
-        /*
-        Snackbar snackbar = Snackbar
-                .make(root,"View all locations",Snackbar.LENGTH_LONG)
-                .setAction(
-                        "SHOW",
-                        view -> {
-                            Intent i = new Intent(getActivity(), GalleryFragment.class);
-                            startActivity(i);
-                        });
-        snackbar.show();
-         */
         return root;
     }
 
