@@ -40,9 +40,10 @@
                 android:padding="10dp">
 
                 <TextView
+                    android:id="@+id/totalUsers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="20"
+                    android:text="00"
                     android:textColor="@color/black"
                     android:textSize="40sp" />
 
@@ -64,9 +65,10 @@
                 android:padding="10dp">
 
                 <TextView
+                    android:id="@+id/inTheArea"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="03"
+                    android:text="00"
                     android:textColor="@color/black"
                     android:textSize="40sp" />
 
