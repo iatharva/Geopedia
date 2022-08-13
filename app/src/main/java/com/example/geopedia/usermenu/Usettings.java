@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.geopedia.Feedback;
 import com.example.geopedia.usermenu.options.AboutUs;
 import com.example.geopedia.usermenu.options.PrivacyPolicy;
 import com.example.geopedia.R;
@@ -39,7 +40,7 @@ public class Usettings extends Fragment {
         });
 
         additionalBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), TermsAndConditions.class);
+            Intent intent = new Intent(getApplicationContext(), Feedback.class);
             startActivity(intent);
         });
 

@@ -136,4 +136,5 @@
     <string name="user_information">User information</string>
     <string name="other_information">Other information</string>
     <string name="time">time</string>
+    <string name="report_problem_feedback">Report problem/Feedback</string>
 </resources>

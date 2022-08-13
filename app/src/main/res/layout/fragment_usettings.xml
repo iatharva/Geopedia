@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="250dp"
-        android:text="@string/additional_settings"
+        android:text="@string/report_problem_feedback"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp" />
 
