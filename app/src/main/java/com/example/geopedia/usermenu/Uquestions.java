@@ -133,21 +133,19 @@ public class Uquestions extends Fragment {
                     }
                 });
 
-                //get the count of comments
-                db.collection("Comments").get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if(document.getId().equals(model.getQuestionId()))
-                            {
-                                int count=0;
-                                for(String key: document.getData().keySet())
-                                {
-                                    count++;
-                                }
-                                viewHolder.tv_comment.setText(String.valueOf(count));
-                            }
+                //get the count of comments from the collection Comments where questionId is equal to the questionId
+                db.collection("Comments").whereEqualTo("questionId",model.getQuestionId()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    if(!queryDocumentSnapshots.isEmpty())
+                    {
+                        int count=0;
+                        for(QueryDocumentSnapshot document: queryDocumentSnapshots)
+                        {
+                            count++;
                         }
+                        viewHolder.tv_comment.setText(String.valueOf(count) + " comments");
                     }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
                
 

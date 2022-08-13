@@ -2,10 +2,14 @@ package com.example.geopedia.accounts;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -42,6 +46,12 @@ public class CreateNewAccount extends AppCompatActivity {
         LNameField = findViewById(R.id.LNameField);
         DateField = findViewById(R.id.DateField);
         AddAccountBtn = findViewById(R.id.AddAccountBtn);
+
+        LocationManager locationManager = (LocationManager) CreateNewAccount.this.getSystemService(Context.LOCATION_SERVICE);
+        @SuppressLint("MissingPermission")
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double currentLatitude = location.getLatitude();
+        double currentLongitude = location.getLongitude();
 
         //Get Date DialogBox
         DateField.setOnClickListener(v -> {
@@ -112,6 +122,8 @@ public class CreateNewAccount extends AppCompatActivity {
                     user.put("Dob", DateOfBirth);
                     user.put("IsPaid", "0");
                     user.put("IsAdmin", "0");
+                    user.put("LastLongitude",currentLongitude);
+                    user.put("LastLatitude",currentLatitude);
 
                     //Insert and check if user is data is inserted successfully and user is created
                     db.collection("Users").document(UID).set(user).addOnCompleteListener(task1 -> {

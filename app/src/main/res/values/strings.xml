@@ -133,4 +133,7 @@
     <string name="location_note">By default your current location will be taken for the location request</string>
     <string name="pending_location_requests">Pending Location requests</string>
     <string name="other_user_information">Other user information</string>
+    <string name="user_information">User information</string>
+    <string name="other_information">Other information</string>
+    <string name="time">time</string>
 </resources>

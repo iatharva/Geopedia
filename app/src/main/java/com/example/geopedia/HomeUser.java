@@ -7,8 +7,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,11 +27,18 @@ import com.example.geopedia.usermenu.Uhome;
 import com.example.geopedia.usermenu.Uquestions;
 import com.example.geopedia.usermenu.Usettings;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 public class HomeUser extends AppCompatActivity {
 
     Button HomeBtn,QuestionsBtn,EventsBtn;
     ImageButton SettingsBtn;
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    final String current_user_id = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,14 +93,19 @@ public class HomeUser extends AppCompatActivity {
     public void onResume()
     {
         super.onResume();
-        getUserLocationPermission();
+        getUserLocation();
     }
-    public void getUserLocationPermission()
+    public void getUserLocation()
     {
-        //fAuth = FirebaseAuth.getInstance();
-        //UID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
-        //Date currDate = new Date(Objects.requireNonNull(fAuth.getCurrentUser().getMetadata().getCreationTimestamp()));
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //String date = dateFormat.format(currDate);
+        LocationManager locationManager = (LocationManager) HomeUser.this.getSystemService(Context.LOCATION_SERVICE);
+        @SuppressLint("MissingPermission")
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double currentLatitude = location.getLatitude();
+        double currentLongitude = location.getLongitude();
+
+        //Update the Users collection with currentLatitude and currentLongitude
+        db.collection("Users").document(current_user_id).update("LastLatitude",currentLatitude);
+        db.collection("Users").document(current_user_id).update("LastLongitude",currentLongitude);
+        
     }
 }

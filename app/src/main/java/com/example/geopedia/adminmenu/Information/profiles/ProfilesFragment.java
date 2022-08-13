@@ -1,6 +1,5 @@
 package com.example.geopedia.adminmenu.Information.profiles;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.geopedia.R;
-import com.example.geopedia.UserInfo;
+import com.example.geopedia.Info.UserInfo;
 import com.example.geopedia.databinding.FragmentProfilesBinding;
 import com.example.geopedia.extras.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -76,13 +75,14 @@ public class ProfilesFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull UsersViewHolder viewHolder, int position, final User model) {
                 viewHolder.row_username.setText(String.format("%s %s", model.getFName(), model.getLName()));
-                String Email = model.getEmail();
-                String EmailSecured = Email.substring(0,3)+"****";
-                viewHolder.row_email.setText(EmailSecured);
+                //set the masked email in the list of user
+                //String Email = model.getEmail();
+                //String EmailSecured = Email.substring(0,3)+"****";
+                //viewHolder.row_email.setText(EmailSecured);
                 String usertype=model.getIsAdmin();
                 if(usertype.equals("1"))
                 {
-                    viewHolder.row_usertype.setText("Admin and User");
+                    viewHolder.row_usertype.setText("Administrator and User");
                 }
                 else if (usertype.equals("0"))
                 {
@@ -109,7 +109,7 @@ public class ProfilesFragment extends Fragment {
             mView = itemView;
             row_username=mView.findViewById(R.id.row_username);
             row_usertype=mView.findViewById(R.id.row_usertype);
-            row_email=mView.findViewById(R.id.row_email);
+            //row_email=mView.findViewById(R.id.row_email);
             container = mView.findViewById(R.id.container);
         }
     }

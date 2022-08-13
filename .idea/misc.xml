@@ -23,6 +23,7 @@
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/activity_log_in.xml" value="0.24010416666666667" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/activity_privacy_policy.xml" value="0.2388644150758688" />
+        <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/activity_question_info.xml" value="0.25416666666666665" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/activity_terms_and_conditions.xml" value="0.21807000946073793" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/activity_update_profile.xml" value="0.264" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/activity_user_info.xml" value="0.264" />
@@ -36,7 +37,7 @@
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/fragment_locations.xml" value="0.176" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/fragment_profiles.xml" value="0.1" />
-        <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/fragment_questions.xml" value="0.1" />
+        <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/fragment_questions.xml" value="0.264" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/fragment_slideshow.xml" value="0.25416666666666665" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/fragment_uevents.xml" value="0.253125" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/fragment_uhome.xml" value="0.25416666666666665" />
@@ -47,6 +48,7 @@
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/intro_screen2.xml" value="0.12" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/nav_header_home_admin.xml" value="0.264" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/row_comment.xml" value="0.253125" />
+        <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/row_comment_user.xml" value="0.253125" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/row_event_admin.xml" value="0.25416666666666665" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/row_event_user.xml" value="0.25416666666666665" />
         <entry key="..\:/Education/MCA-sem-IV/Project/Repository/Geopedia2/app/src/main/res/layout/row_question_admin.xml" value="0.25416666666666665" />

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/off_white"
-    tools:context=".Info.UserInfo">
+    tools:context=".Info.QuestionInfo">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,14 +20,14 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             app:lottie_autoPlay="true"
-            app:lottie_fileName="user_green_animation.json"
+            app:lottie_speed="0.4"
+            app:lottie_fileName="question_animation.json"
             android:layout_marginEnd="10dp"/>
 
         <TextView
-            android:id="@+id/userFullName"
+            android:id="@+id/quesTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Username"
             android:textColor="@color/black"
             android:textStyle="italic"
             android:layout_marginStart="5dp"
@@ -44,16 +44,16 @@
         android:layout_marginTop="20dp"
         android:padding="20dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/user_information"
-        android:textColor="@color/black"
-        android:layout_marginBottom="20dp"
-        android:textSize="15sp"
-        android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Question description"
+            android:textColor="@color/black"
+            android:layout_marginBottom="20dp"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
 
-        <!--EMAIL-->
+        <!--Question description-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -63,7 +63,49 @@
                 android:layout_height="25dp"
                 android:layout_gravity="center"
                 app:lottie_autoPlay="true"
-                app:lottie_fileName="email.json"
+                app:lottie_fileName="description_animation.json"
+                app:lottie_loop="true"
+                app:lottie_speed="0.3"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:id="@+id/quesDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginTop="20dp"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/other_information"
+            android:textColor="@color/black"
+            android:layout_marginBottom="20dp"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <!--POSTED ON-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="calender_hollow.json"
                 app:lottie_loop="true"
                 app:lottie_speed="0.3"
                 android:layout_marginEnd="10dp"/>
@@ -72,12 +114,78 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:gravity="center"
-                android:text="Email: "
+                android:text="Posted on: "
                 android:textColor="@color/black"
                 android:textSize="13sp"/>
 
             <TextView
-                android:id="@+id/userEmail"
+                android:id="@+id/quesPostedOn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+        <!--EMAIL-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="user_icon_animation.json"
+                app:lottie_loop="true"
+                app:lottie_speed="0.3"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="Posted by: "
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/quesPostedBy"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+        <!--Comments-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="calender_filled.json"
+                app:lottie_loop="true"
+                app:lottie_speed="0.3"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="Comments: "
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/quesComments"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:gravity="center"
@@ -105,12 +213,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:gravity="center"
-                android:text="Born on: "
+                android:text="Upvotes: "
                 android:textColor="@color/black"
                 android:textSize="13sp"/>
 
             <TextView
-                android:id="@+id/userDob"
+                android:id="@+id/quesUpvotes"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:gravity="center"
@@ -118,147 +226,6 @@
                 android:textSize="13sp"/>
         </LinearLayout>
 
-        <!--USER TYPE-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="30dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                app:lottie_autoPlay="true"
-                app:lottie_fileName="admin.json"
-                app:lottie_loop="true"
-                app:lottie_speed="0.3"
-                android:layout_marginEnd="10dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:text="User type: "
-                android:textColor="@color/black"
-                android:textSize="13sp"/>
-
-            <TextView
-                android:id="@+id/userType"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="13sp"/>
-        </LinearLayout>
-
-        <!--USER TYPE-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="30dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                app:lottie_autoPlay="true"
-                app:lottie_fileName="calender_hollow.json"
-                app:lottie_loop="true"
-                app:lottie_speed="0.3"
-                android:layout_marginEnd="10dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:text="Joined on: "
-                android:textColor="@color/black"
-                android:textSize="13sp"/>
-
-            <TextView
-                android:id="@+id/userJoinedOn"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="13sp"/>
-        </LinearLayout>
-
-            <!--Account type-->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
-
-                <com.airbnb.lottie.LottieAnimationView
-                    android:layout_width="30dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    app:lottie_autoPlay="true"
-                    app:lottie_fileName="money.json"
-                    app:lottie_loop="true"
-                    app:lottie_speed="0.3"
-                    android:layout_marginEnd="10dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:gravity="center"
-                    android:text="Account type: "
-                    android:textColor="@color/black"
-                    android:textSize="13sp"/>
-
-                <TextView
-                    android:id="@+id/userAccountType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:gravity="center"
-                    android:textColor="@color/black"
-                    android:textSize="13sp"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:layout_marginTop="20dp"
-        android:padding="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/other_user_information"
-            android:textColor="@color/black"
-            android:layout_marginBottom="20dp"
-            android:textSize="15sp"
-            android:textStyle="bold"/>
-
-        <!--No other information-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="30dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                app:lottie_autoPlay="true"
-                app:lottie_fileName="email.json"
-                app:lottie_loop="true"
-                app:lottie_speed="0.3"
-                android:layout_marginEnd="10dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:text="Currently, No other information is available"
-                android:textColor="@color/black"
-                android:textSize="13sp"/>
-        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

@@ -1,10 +1,11 @@
-package com.example.geopedia;
+package com.example.geopedia.Info;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.geopedia.R;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -50,7 +51,7 @@ public class UserInfo extends AppCompatActivity {
                 userDob.setText(Dob);;
                 if(IsAdmin.equals("1"))
                 {
-                    userType.setText("User and Admin");
+                    userType.setText("User and Administrator");
                 }
                 else if (IsAdmin.equals("0"))
                 {

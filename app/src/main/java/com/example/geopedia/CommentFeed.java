@@ -4,9 +4,14 @@ import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,11 +27,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.geopedia.extras.Comment;
 import com.example.geopedia.extras.Question;
 import com.example.geopedia.usermenu.Uquestions;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -46,21 +53,29 @@ public class CommentFeed extends AppCompatActivity {
 
     EditText comment_field;
     ImageButton comment_btn;
-    RecyclerView comment_recycler_view;
-    ListView comment_listview;
+    RecyclerView recycler_comments_user;
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseFirestore firebaseFirestore;
+    String questionId;
+    private FirestoreRecyclerAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment_feed);
-        firebaseFirestore = FirebaseFirestore.getInstance();
         comment_field=findViewById(R.id.comment_field);
         comment_btn=findViewById(R.id.comment_btn);
-        comment_listview = findViewById(R.id.comment_listview);
-        //comment_recycler_view=findViewById(R.id.comment_recycler_view);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+        recycler_comments_user = findViewById(R.id.recycler_comments_user);
         Intent intent=getIntent();
-        String questionId=intent.getStringExtra("questionid");
+        questionId=intent.getStringExtra("questionid");
+        //get latitude and longitude
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        @SuppressLint("MissingPermission")
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double currentLatitude = location.getLatitude();
+        double currentLongitude = location.getLongitude();
+        recycler_comments_user.setHasFixedSize(true);
+        recycler_comments_user.setLayoutManager(new LinearLayoutManager(CommentFeed.this));
+        recycler_comments_user.setAdapter(adapter);
         showComments(questionId);
         comment_btn.setOnClickListener(v -> {
             String com=comment_field.getText().toString();
@@ -68,52 +83,105 @@ public class CommentFeed extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Cannot post empty comment >_<",Toast.LENGTH_SHORT).show();
                 return;
             }else {
-                addComment(questionId);
+                DocumentReference typeref = db.collection("Users").document(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+                typeref.get().addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String Email=documentSnapshot.getString("Email");
+                        String FName=documentSnapshot.getString("FName");
+                        String LName =documentSnapshot.getString("LName");
+                        //Make database call to Comments and add comment
+                        addComment(questionId,currentLatitude,currentLongitude,FName,LName,com);
+                    }
+                });
             }
             showComments(questionId);
         });
     }
 
     //Add the comment in questions
-    private void addComment(String questionId){
+    private void addComment(String questionId,Double latitude,Double longitude,String fName, String lName, String comment)
+    {
+        //Generate a random 28 character string
+        String randomString = "";
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (int i = 0; i < 28; i++) {
+            randomString += characters.charAt((int) Math.floor(Math.random() * characters.length()));
+        }
+
+        //get current date and time
+        java.util.Date date = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        String currentDate = sdf.format(date);
+        java.text.SimpleDateFormat sdf2 = new java.text.SimpleDateFormat("hh:mm a");
+        String currentTime = sdf2.format(date);
+
+        //Create the required object for comment
         Map<String, Object> comments = new HashMap<>();
-        comments.put(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid(), comment_field.getText().toString());
-        db.collection("Comments").document(questionId).set(comments).addOnCompleteListener(task1 -> {
+        comments.put("userId", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+        comments.put("latitude", latitude);
+        comments.put("longitude", longitude);
+        comments.put("questionId", questionId);
+        comments.put("commentId", randomString);
+        comments.put("fname", fName);
+        comments.put("lname", lName);
+        comments.put("date", currentDate);
+        comments.put("time", currentTime);
+        comments.put("isDeleted", "0");
+        comments.put("comment", comment);
+
+        db.collection("Comments").document(randomString).set(comments).addOnCompleteListener(task1 -> {
             if (task1.isSuccessful()) {
                 Toast.makeText(CommentFeed.this, "Comment added", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private void showComments(String questionId) {
-        db.collection("Comments").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                List<String> userIdList = new ArrayList<>();
-                List<String> commentList = new ArrayList<>();
-                //get the document from task.getResult()
-                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                    if(document.getId().equals(questionId)){
-                        //store the key values in a list
-                        Map<String, Object> map = document.getData();
-                        for (Map.Entry<String, Object> entry : map.entrySet()) {
-                            userIdList.add(entry.getKey());
-                            commentList.add(entry.getValue().toString());
-                        }
-                        //display comments
-                        displayComments(userIdList,commentList);
-                    }
-                }
-            } else {
-                Timber.tag(TAG).d(task.getException(), "Error getting documents: ");
+        Query query = db.collection("Comments").whereEqualTo("questionId",questionId);
+
+        FirestoreRecyclerOptions<Comment> options = new FirestoreRecyclerOptions.Builder<Comment>()
+                .setQuery(query, Comment.class)
+                .build();
+
+        adapter = new FirestoreRecyclerAdapter<Comment, FiltersViewHolder>(options) {
+            @NotNull
+            @Override
+            public FiltersViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.row_comment_user, parent, false);
+
+                return new FiltersViewHolder(view);
             }
-        });
+            @Override
+            protected void onBindViewHolder(@NotNull FiltersViewHolder viewHolder, int position, @NotNull Comment model) {
+
+                viewHolder.com_user.setText(model.getFname()+" "+model.getLname());
+                viewHolder.com_here.setText(model.getComment());
+                viewHolder.com_time.setText(model.getDate()+" "+model.getTime());
+            }
+        };
+        adapter.startListening();
+        recycler_comments_user.setAdapter(adapter);
     }
 
-    public void displayComments(List<String> userIdList, List<String> commentList) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1,
-                commentList);
-        comment_listview.setAdapter(adapter);
-        
+    public static class FiltersViewHolder extends RecyclerView.ViewHolder {
+        View mView;
+        TextView com_user,com_here,com_time;
+        FiltersViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mView = itemView;
+            com_user = mView.findViewById(R.id.com_user);
+            com_here = mView.findViewById(R.id.com_here);
+            com_time = mView.findViewById(R.id.com_time);
+        }
     }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        showComments(questionId);
+    }
+
 }

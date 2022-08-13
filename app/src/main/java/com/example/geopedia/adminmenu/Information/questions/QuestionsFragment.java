@@ -1,9 +1,13 @@
 package com.example.geopedia.adminmenu.Information.questions;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -11,12 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.geopedia.Info.QuestionInfo;
 import com.example.geopedia.R;
 import com.example.geopedia.adminmenu.Information.events.EventsFragment;
 import com.example.geopedia.databinding.FragmentQuestionsBinding;
@@ -127,7 +133,8 @@ public class QuestionsFragment extends Fragment {
                 });
 
                 //get the count of comments
-                db.collection("Comments").get().addOnCompleteListener(task -> {
+                //get the count of comments from the collection Comments where questionId is equal to the questionId
+                db.collection("Comments").whereEqualTo("questionId",model.getQuestionId()).get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             if(document.getId().equals(model.getQuestionId()))
@@ -137,7 +144,7 @@ public class QuestionsFragment extends Fragment {
                                 {
                                     count++;
                                 }
-                                viewHolder.tv_comment.setText(String.format("%s Comments", String.valueOf(count)));
+                                viewHolder.tv_comment.setText(String.format("%s comments", count));
                             }
                         }
                     }
@@ -148,7 +155,19 @@ public class QuestionsFragment extends Fragment {
                     PopupMenu popup = new PopupMenu(requireActivity(), viewHolder.questionPopupMenu);
                     popup.getMenuInflater().inflate(R.menu.question_admin_menu, popup.getMenu());
                     popup.setOnMenuItemClickListener(item -> {
-                        Toast.makeText(getActivity(),"You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+                        if(item.getTitle().equals("Delete"))
+                        {
+                            showDialogToDeleteTheQuestion(model.getQuestionId());
+                        }
+                        else if(item.getTitle().equals("View Comments"))
+                        {
+                            showComments(model.getQuestionId());
+                        }
+                        else if(item.getTitle().equals("View details"))
+                        {
+                            showDetails(model.getQuestionId());
+                        }
+
                         return true;
                     });
                     popup.show();
@@ -190,5 +209,52 @@ public class QuestionsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    //Function required for action Delete
+    private void showDialogToDeleteTheQuestion(String questionId)
+    {
+        //Show dialog box with textfield of adding comments and yes and no option.
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        builder.setTitle("Delete Question");
+        builder.setMessage("Are you sure you want to delete this question?");
+        //Add textfield for why you want to delete the question
+        final EditText input = new EditText(requireActivity());
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setHint("Enter reason");
+        builder.setView(input);
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            markQuestionAsDeleted(questionId,input.getText().toString());
+        });
+        builder.setNegativeButton("No", (dialog, which) -> {
+            dialog.cancel();
+        });
+        builder.show();
+    }
+
+    //Function required for action show comments
+    private void showComments(String questionId)
+    {
+
+    }
+
+    //Function required for action show details
+    private void showDetails(String questionId)
+    {
+        Intent intent = new Intent(requireActivity(), QuestionInfo.class);
+        intent.putExtra("questionId", questionId);
+        startActivity(intent);
+    }
+
+    //Function which actually mark question as deleted
+    private void markQuestionAsDeleted(String questionId, String reason)
+    {
+        if (TextUtils.isEmpty(reason)) {
+            Toast.makeText(requireActivity(), "Please enter reason to delete", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        db.collection("Questions").document(questionId).update("isDeleted",true);
+        db.collection("Questions").document(questionId).update("deletedReason",reason);
+        Toast.makeText(requireActivity(), "Question deleted", Toast.LENGTH_SHORT).show();
     }
 }

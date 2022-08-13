@@ -100,7 +100,7 @@ final FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Questions").document(randomString).set(question).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 //Go back to home screen
-                initiateRequiredStructure(finalRandomString,userId);
+                initiateRequiredStructure(finalRandomString,userId,currentDate,currentTime);
                 Intent intent = new Intent(AddQuestions.this, HomeUser.class);
                 startActivity(intent);
                 finish();
@@ -116,26 +116,46 @@ final FirebaseFirestore db = FirebaseFirestore.getInstance();
     /*
      * This function is used to initiate the required structure for the user to be able to answer/upvote the question
      */
-    private void initiateRequiredStructure(String questionId,String userId) {
+    private void initiateRequiredStructure(String questionId,String userId,String date,String time) {
         
         //Initiate Upvote structure
         Map<String, Object> upvote = new HashMap<>();
         upvote.put(userId, 1);
+
+        //Get randomstring for comment
+        //Generate a random 28 character string
+        String randomString = "";
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (int i = 0; i < 28; i++) {
+            randomString += characters.charAt((int) Math.floor(Math.random() * characters.length()));
+        }
+
+        String finalRandomString = randomString;
         db.collection("Upvotes").document(questionId).set(upvote).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
-                //Initiate comments structure
+
+                //Create the required object for comment
                 Map<String, Object> comments = new HashMap<>();
-                comments.put("aWuD6jzhCRgTwNzOcOBDywZBvR42", "Hello I am the creator of the App, Just wanted to give heads up to keep comments meaningful and respectful. Thanks");
-                db.collection("Comments").document(questionId).set(comments).addOnCompleteListener(task1 -> {
-                if(task1.isSuccessful()) {
-                    Toast.makeText(AddQuestions.this, "Question submitted successfully", Toast.LENGTH_SHORT).show();
-                }
-                else 
-                {
-                    //Exception Case
-                    Toast.makeText(AddQuestions.this, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
-                }
-        });
+                comments.put("userId", "aWuD6jzhCRgTwNzOcOBDywZBvR42");
+                comments.put("latitude", 18.512291251681745);
+                comments.put("longitude", 73.782062754035);
+                comments.put("questionId", questionId);
+                comments.put("commentId", finalRandomString);
+                comments.put("fname", "Atharva");
+                comments.put("lname", "(Dev)");
+                comments.put("date", date);
+                comments.put("time", time);
+                comments.put("isDeleted", "0");
+                comments.put("comment", "Hello I am the creator of the App, Just wanted to give heads up to keep comments meaningful and respectful. Thanks");
+
+                db.collection("Comments").document(finalRandomString).set(comments).addOnCompleteListener(task1 -> {
+                    if (task1.isSuccessful()) {
+                        Toast.makeText(AddQuestions.this, "Question submitted successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        //Exception Case
+                        Toast.makeText(AddQuestions.this, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             else 
             {
@@ -143,8 +163,5 @@ final FirebaseFirestore db = FirebaseFirestore.getInstance();
                 Toast.makeText(AddQuestions.this, "Error! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-        
-
     }
 }

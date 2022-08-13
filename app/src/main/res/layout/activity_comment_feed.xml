@@ -18,9 +18,16 @@
         android:textColor="@color/White"
         android:textSize="20sp" />
 
-    <RelativeLayout
-        android:id="@+id/addCommentLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_comments_user"
+        android:layout_width="match_parent"
+        android:layout_height="630dp"
         android:layout_below="@+id/activityTitle"
+        android:layout_marginTop="10dp" />
+
+    <RelativeLayout
+        android:layout_below="@+id/recycler_comments_user"
+        android:id="@+id/addCommentLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ImageView
@@ -55,11 +62,6 @@
             android:src="@drawable/send_50" />
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/comment_listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/addCommentLayout"
-        android:layout_marginTop="10dp" />
+
 
 </RelativeLayout>

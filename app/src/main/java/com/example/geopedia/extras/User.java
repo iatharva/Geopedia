@@ -15,9 +15,13 @@ public class User {
     private String IsAdmin;
     private String IsPaid;
 
+    //Last known location
+    private double LastLongitude;
+    private double LastLatitude;
+
     public User(){ }
 
-    public User(String uid, String FName, String LName, String email, String dob, String isAdmin, String isPaid) {
+    public User(String uid, String FName, String LName, String email, String dob, String isAdmin, String isPaid, double lastLongitude, double lastLatitude) {
         this.Uid = uid;
         this.FName = FName;
         this.LName = LName;
@@ -25,6 +29,8 @@ public class User {
         this.Dob = dob;
         this.IsAdmin = isAdmin;
         this.IsPaid = isPaid;
+        this.LastLatitude = lastLatitude;
+        this.LastLongitude = lastLongitude;
     }
 
     public String getUid() {
@@ -81,6 +87,22 @@ public class User {
 
     public void setIsPaid(String isPaid) {
         IsPaid = isPaid;
+    }
+
+    public double getLastLongitude() {
+        return LastLongitude;
+    }
+
+    public void setLastLongitude(double lastLongitude) {
+        LastLongitude = lastLongitude;
+    }
+
+    public double getLastLatitude() {
+        return LastLatitude;
+    }
+
+    public void setLastLatitude(double lastLatitude) {
+        LastLatitude = lastLatitude;
     }
 
 }
