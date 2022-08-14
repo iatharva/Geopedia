@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.geopedia.CommentFeed;
 import com.example.geopedia.Info.QuestionInfo;
 import com.example.geopedia.R;
 import com.example.geopedia.adminmenu.Information.events.EventsFragment;
@@ -116,38 +117,36 @@ public class QuestionsFragment extends Fragment {
                 });
 
                 //get the count of upvotes
-                db.collection("Upvotes").get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if(document.getId().equals(model.getQuestionId()))
-                            {
-                                int count=0;
-                                for(String key: document.getData().keySet())
-                                {
-                                    count++;
-                                }
-                                viewHolder.tv_like.setText(String.format("%s Upvotes", String.valueOf(count)));
-                            }
+                //set the upvote count
+                db.collection("Upvotes").whereEqualTo("questionId",model.getQuestionId()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    if(!queryDocumentSnapshots.isEmpty())
+                    {
+                        int count=0;
+                        for(QueryDocumentSnapshot document: queryDocumentSnapshots)
+                        {
+                            //increase count if isUpvoted = "1"
+                            if(document.getString("isUpvoted").equals("1"))
+                                count++;
                         }
+                        viewHolder.tv_like.setText(String.valueOf(count) + " upvotes");
                     }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
 
                 //get the count of comments
-                //get the count of comments from the collection Comments where questionId is equal to the questionId
-                db.collection("Comments").whereEqualTo("questionId",model.getQuestionId()).get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if(document.getId().equals(model.getQuestionId()))
-                            {
-                                int count=0;
-                                for(String key: document.getData().keySet())
-                                {
-                                    count++;
-                                }
-                                viewHolder.tv_comment.setText(String.format("%s comments", count));
-                            }
+                db.collection("Comments").whereEqualTo("questionId",model.getQuestionId()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    if(!queryDocumentSnapshots.isEmpty())
+                    {
+                        int count=0;
+                        for(QueryDocumentSnapshot document: queryDocumentSnapshots)
+                        {
+                            count++;
                         }
+                        viewHolder.tv_comment.setText(String.valueOf(count) + " comments");
                     }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
 
                 //get the popup menu
@@ -157,7 +156,7 @@ public class QuestionsFragment extends Fragment {
                     popup.setOnMenuItemClickListener(item -> {
                         if(item.getTitle().equals("Delete"))
                         {
-                            showDialogToDeleteTheQuestion(model.getQuestionId());
+                            showDialogToDeleteTheQuestion(model.getQuestionId(),model.getIsDeleted());
                         }
                         else if(item.getTitle().equals("View Comments"))
                         {
@@ -212,30 +211,40 @@ public class QuestionsFragment extends Fragment {
     }
 
     //Function required for action Delete
-    private void showDialogToDeleteTheQuestion(String questionId)
+    private void showDialogToDeleteTheQuestion(String questionId,int isDeleted)
     {
-        //Show dialog box with textfield of adding comments and yes and no option.
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-        builder.setTitle("Delete Question");
-        builder.setMessage("Are you sure you want to delete this question?");
-        //Add textfield for why you want to delete the question
-        final EditText input = new EditText(requireActivity());
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        input.setHint("Enter reason");
-        builder.setView(input);
-        builder.setPositiveButton("Yes", (dialog, which) -> {
-            markQuestionAsDeleted(questionId,input.getText().toString());
-        });
-        builder.setNegativeButton("No", (dialog, which) -> {
-            dialog.cancel();
-        });
-        builder.show();
+        //show dialog if isDeleted = 0
+        if(isDeleted==0)
+        {
+            //Show dialog box with textfield of adding comments and yes and no option.
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            builder.setTitle("Delete Question");
+            builder.setMessage("Are you sure you want to delete this question?");
+            //Add textfield for why you want to delete the question
+            final EditText input = new EditText(requireActivity());
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            input.setHint("Enter reason");
+            builder.setView(input);
+            builder.setPositiveButton("Yes", (dialog, which) -> {
+                markQuestionAsDeleted(questionId,input.getText().toString());
+            });
+            builder.setNegativeButton("No", (dialog, which) -> {
+                dialog.cancel();
+            });
+            builder.show();
+        }
+        else
+        {
+            Toast.makeText(requireActivity(), "Question already deleted", Toast.LENGTH_SHORT).show();
+        }
     }
 
     //Function required for action show comments
     private void showComments(String questionId)
     {
-
+        Intent intent = new Intent(getActivity(), CommentFeed.class);
+        intent.putExtra("questionid",questionId);
+        startActivity(intent);
     }
 
     //Function required for action show details
@@ -253,7 +262,7 @@ public class QuestionsFragment extends Fragment {
             Toast.makeText(requireActivity(), "Please enter reason to delete", Toast.LENGTH_SHORT).show();
             return;
         }
-        db.collection("Questions").document(questionId).update("isDeleted",true);
+        db.collection("Questions").document(questionId).update("isDeleted",1);
         db.collection("Questions").document(questionId).update("deletedReason",reason);
         Toast.makeText(requireActivity(), "Question deleted", Toast.LENGTH_SHORT).show();
     }

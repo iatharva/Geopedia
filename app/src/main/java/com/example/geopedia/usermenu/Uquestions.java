@@ -73,14 +73,8 @@ public class Uquestions extends Fragment {
     private void showquestions(String filter,String userid)
     {
         Query query;
-        if(filter.equals("All"))
-        {
-            query = firebaseFirestore.collection("Questions");
-        }else{
-            //Update the query
-            query = firebaseFirestore.collection("Orders").whereEqualTo("sellerid",userid)
-                    .whereEqualTo("status",filter);
-        }
+        //show all questions where isDeleted (number) is 0
+        query = firebaseFirestore.collection("Questions").whereEqualTo("isDeleted",0);
 
         FirestoreRecyclerOptions<Question> options = new FirestoreRecyclerOptions.Builder<Question>()
                 .setQuery(query, Question.class)

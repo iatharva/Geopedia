@@ -109,12 +109,24 @@
                 android:id="@+id/submitLocationBtn"
                 android:layout_width="300dp"
                 android:layout_height="50sp"
-                android:text="@string/submit_request"
-                android:textSize="18sp"
-                android:layout_marginTop="30dp"
                 android:layout_below="@id/categoryLocation"
                 android:layout_marginStart="40dp"
-                android:layout_marginEnd="20dp"/>
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/submit_request"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/eventlatitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:id="@+id/eventlongitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
 
         </RelativeLayout>
 

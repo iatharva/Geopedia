@@ -118,4 +118,5 @@ public class Question {
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
+
 }

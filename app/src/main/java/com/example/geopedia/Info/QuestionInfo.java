@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.geopedia.R;
 import com.google.firebase.firestore.DocumentReference;
@@ -53,37 +54,36 @@ public class QuestionInfo extends AppCompatActivity {
         });
 
         //get the count of upvotes
-        db.collection("Upvotes").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    if(document.getId().equals(questionId))
-                    {
-                        int count=0;
-                        for(String key: document.getData().keySet())
-                        {
-                            count++;
-                        }
-                        quesUpvotes.setText(String.format("%s Upvotes", String.valueOf(count)));
-                    }
+        //set the upvote count
+        db.collection("Upvotes").whereEqualTo("questionId",questionId).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if(!queryDocumentSnapshots.isEmpty())
+            {
+                int count=0;
+                for(QueryDocumentSnapshot document: queryDocumentSnapshots)
+                {
+                    //increase count if isUpvoted = "1"
+                    if(document.getString("isUpvoted").equals("1"))
+                        count++;
                 }
+                quesUpvotes.setText(String.valueOf(count) + " upvotes");
             }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(QuestionInfo.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
         });
 
         //get the count of comments
-        db.collection("Comments").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    if(document.getId().equals(questionId))
-                    {
-                        int count=0;
-                        for(String key: document.getData().keySet())
-                        {
-                            count++;
-                        }
-                        quesComments.setText(String.format("%s Comments", String.valueOf(count)));
-                    }
+        db.collection("Comments").whereEqualTo("questionId",questionId).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if(!queryDocumentSnapshots.isEmpty())
+            {
+                int count=0;
+                for(QueryDocumentSnapshot document: queryDocumentSnapshots)
+                {
+                    count++;
                 }
+                quesComments.setText(String.valueOf(count) + " comments");
             }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(QuestionInfo.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
         });
 
     }

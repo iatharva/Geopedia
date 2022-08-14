@@ -21,7 +21,11 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.geopedia.R;
 import com.example.geopedia.usermenu.Uevents;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -111,6 +115,8 @@ public class EventInfo extends AppCompatActivity implements OnMapReadyCallback, 
                         eventHappens.setText(String.format("This event happens %s", task.getResult().getString("eventRecurringOption")));
                         eventStatus.setText("Active");
                     }
+
+                    showPostedBy(task.getResult().getString("userId"));
                 }
             }
         });
@@ -268,5 +274,22 @@ public class EventInfo extends AppCompatActivity implements OnMapReadyCallback, 
         {
             return "Active in Future";
         }
+    }
+
+    private void showPostedBy(String userId)    
+    {
+        //get the userId of the user who posted the event
+        DocumentReference userRef = db.collection("Users").document(userId);
+        userRef.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful())
+            {
+                DocumentSnapshot user = task.getResult();
+                if(user.exists())
+                {
+                    String userName = user.getString("FName")+" "+user.getString("LName");
+                    eventPostedBy.setText(String.format("%s", userName));
+                }
+            }
+        });
     }
 }

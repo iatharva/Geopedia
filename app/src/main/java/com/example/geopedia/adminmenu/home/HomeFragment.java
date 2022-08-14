@@ -2,30 +2,59 @@ package com.example.geopedia.adminmenu.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.geopedia.CommentFeed;
 import com.example.geopedia.HomeUser;
 import com.example.geopedia.R;
 import com.example.geopedia.databinding.FragmentHomeBinding;
+import com.example.geopedia.extras.CustomLocation;
+import com.example.geopedia.extras.Question;
 import com.example.geopedia.extras.User;
+import com.example.geopedia.usermenu.Uquestions;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private TextView totalUsers,inTheArea;
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private RecyclerView recycler_pending_location_admin;
+    private FirebaseFirestore firebaseFirestore;
+    private FirestoreRecyclerAdapter adapter;
+    private SwipeRefreshLayout pullToRefreshPendingLocationAdmin;
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    final String current_user_id = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -33,9 +62,22 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
         inTheArea = root.findViewById(R.id.inTheArea);
         totalUsers = root.findViewById(R.id.totalUsers);
+        recycler_pending_location_admin = root.findViewById(R.id.recycler_pending_location_admin);
+        pullToRefreshPendingLocationAdmin = root.findViewById(R.id.pullToRefreshPendingLocationAdmin);
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        recycler_pending_location_admin.setHasFixedSize(true);
+        recycler_pending_location_admin.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recycler_pending_location_admin.setAdapter(adapter);
+        showpendingLocations("All",current_user_id);
+
+        pullToRefreshPendingLocationAdmin.setOnRefreshListener(() -> {
+            showpendingLocations("All",current_user_id);
+            pullToRefreshPendingLocationAdmin.setRefreshing(false);
+        });
 
         return root;
     }
+
     public void getData() {
         //Count the number of documents present in the collection Users
         db.collection("Users").get().addOnSuccessListener(queryDocumentSnapshots -> {
@@ -65,6 +107,74 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void showpendingLocations(String all, String current_user_id) {
+        Query query;
+        //show all questions where isDeleted (number) is 0
+        query = firebaseFirestore.collection("Locations")
+        .whereEqualTo("isApproved","0")
+        .whereEqualTo("isDeleted","0")
+        .whereEqualTo("isDeclined","0");
+
+        FirestoreRecyclerOptions<CustomLocation> options = new FirestoreRecyclerOptions.Builder<CustomLocation>()
+                .setQuery(query, CustomLocation.class)
+                .build();
+
+        adapter = new FirestoreRecyclerAdapter<CustomLocation, FiltersViewHolder>(options) {
+            @NotNull
+            @Override
+            public FiltersViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.row_pending_admin, parent, false);
+
+                return new FiltersViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NotNull FiltersViewHolder viewHolder, int position, @NotNull CustomLocation model) {
+
+                viewHolder.locationName.setText(model.getLocationTitle());
+
+                //get FName and LName from userId
+                db.collection("Users").whereEqualTo("Uid", model.getUserId()).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            viewHolder.submittedBy.setText(String.format("%s %s", document.getString("FName"), document.getString("LName")));
+                        }
+                    }
+                });
+
+                viewHolder.acceptButton.setOnClickListener(view -> {
+                    //update isApproved to 1 and updatedBy to current userId in CustomLocation having locationId equal to model.getLocationId
+                    db.collection("Locations").document(model.getLocationId()).update("isApproved", "1", "updatedBy", current_user_id);
+                });
+
+                viewHolder.declineButton.setOnClickListener(view -> {
+                    //update isDeclined to 1 and updatedBy to current userId in CustomLocation having locationId equal to model.getLocationId
+                    db.collection("Locations").document(model.getLocationId()).update("isDeclined", "1", "updatedBy", current_user_id);
+                });
+
+            }
+        };
+        adapter.startListening();
+        recycler_pending_location_admin.setAdapter(adapter);
+    }
+
+    public static class FiltersViewHolder extends RecyclerView.ViewHolder {
+        View mView;
+        TextView submittedBy,locationName;
+        ImageButton declineButton,acceptButton;
+
+        FiltersViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mView = itemView;
+            submittedBy = mView.findViewById(R.id.submittedBy);
+            locationName = mView.findViewById(R.id.locationName);
+            declineButton = mView.findViewById(R.id.declineButton);
+            acceptButton = mView.findViewById(R.id.acceptButton);
+            
+        }
     }
 
     @Override
