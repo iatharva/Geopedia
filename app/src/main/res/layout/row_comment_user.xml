@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10sp"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/com_propic"
@@ -18,14 +20,15 @@
         android:textColor="@color/Black"
         android:layout_marginTop="5dp"
         android:layout_marginStart="65sp"/>
+
     <TextView
         android:id="@+id/com_here"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/comm"
         android:layout_below="@+id/com_user"
         android:layout_marginStart="65sp"
-        android:textSize="18sp"/>
+        android:text="@string/comm"
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/com_time"

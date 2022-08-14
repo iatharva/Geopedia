@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Info.EventInfo"
+    xmlns:mapbox="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/off_white">
+
+    <FrameLayout
+        android:id="@+id/mapLayout"
+        android:layout_width="match_parent"
+        android:layout_height="140sp">
+
+        <com.mapbox.mapboxsdk.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            mapbox:mapbox_cameraZoom="12" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:padding="20dp">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_speed="0.4"
+            app:lottie_fileName="event_animation.json"
+            android:layout_marginEnd="10dp"/>
+
+        <TextView
+            android:id="@+id/eventTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textStyle="italic"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginTop="20dp"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Event description"
+            android:textColor="@color/black"
+            android:layout_marginBottom="20dp"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <!--Event description-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="description_animation.json"
+                app:lottie_loop="true"
+                app:lottie_speed="0.3"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:id="@+id/eventDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+        <!--Event Addr-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="description_animation.json"
+                app:lottie_loop="true"
+                app:lottie_speed="0.3"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:id="@+id/eventAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+        <!--Event Status-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/eventStatusLottie"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="event_completed_animation.json"
+                app:lottie_loop="true"
+                app:lottie_speed="0.3"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:id="@+id/eventStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginTop="20dp"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/other_information"
+            android:textColor="@color/black"
+            android:layout_marginBottom="20dp"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <!--POSTED ON-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="calender_hollow.json"
+                app:lottie_loop="true"
+                app:lottie_speed="0.3"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="Posted on: "
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/eventPostedOn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+        <!--EMAIL-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="user_icon_animation.json"
+                app:lottie_loop="true"
+                app:lottie_speed="0.3"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="Posted by: "
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/eventPostedBy"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+        <!--Comments-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="calender_filled.json"
+                app:lottie_loop="true"
+                app:lottie_speed="0.3"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="EventType: "
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/eventType"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+        <!--DOB-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="calender_filled.json"
+                app:lottie_loop="true"
+                app:lottie_speed="0.3"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="Event happen(s/ed): "
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/eventHappens"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/launchMaps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:text="Open navigation map to Location"/>
+    </LinearLayout>
+</ScrollView>
+

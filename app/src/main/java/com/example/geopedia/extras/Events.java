@@ -6,19 +6,24 @@ public class Events {
     private String eventId;
     private String userId;
 
-    private String eventLatitude;
-    private String eventLongitude;
+    private Double eventLatitude;
+    private Double eventLongitude;
 
     //details
     private String eventTitle;
     private String eventDesc;
+    private String eventAddr;
+    private String eventType;
+    private String eventRecurringOption;
+    private String eventDate;
+    private String eventTime;
 
     //additional details
     private String eventStatus;
     private String date;
     private String time;
-    private int isDeleted;
-    private int isActive;
+    private String isDeleted;
+    private String isActive;
 
     public Events(){}
 
@@ -38,19 +43,19 @@ public class Events {
         this.userId = userId;
     }
 
-    public String getEventLatitude() {
+    public Double getEventLatitude() {
         return eventLatitude;
     }
 
-    public void setEventLatitude(String eventLatitude) {
+    public void setEventLatitude(Double eventLatitude) {
         this.eventLatitude = eventLatitude;
     }
 
-    public String getEventLongitude() {
+    public Double getEventLongitude() {
         return eventLongitude;
     }
 
-    public void setEventLongitude(String eventLongitude) {
+    public void setEventLongitude(Double eventLongitude) {
         this.eventLongitude = eventLongitude;
     }
 
@@ -86,21 +91,6 @@ public class Events {
         this.time = time;
     }
 
-    public int getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(int isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public int getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(int isActive) {
-        this.isActive = isActive;
-    }
     public String getDate() {
         return date;
     }
@@ -108,5 +98,62 @@ public class Events {
     public void setDate(String date) {
         this.date = date;
     }
+
+    public String getEventAddr() {
+        return eventAddr;
+    }
+
+    public void setEventAddr(String eventAddr) {
+        this.eventAddr = eventAddr;
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
+    public String getEventRecurringOption() {
+        return eventRecurringOption;
+    }
+
+    public void setEventRecurringOption(String eventRecurringOption) {
+        this.eventRecurringOption = eventRecurringOption;
+    }
+
+    public String getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(String eventDate) {
+        this.eventDate = eventDate;
+    }
+
+    public String getEventTime() {
+        return eventTime;
+    }
+
+    public void setEventTime(String eventTime) {
+        this.eventTime = eventTime;
+    }
+
+    public void setIsDeleted(String isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public void setIsActive(String isActive) {
+        this.isActive = isActive;
+    }
+
+    public String getIsDeleted() {
+        return isDeleted;
+    }
+
+    public String getIsActive() {
+        return isActive;
+    }
+
 
 }

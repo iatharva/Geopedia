@@ -40,19 +40,6 @@
 
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/mapLayout"
-            android:layout_width="match_parent"
-            android:layout_height="140sp">
-
-            <com.mapbox.mapboxsdk.maps.MapView
-                android:id="@+id/mapView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                mapbox:mapbox_cameraZoom="12" />
-
-        </FrameLayout>
-
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/pullToRefreshEvents"
             android:layout_width="match_parent"

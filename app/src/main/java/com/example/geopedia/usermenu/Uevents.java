@@ -1,8 +1,10 @@
 package com.example.geopedia.usermenu;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.geopedia.AddEvents;
 import com.example.geopedia.AddQuestions;
 import com.example.geopedia.CommentFeed;
+import com.example.geopedia.Info.EventInfo;
 import com.example.geopedia.R;
 import com.example.geopedia.extras.Events;
 import com.example.geopedia.extras.Question;
@@ -66,17 +69,22 @@ import com.mapbox.mapboxsdk.maps.Style;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Uevents extends Fragment implements OnMapReadyCallback, PermissionsListener {
+public class Uevents extends Fragment {
 
     private FirebaseFirestore firebaseFirestore;
     private FirestoreRecyclerAdapter adapter;
     private MapView mapView;
     private MapboxMap mapboxMap;
     private PermissionsManager permissionsManager;
+    private double currentSelectedLatitude=0,currentSelectedLongitude=0;
+    private  double currentLatitude,currentLongitude;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
     final String current_user_id = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
@@ -91,9 +99,6 @@ public class Uevents extends Fragment implements OnMapReadyCallback, Permissions
         final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefreshEvents);
         RecyclerView recycler_events_user = view.findViewById(R.id.recycler_events_user);
         firebaseFirestore = FirebaseFirestore.getInstance();
-        mapView = view.findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync( this);
 
         showEvents();
         recycler_events_user.setHasFixedSize(true);
@@ -113,7 +118,13 @@ public class Uevents extends Fragment implements OnMapReadyCallback, Permissions
     }
 
     private void showEvents() {
-        Query query = firebaseFirestore.collection("Events");
+        //events where status is Pending && 
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        @SuppressLint("MissingPermission")
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        currentLatitude = location.getLatitude();
+        currentLongitude = location.getLongitude();
+        Query query = firebaseFirestore.collection("Events").whereEqualTo("eventStatus", "Pending");
 
         FirestoreRecyclerOptions<Events> options = new FirestoreRecyclerOptions.Builder<Events>()
                 .setQuery(query, Events.class)
@@ -132,8 +143,39 @@ public class Uevents extends Fragment implements OnMapReadyCallback, Permissions
             @Override
             protected void onBindViewHolder(@NotNull EventsViewHolder viewHolder, int position, @NotNull final Events model) {
                 final String event_id= model.getEventId();
+
+                if(model.getEventLatitude() >= currentLatitude - 0.01 && model.getEventLatitude() <= currentLatitude + 0.01 && model.getEventLongitude() >= currentLongitude - 0.01 && model.getEventLongitude() <= currentLongitude + 0.01)
+                    viewHolder.cardLayout.setVisibility(View.VISIBLE);
+                else
+                {
+                    viewHolder.cardLayout.setVisibility(View.INVISIBLE);
+                    viewHolder.cardLayout.getLayoutParams().height = 0;
+                    viewHolder.cardLayout.requestLayout();
+                }
                 viewHolder.eventName.setText(model.getEventTitle());
                 viewHolder.eventDescription.setText(model.getEventDesc());
+
+                viewHolder.cardLayout.setOnClickListener(view -> {
+                    currentSelectedLatitude = model.getEventLatitude();
+                    currentSelectedLongitude = model.getEventLongitude();
+                    Intent intent = new Intent(getActivity(), EventInfo.class);
+                    intent.putExtra("event_id", event_id);
+                    intent.putExtra("latitude", currentSelectedLatitude);
+                    intent.putExtra("longitude", currentSelectedLongitude);
+                    startActivity(intent);
+                });
+
+                if(model.getEventType().equals("Once time")){
+                    viewHolder.eventType.setText(String.format("Event on %s at %s", model.getEventDate(), model.getEventTime()));
+                    viewHolder.eventStatus.setText(compareDateToPresent(model.getEventDate()));
+
+                    if(compareDateToPresent(model.getEventDate()).equals("Completed")){
+                        firebaseFirestore.collection("Events").document(model.getEventId()).update("eventStatus", "Completed");
+                    }
+                }else {
+                    viewHolder.eventType.setText(String.format("This event happens %s", model.getEventRecurringOption()));
+                    viewHolder.eventStatus.setText("Active");
+                }
             }
         };
     }
@@ -141,87 +183,33 @@ public class Uevents extends Fragment implements OnMapReadyCallback, Permissions
     private static class EventsViewHolder extends RecyclerView.ViewHolder {
         View mView;
         RelativeLayout cardLayout;
-        TextView eventName,eventDescription;
+        TextView eventName,eventDescription,eventType,eventStatus;
         EventsViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
             cardLayout=mView.findViewById(R.id.cardLayout);
             eventName= mView.findViewById(R.id.eventName);
             eventDescription=mView.findViewById(R.id.eventDescription);
-        }
-    }
-
-    //All required methods for map
-    @Override
-    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-        Uevents.this.mapboxMap = mapboxMap;
-        mapboxMap.setStyle(Style.MAPBOX_STREETS, style -> enableLocationComponent(style));
-    }
-
-    @SuppressWarnings( {"MissingPermission"})
-    private void enableLocationComponent(@NonNull Style loadedMapStyle) {
-
-        if (PermissionsManager.areLocationPermissionsGranted(getActivity())) {
-
-            LocationComponentOptions customLocationComponentOptions = LocationComponentOptions.builder(getActivity())
-                    .build();
-            LocationComponent locationComponent = mapboxMap.getLocationComponent();
-            locationComponent.activateLocationComponent(
-                    LocationComponentActivationOptions.builder(getActivity(), loadedMapStyle)
-                            .locationComponentOptions(customLocationComponentOptions)
-                            .build());
-            locationComponent.setLocationComponentEnabled(true);
-            locationComponent.zoomWhileTracking(200,0);
-            locationComponent.setCameraMode(CameraMode.TRACKING);
-            locationComponent.setRenderMode(RenderMode.NORMAL);
-
-            //get the location of the clicked Event from model object.
-            Location lastKnownLocation = locationComponent.getLastKnownLocation();
-            if (lastKnownLocation != null)
-            {
-                mapboxMap.addMarker(new MarkerOptions().position(new LatLng(18.508486, 73.817409)).setIcon(
-                        IconFactory.getInstance(getActivity()).fromResource(R.drawable.place_marker_green60)));
-                mapboxMap.easeCamera(CameraUpdateFactory.newLatLngZoom(
-                        new LatLng(18.508486, 73.817409), 15), 7000);
-            }
-
-        } else {
-            permissionsManager = new PermissionsManager(this);
-            permissionsManager.requestLocationPermissions(getActivity());
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
-    public void onExplanationNeeded(List<String> permissionsToExplain) {
-        Toast.makeText(getActivity(), "We need user permission in order to function the app properly", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onPermissionResult(boolean granted) {
-        if (granted) {
-            mapboxMap.getStyle(this::enableLocationComponent);
-        } else {
-            Toast.makeText(getActivity(), "User permission is not given", Toast.LENGTH_LONG).show();
+            eventStatus=mView.findViewById(R.id.eventStatus);
+            eventType = mView.findViewById(R.id.eventType);
         }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mapView.onStart();
         adapter.startListening();
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        @SuppressLint("MissingPermission")
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        currentLatitude = location.getLatitude();
+        currentLongitude = location.getLongitude();
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onResume() {
         super.onResume();
-        mapView.onResume();
         adapter.notifyDataSetChanged();
         //getUserLocation();
     }
@@ -229,32 +217,69 @@ public class Uevents extends Fragment implements OnMapReadyCallback, Permissions
     @Override
     public void onPause() {
         super.onPause();
-        mapView.onPause();
         adapter.stopListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mapView.onStop();
         adapter.stopListening();
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mapView.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mapView.onLowMemory();
+    }
+
+    public String compareDateToPresent(String eventDate)
+    {
+        //date in eventDate will be like 2022-8-15 i.e. yyyy-mm-dd where m and d can be single digit
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String[] currentDateArray = currentDate.split("-");
+        String[] eventDateArray = eventDate.split("-");
+        if(Integer.parseInt(currentDateArray[0])>Integer.parseInt(eventDateArray[0]))
+        {
+            return "Completed";
+        }
+        else if(Integer.parseInt(currentDateArray[0])==Integer.parseInt(eventDateArray[0]))
+        {
+            if(Integer.parseInt(currentDateArray[1])>Integer.parseInt(eventDateArray[1]))
+            {
+                return "Completed";
+            }
+            else if(Integer.parseInt(currentDateArray[1])==Integer.parseInt(eventDateArray[1]))
+            {
+                if(Integer.parseInt(currentDateArray[2])>Integer.parseInt(eventDateArray[2]))
+                {
+                    return "Completed";
+                }
+                else if(Integer.parseInt(currentDateArray[2])==Integer.parseInt(eventDateArray[2]))
+                {
+                    return "Active Today";
+                }
+                else
+                {
+                    return "Active in Future";
+                }
+            }
+            else
+            {
+                return "Active in Future";
+            }
+        }
+        else
+        {
+            return "Active in Future";
+        }
     }
 }

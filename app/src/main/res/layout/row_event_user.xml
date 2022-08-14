@@ -5,9 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
+    android:layout_marginStart="2dp"
+    android:layout_marginEnd="3dp"
+    android:layout_marginTop="5dp"
     android:background="@drawable/round_corner_hollow"
     android:paddingTop="10dp"
-    android:paddingBottom="20dp"
+    android:paddingBottom="5dp"
     android:id="@+id/cardLayout">
 
     <RelativeLayout
@@ -42,6 +45,13 @@
                 android:text="@string/event_name"
                 android:textColor="@color/Black"
                 android:textSize="19sp" />
+            <TextView
+                android:id="@+id/eventStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/event_name"
+                android:textColor="@color/dot_dark_screen2"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_time"
@@ -63,5 +73,25 @@
         android:text="@string/description"
         android:textColor="@color/Black"
         android:textSize="18sp" />
+
+    <View
+        android:id="@+id/horizonal_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:foregroundGravity="center"
+        android:layout_below="@+id/eventDescription"
+        android:background="@color/black" />
+
+    <TextView
+        android:id="@+id/eventType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/horizonal_line"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="15dp"
+        android:textColor="@color/Black"
+        android:textSize="15sp" />
 
 </RelativeLayout>

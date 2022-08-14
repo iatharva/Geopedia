@@ -1,10 +1,7 @@
 package com.example.geopedia.usermenu;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,23 +22,18 @@ import com.example.geopedia.R;
 import com.example.geopedia.extras.Question;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import timber.log.Timber;
 
 public class Uquestions extends Fragment {
     private RecyclerView recycler_questions_user;
@@ -65,7 +57,6 @@ public class Uquestions extends Fragment {
         recycler_questions_user.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler_questions_user.setAdapter(adapter);
         showquestions("All",current_user_id);
-        //End of adapter code
 
         pullToRefresh.setOnRefreshListener(() -> {
             showquestions("All",current_user_id);
@@ -107,31 +98,20 @@ public class Uquestions extends Fragment {
 
             @Override
             protected void onBindViewHolder(@NotNull FiltersViewHolder viewHolder, int position, @NotNull Question model) {
-                
+                String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                //get current date and time
+                java.util.Date date = new java.util.Date();
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                String currentDate = sdf.format(date);
+                java.text.SimpleDateFormat sdf2 = new java.text.SimpleDateFormat("hh:mm a");
+                String currentTime = sdf2.format(date);
+                AtomicBoolean isLiked = new AtomicBoolean(false);
                 viewHolder.tv_name.setText(model.getFname()+" "+model.getLname());
                 viewHolder.tv_status.setText(model.getQuestionTitle());
                 viewHolder.tv_description.setText(model.getQuestionDesc());
                 viewHolder.tv_time.setText(model.getDate()+" "+model.getTime());
                 if(model.getQuestionDesc().isEmpty())
                     viewHolder.tv_description.setText("No Description");
-                AtomicBoolean isLiked= new AtomicBoolean(false);
-
-                //get the count of upvotes
-                db.collection("Upvotes").get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if(document.getId().equals(model.getQuestionId()))
-                            {
-                                int count=0;
-                                for(String key: document.getData().keySet())
-                                {
-                                    count++;
-                                }
-                                viewHolder.tv_like.setText(String.valueOf(count));
-                            }
-                        }
-                    }
-                });
 
                 //get the count of comments from the collection Comments where questionId is equal to the questionId
                 db.collection("Comments").whereEqualTo("questionId",model.getQuestionId()).get().addOnSuccessListener(queryDocumentSnapshots -> {
@@ -147,61 +127,91 @@ public class Uquestions extends Fragment {
                 }).addOnFailureListener(e -> {
                     Toast.makeText(getActivity(), "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
-               
 
-                firebaseFirestore.collection("Upvotes").orderBy(model.getQuestionId()).whereEqualTo("userid",current_user_id).get().addOnCompleteListener(task -> {
-                    if(task.isSuccessful())
-                    {
-                        for(int i = 0;i<task.getResult().size();i++)
-                        {
-                            if(task.getResult().getDocuments().get(i).get("value").equals(1))
-                            {
-                                isLiked.set(true);
-                                if(isLiked.get())
-                                    viewHolder.likee.setBackgroundResource(R.drawable.upvote_color_50);
-                                else
-                                    viewHolder.likee.setBackgroundResource(R.drawable.upvot_black_50);
-                            }
-                        }
-                    }
-                });
-
-                viewHolder.likelayout.setOnClickListener(v -> {
-                    if(isLiked.get())
-                    {
-                        isLiked.set(false);
-                        viewHolder.likee.setBackgroundResource(R.drawable.upvot_black_50);
-                        firebaseFirestore.collection("Upvotes").orderBy(model.getQuestionId()).whereEqualTo("userid",current_user_id).get().addOnCompleteListener(task -> {
-                            if(task.isSuccessful())
-                            {
-                                for(int i = 0;i<task.getResult().size();i++)
-                                {
-                                    firebaseFirestore.collection("Upvotes").document(task.getResult().getDocuments().get(i).getId()).delete();
-                                    Toast.makeText(getActivity(), "Upvote removed", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }else{
-                        isLiked.set(true);
-                        viewHolder.likee.setBackgroundResource(R.drawable.upvote_color_50);
-                        //Add a field with key=current_user_id and value=1 to the document model.getQuestionId() in collection upvoteswashingtonRef
-                        db.collection("Upvotes").document(model.getQuestionId())
-                        .update(current_user_id, 1)
-                            .addOnSuccessListener(aVoid -> Toast.makeText(getActivity(), "Upvoted", Toast.LENGTH_SHORT).show());
-                    }
-                });
-
+                //Open the comment feed
                 viewHolder.commentfeedlayout.setOnClickListener(view -> {
-                    //Open the comment feed
                     Intent intent = new Intent(getActivity(), CommentFeed.class);
                     intent.putExtra("questionid",model.getQuestionId());
                     startActivity(intent);
                 });
 
-                if(isLiked.get())
-                    viewHolder.likee.setBackgroundResource(R.drawable.upvote_color_50);
-                else
-                    viewHolder.likee.setBackgroundResource(R.drawable.upvot_black_50);
+                viewHolder.likee.setBackgroundResource(R.drawable.upvot_black_50);
+                isLiked.set(false);
+
+                //set the upvote count
+                db.collection("Upvotes").whereEqualTo("questionId",model.getQuestionId()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    if(!queryDocumentSnapshots.isEmpty())
+                    {
+                        int count=0;
+                        for(QueryDocumentSnapshot document: queryDocumentSnapshots)
+                        {
+                            //increase count if isUpvoted = "1"
+                            if(document.getString("isUpvoted").equals("1"))
+                                count++;
+                            //check if the current user has upvoted the question
+                            if(document.getString("userId").equals(current_user_id) && document.getString("isUpvoted").equals("1"))
+                            {
+                                viewHolder.likee.setBackgroundResource(R.drawable.upvote_color_50);
+                                isLiked.set(true);
+                            }
+                        }
+                        viewHolder.tv_like.setText(String.valueOf(count) + " upvotes");
+                    }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(getActivity(), "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+
+                viewHolder.likelayout.setOnClickListener(view -> {
+                    adapter.notifyItemChanged(position);
+                    //get the Upvotes collection where questionId is equal to the questionId and userId is equal to the current userId
+                    db.collection("Upvotes").whereEqualTo("questionId",model.getQuestionId()).whereEqualTo("userId",current_user_id).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                        if(!queryDocumentSnapshots.isEmpty())
+                        {
+                            for(QueryDocumentSnapshot document: queryDocumentSnapshots)
+                            {
+                                //if the user has upvoted the question, then update the isUpvoted field to 0
+                                if(document.getString("isUpvoted").equals("1"))
+                                {
+                                    db.collection("Upvotes").document(document.getId()).update("isUpvoted","0");
+                                    viewHolder.likee.setBackgroundResource(R.drawable.upvot_black_50);
+                                    isLiked.set(false);
+                                    Toast.makeText(getActivity(), "Downvoted", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    //if the user has not upvoted the question, then update the isUpvoted field to 1
+                                    db.collection("Upvotes").document(document.getId()).update("isUpvoted","1");
+                                    viewHolder.likee.setBackgroundResource(R.drawable.upvote_color_50);
+                                    isLiked.set(true);
+                                    Toast.makeText(getActivity(), "Upvoted", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }else{
+                            //if the user has not upvoted the question, then add a new document to the Upvotes collection
+                            Map<String, Object> Upvotes = new HashMap<>();
+                            String randomString1 = "";
+                            for (int i = 0; i < 28; i++) {
+                                randomString1 += characters.charAt((int) Math.floor(Math.random() * characters.length()));
+                            }
+                            Upvotes.put("upvoteId", randomString1);
+                            Upvotes.put("questionId", model.getQuestionId());
+                            Upvotes.put("userId", current_user_id);
+                            Upvotes.put("date", currentDate);
+                            Upvotes.put("isUpvoted", "1");
+                            Upvotes.put("time", currentTime);
+                            db.collection("Upvotes").add(Upvotes).addOnSuccessListener(documentReference -> {
+                                viewHolder.likee.setBackgroundResource(R.drawable.upvote_color_50);
+                                isLiked.set(true);
+                                Toast.makeText(getActivity(), "Upvoted", Toast.LENGTH_SHORT).show();
+                            }).addOnFailureListener(e -> {
+                                Toast.makeText(getActivity(), "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                        }
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(getActivity(), "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+
+                    //Refresh after due to the change in the upvote count
+                    adapter.notifyItemChanged(position);
+                });
             }
         };
         adapter.startListening();

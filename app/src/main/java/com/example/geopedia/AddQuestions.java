@@ -131,7 +131,23 @@ final FirebaseFirestore db = FirebaseFirestore.getInstance();
         }
 
         String finalRandomString = randomString;
-        db.collection("Upvotes").document(questionId).set(upvote).addOnCompleteListener(task -> {
+
+        //Create a new object
+        Map<String, Object> Upvotes = new HashMap<>();
+        //Create another random string for comment
+        String randomString1 = "";
+        for (int i = 0; i < 28; i++) {
+            randomString1 += characters.charAt((int) Math.floor(Math.random() * characters.length()));
+        }
+        Upvotes.put("upvoteId", randomString1);
+        Upvotes.put("questionId", questionId);
+        Upvotes.put("userId", userId);
+        Upvotes.put("date", date);
+        Upvotes.put("isUpvoted", "1");
+        Upvotes.put("time", time);
+
+        //Add upvote to database
+        db.collection("Upvotes").document(randomString1).set(Upvotes).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
 
                 //Create the required object for comment

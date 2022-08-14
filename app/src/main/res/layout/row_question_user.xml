@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/imgView_propic"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/nav_header_desc"
             android:scaleType="fitCenter"
@@ -129,6 +129,7 @@
         android:layout_below="@id/relalayout1"
         android:layout_marginTop="10dp"
         android:background="@color/light_grey" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
@@ -161,7 +162,6 @@
                     android:layout_marginStart="10dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/upvote_color_50"
                     android:background="@color/White"
                     android:id="@+id/likee"
                     />

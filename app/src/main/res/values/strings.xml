@@ -137,4 +137,10 @@
     <string name="other_information">Other information</string>
     <string name="time">time</string>
     <string name="report_problem_feedback">Report problem/Feedback</string>
+    <string name="please_add_the_address_about_event_and_other_required_information_here">Please add the address, about event and other required information here</string>
+    <string name="event_on">Event on</string>
+    <string name="event_type">Event Type</string>
+    <string name="event_recurring">Event Recurring</string>
+    <string name="event_on_date">event on Date</string>
+    <string name="event_on_time">event on Time</string>
 </resources>

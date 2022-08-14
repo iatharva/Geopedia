@@ -19,6 +19,9 @@
         android:theme="@style/Theme.Geopedia"
         tools:targetApi="31">
         <activity
+            android:name=".Info.EventInfo"
+            android:exported="false" />
+        <activity
             android:name=".Feedback"
             android:exported="false" />
         <activity
