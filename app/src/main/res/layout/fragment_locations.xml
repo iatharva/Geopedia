@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
+    android:background="@color/off_white"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".adminmenu.Information.locations.LocationsFragment">
 

@@ -4,9 +4,6 @@
         android:id="@+id/delete"
         android:title="@string/delete" />
     <item
-        android:id="@+id/view_comments"
-        android:title="@string/view_comments"/>
-    <item
         android:id="@+id/view_details"
         android:title="@string/view_details"/>
 </menu>
