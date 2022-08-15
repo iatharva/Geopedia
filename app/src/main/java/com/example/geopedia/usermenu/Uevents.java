@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -83,6 +84,7 @@ public class Uevents extends Fragment {
     private MapView mapView;
     private MapboxMap mapboxMap;
     private PermissionsManager permissionsManager;
+    private ToggleButton toggleEvent;
     private double currentSelectedLatitude=0,currentSelectedLongitude=0;
     private  double currentLatitude,currentLongitude;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -95,12 +97,39 @@ public class Uevents extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_uevents, container, false);
         FloatingActionButton addEventFab = view.findViewById(R.id.addEventFab);
+        toggleEvent = view.findViewById(R.id.toggleEvent);
+
+        //set default toggle button text to "Show Present Events"
+        toggleEvent.setText("Show Present Events");
+        //set default toggle button to true
+        toggleEvent.setChecked(true);
+
+        if(toggleEvent.isChecked()){
+            toggleEvent.setText("Show Present Events");
+        }
+        else{
+            toggleEvent.setText("Show Past Events");
+        }
+
+        toggleEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(toggleEvent.isChecked()){
+                    toggleEvent.setText("Show Present Events");
+                    showEvents(toggleEvent.isChecked());
+                }
+                else{
+                    toggleEvent.setText("Show Past Events");
+                    showEvents(toggleEvent.isChecked());
+                }
+            }
+        });
 
         final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefreshEvents);
         RecyclerView recycler_events_user = view.findViewById(R.id.recycler_events_user);
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        showEvents();
+        showEvents(toggleEvent.isChecked());
         recycler_events_user.setHasFixedSize(true);
         recycler_events_user.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler_events_user.setAdapter(adapter);
@@ -111,20 +140,27 @@ public class Uevents extends Fragment {
         });
 
         pullToRefresh.setOnRefreshListener(() -> {
-            showEvents();
+            showEvents(toggleEvent.isChecked());
             pullToRefresh.setRefreshing(false);
         });
         return view;
     }
 
-    private void showEvents() {
-        //events where status is Pending && 
+    private void showEvents(boolean isPresent) {
+        Query query;
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         currentLatitude = location.getLatitude();
         currentLongitude = location.getLongitude();
-        Query query = firebaseFirestore.collection("Events").whereEqualTo("eventStatus", "Pending");
+        if(isPresent)
+        {
+            query = firebaseFirestore.collection("Events").whereEqualTo("eventStatus", "Pending").whereEqualTo("isDeleted","0");
+        }
+        else
+        {
+            query = firebaseFirestore.collection("Events").whereEqualTo("isDeleted","0");
+        }
 
         FirestoreRecyclerOptions<Events> options = new FirestoreRecyclerOptions.Builder<Events>()
                 .setQuery(query, Events.class)

@@ -35,6 +35,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.geopedia.AddLocation;
 import com.example.geopedia.HomeUser;
 import com.example.geopedia.R;
+import com.example.geopedia.showLocations;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -94,6 +95,10 @@ public class Uhome extends Fragment implements OnMapReadyCallback, PermissionsLi
         addLocationFab = view.findViewById(R.id.addLocationFab);
         addLocationFab.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), AddLocation.class);
+            startActivity(intent);
+        });
+        viewLocations.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), showLocations.class);
             startActivity(intent);
         });
         getUserLocation();
