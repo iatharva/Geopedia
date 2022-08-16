@@ -53,6 +53,7 @@ public class LocationsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLocationsBinding.inflate(inflater, container, false);
+
         View root = binding.getRoot();
         recyler_locations_admin = root.findViewById(R.id.recyler_locations_admin);
         SwipeRefreshLayout pullToRefreshLocationAdmin = root.findViewById(R.id.pullToRefreshLocationAdmin);
