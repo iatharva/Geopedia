@@ -33,6 +33,7 @@ public class HomeAdmin extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarHomeAdmin.toolbar);
+        /*
         binding.appBarHomeAdmin.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -40,6 +41,7 @@ public class HomeAdmin extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+         */
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each

@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -87,6 +90,9 @@ public class Uevents extends Fragment {
     private ToggleButton toggleEvent;
     private double currentSelectedLatitude=0,currentSelectedLongitude=0;
     private  double currentLatitude,currentLongitude;
+    private EditText SearchEventFld;
+    private ImageButton searchEButton;
+    private RecyclerView recycler_events_user;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
     final String current_user_id = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
@@ -97,13 +103,16 @@ public class Uevents extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_uevents, container, false);
         FloatingActionButton addEventFab = view.findViewById(R.id.addEventFab);
-        toggleEvent = view.findViewById(R.id.toggleEvent);
+        SearchEventFld = view.findViewById(R.id.SearchEventFld);
+        searchEButton = view.findViewById(R.id.searchEButton);
+        //toggleEvent = view.findViewById(R.id.toggleEvent);
 
         //set default toggle button text to "Show Present Events"
-        toggleEvent.setText("Show Present Events");
+        //toggleEvent.setText("Show Present Events");
         //set default toggle button to true
-        toggleEvent.setChecked(true);
+        //toggleEvent.setChecked(true);
 
+        /*
         if(toggleEvent.isChecked()){
             toggleEvent.setText("Show Present Events");
         }
@@ -124,12 +133,13 @@ public class Uevents extends Fragment {
                 }
             }
         });
+         */
 
         final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefreshEvents);
-        RecyclerView recycler_events_user = view.findViewById(R.id.recycler_events_user);
+        recycler_events_user = view.findViewById(R.id.recycler_events_user);
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        showEvents(toggleEvent.isChecked());
+        showEvents(true,"");
         recycler_events_user.setHasFixedSize(true);
         recycler_events_user.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler_events_user.setAdapter(adapter);
@@ -140,13 +150,26 @@ public class Uevents extends Fragment {
         });
 
         pullToRefresh.setOnRefreshListener(() -> {
-            showEvents(toggleEvent.isChecked());
+            showEvents(true, "");
             pullToRefresh.setRefreshing(false);
         });
+
+        searchEButton.setOnClickListener(view -> {
+            if(TextUtils.isEmpty(SearchEventFld.getText().toString()))
+            {
+                Toast.makeText(getActivity(),"Please enter something to search",Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getActivity(), "Searching through our logs", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"Searching -"+SearchEventFld.getText().toString(),Toast.LENGTH_SHORT).show();
+                showEvents(false, SearchEventFld.getText().toString());
+            }
+        });
+
+
         return view;
     }
 
-    private void showEvents(boolean isPresent) {
+    private void showEvents(boolean isPresent, String searchEvent) {
         Query query;
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
@@ -159,7 +182,7 @@ public class Uevents extends Fragment {
         }
         else
         {
-            query = firebaseFirestore.collection("Events").whereEqualTo("isDeleted","0");
+            query = firebaseFirestore.collection("Events").whereEqualTo("isDeleted","0").whereEqualTo("eventTitle", searchEvent);;
         }
 
         FirestoreRecyclerOptions<Events> options = new FirestoreRecyclerOptions.Builder<Events>()
@@ -180,6 +203,7 @@ public class Uevents extends Fragment {
             protected void onBindViewHolder(@NotNull EventsViewHolder viewHolder, int position, @NotNull final Events model) {
                 final String event_id= model.getEventId();
 
+                /*
                 if(model.getEventLatitude() >= currentLatitude - 0.01 && model.getEventLatitude() <= currentLatitude + 0.01 && model.getEventLongitude() >= currentLongitude - 0.01 && model.getEventLongitude() <= currentLongitude + 0.01)
                     viewHolder.cardLayout.setVisibility(View.VISIBLE);
                 else
@@ -188,6 +212,8 @@ public class Uevents extends Fragment {
                     viewHolder.cardLayout.getLayoutParams().height = 0;
                     viewHolder.cardLayout.requestLayout();
                 }
+
+                 */
                 viewHolder.eventName.setText(model.getEventTitle());
                 viewHolder.eventDescription.setText(model.getEventDesc());
 
@@ -214,6 +240,8 @@ public class Uevents extends Fragment {
                 }
             }
         };
+        adapter.startListening();
+        recycler_events_user.setAdapter(adapter);
     }
 
     private static class EventsViewHolder extends RecyclerView.ViewHolder {

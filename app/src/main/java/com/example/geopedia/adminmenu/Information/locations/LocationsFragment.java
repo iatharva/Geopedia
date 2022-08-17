@@ -235,7 +235,7 @@ public class LocationsFragment extends Fragment {
             Toast.makeText(requireActivity(), "Please enter reason to delete", Toast.LENGTH_SHORT).show();
             return;
         }
-        db.collection("Locations").document(locationId).update("isDeleted",1);
+        db.collection("Locations").document(locationId).update("isDeleted","1");
         db.collection("Locations").document(locationId).update("deletedReason",reason);
         Toast.makeText(requireActivity(), "Location deleted", Toast.LENGTH_SHORT).show();
     }

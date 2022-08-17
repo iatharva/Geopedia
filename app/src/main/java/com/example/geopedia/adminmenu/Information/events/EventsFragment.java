@@ -173,7 +173,7 @@ public class EventsFragment extends Fragment {
             Toast.makeText(requireActivity(), "Please enter reason to delete", Toast.LENGTH_SHORT).show();
             return;
         }
-        db.collection("Events").document(eventId).update("isDeleted",1);
+        db.collection("Events").document(eventId).update("isDeleted","1");
         db.collection("Events").document(eventId).update("deletedReason",reason);
         Toast.makeText(requireActivity(), "Event deleted", Toast.LENGTH_SHORT).show();
     }

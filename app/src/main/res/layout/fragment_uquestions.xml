@@ -29,7 +29,7 @@
                 android:focusable="true"
                 />
             <ImageButton
-                android:id="@+id/search_people_btn"
+                android:id="@+id/search_question_btn"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="5dp"
