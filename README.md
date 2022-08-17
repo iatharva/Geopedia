@@ -8,9 +8,9 @@ Geopedia - Places &amp; Travel Itineraries. Android application which gives info
 - [x] Create Login screen
 - [x] Create SignUp screen
 - [x] Create ForgetPassword screen
-- [ ] Create Home screen
+- [x] Create Home screen
 - [x] Create Home(Admin) screen
 - [x] Create Sub screens for admin
-- [ ] Resolve the bugs in Admin side screens
-- [ ] Add the logic in remaining admin side screens
-- [ ] Create sub screens for user
+- [x] Resolve the bugs in Admin side screens
+- [x] Add the logic in remaining admin side screens
+- [x] Create sub screens for user
