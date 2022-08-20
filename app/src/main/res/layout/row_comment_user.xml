@@ -9,7 +9,7 @@
         android:id="@+id/com_propic"
         android:layout_width="60sp"
         android:layout_height="60sp"
-        android:src="@drawable/user_colored"/>
+        android:src="@drawable/user_colored" />
 
     <TextView
         android:id="@+id/com_user"

@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.geopedia.Feedback;
 import com.example.geopedia.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -52,7 +53,7 @@ public class LocationInfo extends AppCompatActivity implements OnMapReadyCallbac
     final String current_user_id = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
     private Double latitude,longitude;
     private String location_id,distance;
-    private Button launchMaps;
+    private Button launchMaps,doubt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +68,7 @@ public class LocationInfo extends AppCompatActivity implements OnMapReadyCallbac
         approvedBy = findViewById(R.id.approvedBy);
         rating = findViewById(R.id.rating);
         launchMaps = findViewById(R.id.launchMaps);
-
+        doubt = findViewById(R.id.doubt);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync( this);
         LocationManager locationManager = (LocationManager) LocationInfo.this.getSystemService(Context.LOCATION_SERVICE);
@@ -92,6 +93,11 @@ public class LocationInfo extends AppCompatActivity implements OnMapReadyCallbac
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
+        });
+
+        doubt.setOnClickListener(view -> {
+            Intent intent = new Intent(LocationInfo.this, Feedback.class);
+            startActivity(intent);
         });
 
         //Get the event info

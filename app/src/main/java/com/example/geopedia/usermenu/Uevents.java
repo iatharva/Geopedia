@@ -202,7 +202,6 @@ public class Uevents extends Fragment {
             @Override
             protected void onBindViewHolder(@NotNull EventsViewHolder viewHolder, int position, @NotNull final Events model) {
                 final String event_id= model.getEventId();
-
                 /*
                 if(model.getEventLatitude() >= currentLatitude - 0.01 && model.getEventLatitude() <= currentLatitude + 0.01 && model.getEventLongitude() >= currentLongitude - 0.01 && model.getEventLongitude() <= currentLongitude + 0.01)
                     viewHolder.cardLayout.setVisibility(View.VISIBLE);
@@ -212,8 +211,7 @@ public class Uevents extends Fragment {
                     viewHolder.cardLayout.getLayoutParams().height = 0;
                     viewHolder.cardLayout.requestLayout();
                 }
-
-                 */
+                */
                 viewHolder.eventName.setText(model.getEventTitle());
                 viewHolder.eventDescription.setText(model.getEventDesc());
 

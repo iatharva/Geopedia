@@ -180,6 +180,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:gravity="center"
+                android:text="Unknown"
                 android:textColor="@color/black"
                 android:textSize="13sp"/>
         </LinearLayout>
@@ -252,8 +253,9 @@
                 android:layout_marginEnd="10dp"/>
 
             <TextView
+                android:id="@+id/other_info"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Currently, No other information is available"
                 android:textColor="@color/black"

@@ -29,14 +29,16 @@
         android:layout_below="@+id/recycler_comments_user"
         android:id="@+id/addCommentLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
         <ImageView
             android:id="@+id/comment_profile"
             android:layout_width="40sp"
             android:layout_height="40sp"
             android:layout_marginStart="10sp"
-            android:src="@drawable/user_color_50"
-            android:layout_marginTop="10sp"/>
+            android:layout_marginTop="10sp"
+            android:src="@drawable/user_color_50" />
 
         <EditText
             android:id="@+id/comment_field"

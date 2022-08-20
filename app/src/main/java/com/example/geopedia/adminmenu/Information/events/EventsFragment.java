@@ -102,6 +102,14 @@ public class EventsFragment extends Fragment {
             protected void onBindViewHolder(@NotNull FiltersViewHolder viewHolder, int position, @NotNull Events model) {
 
                 viewHolder.eventName.setText(model.getEventTitle());
+                if(model.getIsDeleted().equals("1"))
+                {
+                    viewHolder.eventName.setTextColor(getResources().getColor(R.color.Red));
+                }
+                else
+                {
+                    viewHolder.eventName.setTextColor(getResources().getColor(R.color.Green));
+                }
                 viewHolder.eventDescription.setText(model.getEventDesc());
                 viewHolder.tv_time.setText(model.getDate()+" "+model.getTime());
 
@@ -161,8 +169,8 @@ public class EventsFragment extends Fragment {
         Intent intent = new Intent(requireActivity(), EventInfo.class);
         intent.putExtra("eventId", eventId);
         //Convert double to string
-        intent.putExtra("latitude", String.valueOf(latitude));
-        intent.putExtra("longitude", String.valueOf(longitude));
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitude);
         startActivity(intent);
     }
 

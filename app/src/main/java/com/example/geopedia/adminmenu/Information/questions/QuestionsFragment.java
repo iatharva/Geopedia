@@ -102,6 +102,12 @@ public class QuestionsFragment extends Fragment {
             protected void onBindViewHolder(@NotNull FiltersViewHolder viewHolder, int position, @NotNull Question model) {
 
                 viewHolder.tv_status.setText(model.getQuestionTitle());
+                if(model.getIsDeleted() == 0)
+                {
+                    viewHolder.tv_status.setTextColor(getResources().getColor(R.color.Green));
+                }else{
+                    viewHolder.tv_status.setTextColor(getResources().getColor(R.color.Red));
+                }
                 viewHolder.tv_description.setText(model.getQuestionDesc());
                 viewHolder.tv_time.setText(String.format("%s %s", model.getDate(), model.getTime()));
 
@@ -141,7 +147,8 @@ public class QuestionsFragment extends Fragment {
                         int count=0;
                         for(QueryDocumentSnapshot document: queryDocumentSnapshots)
                         {
-                            count++;
+                            if(document.getString("isDeleted").equals("0"))
+                                count++;
                         }
                         viewHolder.tv_comment.setText(String.valueOf(count) + " comments");
                     }

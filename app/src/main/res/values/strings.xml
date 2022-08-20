@@ -143,4 +143,5 @@
     <string name="event_recurring">Event Recurring</string>
     <string name="event_on_date">event on Date</string>
     <string name="event_on_time">event on Time</string>
+    <string name="more_info">More info</string>
 </resources>

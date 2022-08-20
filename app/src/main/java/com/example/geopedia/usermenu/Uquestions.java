@@ -1,6 +1,5 @@
 package com.example.geopedia.usermenu;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,24 +37,22 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Uquestions extends Fragment {
     private RecyclerView recycler_questions_user;
@@ -153,7 +151,7 @@ public class Uquestions extends Fragment {
                     viewHolder.tv_description.setText("No Description");
 
                 //get the count of comments from the collection Comments where questionId is equal to the questionId
-                db.collection("Comments").whereEqualTo("questionId",model.getQuestionId()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                db.collection("Comments").whereEqualTo("questionId",model.getQuestionId()).whereEqualTo("isDeleted","0").get().addOnSuccessListener(queryDocumentSnapshots -> {
                     if(!queryDocumentSnapshots.isEmpty())
                     {
                         int count=0;
@@ -292,6 +290,17 @@ public class Uquestions extends Fragment {
                      */
                 });
 
+                viewHolder.imgView_propic.setOnClickListener(view ->{
+
+                    //Make a query to the User data and pass it to showUserInfo
+                    DocumentReference typeref = db.collection("Users").document(model.getUserId());
+                    typeref.get().addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                                showUserInfo(documentSnapshot.getString("FName"),documentSnapshot.getString("LName"),documentSnapshot.getString("Dob"),documentSnapshot.getString("JoinedOn"), model.getUserId());
+                        }
+                    });
+                });
+
             }
         };
         adapter.startListening();
@@ -385,5 +394,81 @@ public class Uquestions extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Calculate the Age from Data of Birth of user
+     */
+    private int getAge(int year, int month, int day) {
+        int age = 0;
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH)+1;
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        if (currentMonth > month) {
+            age = currentYear - year;
+        } else if (currentMonth == month) {
+            if (currentDay >= day) {
+                age = currentYear - year;
+            } else {
+                age = currentYear - year - 1;
+            }
+        } else {
+            age = currentYear - year - 1;
+        }
+        return age;
+    }
+
+    private void showUserInfo(String FName,String LName,String Dob, String JoinedOn, String UserId)
+    {
+         //Show the user info in dialog box
+         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+         LayoutInflater inflater = getActivity().getLayoutInflater();
+         View view1 = inflater.inflate(R.layout.user_info_dialof, null);
+         builder.setView(view1);
+         builder.setCancelable(true);
+         TextView username = view1.findViewById(R.id.row_username);
+         TextView user_age = view1.findViewById(R.id.userAge);
+         TextView user_commentedOn = view1.findViewById(R.id.commentedOn);
+         TextView user_questionOn = view1.findViewById(R.id.questionOn);
+         TextView user_joined = view1.findViewById(R.id.userJoined);
+
+        String[] dob = Dob.split("-");
+        username.setText(FName+" "+LName);  
+        user_age.setText(getAge(Integer.parseInt(dob[2]),Integer.parseInt(dob[1]),Integer.parseInt(dob[0]))+" years");
+        user_joined.setText(JoinedOn);
+
+        db.collection("Comments").whereEqualTo("userId",UserId).whereEqualTo("isDeleted","0").get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if(!queryDocumentSnapshots.isEmpty())
+            {
+                int count=0;
+                for(QueryDocumentSnapshot document: queryDocumentSnapshots)
+                {
+                    if(document.getString("commentId")!=null)
+                        count++;
+                }
+                user_commentedOn.setText(count+"");
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(getActivity(), "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+        
+        db.collection("Questions").whereEqualTo("userId",UserId).whereEqualTo("isDeleted",0).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if(!queryDocumentSnapshots.isEmpty())
+            {
+                int count=0;
+                for(QueryDocumentSnapshot document: queryDocumentSnapshots)
+                {
+                    if(document.getString("questionId")!=null)
+                        count++;
+                }
+                user_questionOn.setText(count+"");
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(getActivity(), "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+        
+        builder.show();
     }
 }

@@ -115,6 +115,13 @@ public class CreateNewAccount extends AppCompatActivity {
                 if(task.isSuccessful()){
                     UID = Objects.requireNonNull(fAuth.getCurrentUser()).getUid();
                     Map<String, Object> user = new HashMap<>();
+                    //get current date and time
+                    java.util.Date date = new java.util.Date();
+                    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd MMMM yyyyy");
+                    String currentDate = sdf.format(date);
+                    java.text.SimpleDateFormat sdf2 = new java.text.SimpleDateFormat("hh:mm a");
+                    String currentTime = sdf2.format(date);
+
                     user.put("Uid", UID);
                     user.put("Email", Email);
                     user.put("FName", FName);
@@ -124,7 +131,7 @@ public class CreateNewAccount extends AppCompatActivity {
                     user.put("IsAdmin", "0");
                     user.put("LastLongitude",currentLongitude);
                     user.put("LastLatitude",currentLatitude);
-
+                    user.put("JoinedOn",currentDate+" "+currentTime);
                     //Insert and check if user is data is inserted successfully and user is created
                     db.collection("Users").document(UID).set(user).addOnCompleteListener(task1 -> {
                         if(task1.isSuccessful()) {

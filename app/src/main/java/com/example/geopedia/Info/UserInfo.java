@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.geopedia.R;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Objects;
@@ -15,7 +17,7 @@ import java.util.Objects;
 public class UserInfo extends AppCompatActivity {
 
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    TextView userFullName,userEmail,userDob,userType,userJoinedOn,userAccountType;
+    TextView userFullName,userEmail,userDob,userType,userJoinedOn,userAccountType,other_info;
     String Email,FName,LName,Dob,IsAdmin,IsPaid,Uid;
     String userid;
     @Override
@@ -29,6 +31,7 @@ public class UserInfo extends AppCompatActivity {
         userType = findViewById(R.id.userType);
         userJoinedOn = findViewById(R.id.userJoinedOn);
         userAccountType = findViewById(R.id.userAccountType);
+        other_info = findViewById(R.id.other_info);
         userid = getIntent().getStringExtra("userid");
         getUserData();
     }
@@ -45,6 +48,7 @@ public class UserInfo extends AppCompatActivity {
                 Dob=documentSnapshot.getString("Dob");
                 IsAdmin =documentSnapshot.getString("IsAdmin");
                 IsPaid = documentSnapshot.getString("IsPaid");
+                String joined = documentSnapshot.getString("JoinedOn");
 
                 userFullName.setText(String.format("%s %s", FName, LName));
                 userEmail.setText(Email);
@@ -67,13 +71,51 @@ public class UserInfo extends AppCompatActivity {
                     userAccountType.setText("FREE");
                 }
 
-                userJoinedOn.setText("Unknown");
+                userJoinedOn.setText(joined);
             }
         });
 
-        //Get user's CreationDate from firebase auth using uid
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //TODO: Add account creation in user data while creating account. and then update it here
+        db.collection("Comments").whereEqualTo("userId",userid).whereEqualTo("isDeleted","0").get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if(!queryDocumentSnapshots.isEmpty())
+            {
+                int count=0;
+                for(QueryDocumentSnapshot document: queryDocumentSnapshots)
+                {
+                    if(document.getString("commentId")!=null)
+                        count++;
+                }
+                other_info.setText("Total contribution of\n\nTotal Comments: "+count+"");
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(UserInfo.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+
+        db.collection("Questions").whereEqualTo("userId",userid).whereEqualTo("isDeleted",0).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            if(!queryDocumentSnapshots.isEmpty())
+            {
+                int count=0;
+                for(QueryDocumentSnapshot document: queryDocumentSnapshots)
+                {
+                    if(document.getString("questionId")!=null)
+                        count++;
+                }
+
+                if(other_info.getText().toString().equals("Currently, No other information is available"))
+                {
+                    other_info.setText("Total contribution of\n\nTotal Questions: "+count+"");
+                }
+                else
+                {
+                    if(!other_info.getText().toString().contains("Total Questions: "))
+                    {
+                        other_info.setText(other_info.getText().toString()+"\n\nTotal Questions: "+count+"");
+                    }
+
+                }
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(UserInfo.this, "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override

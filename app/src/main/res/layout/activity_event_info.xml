@@ -90,8 +90,7 @@
             <TextView
                 android:id="@+id/eventDescription"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center"
+                android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="13sp"/>
         </LinearLayout>
@@ -163,76 +162,10 @@
             android:textSize="15sp"
             android:textStyle="bold"/>
 
-        <!--POSTED ON-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="30dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                app:lottie_autoPlay="true"
-                app:lottie_fileName="calender_hollow.json"
-                app:lottie_loop="true"
-                app:lottie_speed="0.3"
-                android:layout_marginEnd="10dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:text="Posted on: "
-                android:textColor="@color/black"
-                android:textSize="13sp"/>
-
-            <TextView
-                android:id="@+id/eventPostedOn"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="13sp"/>
-        </LinearLayout>
-
-        <!--EMAIL-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="30dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                app:lottie_autoPlay="true"
-                app:lottie_fileName="user_icon_animation.json"
-                app:lottie_loop="true"
-                app:lottie_speed="0.3"
-                android:layout_marginEnd="10dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:text="Posted by: "
-                android:textColor="@color/black"
-                android:textSize="13sp"/>
-
-            <TextView
-                android:id="@+id/eventPostedBy"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="13sp"/>
-        </LinearLayout>
-
         <!--Comments-->
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
+            android:layout_height="wrap_content">
 
             <com.airbnb.lottie.LottieAnimationView
                 android:layout_width="30dp"
@@ -294,6 +227,72 @@
                 android:textSize="13sp"/>
         </LinearLayout>
 
+        <!--POSTED ON-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="calender_hollow.json"
+                app:lottie_loop="true"
+                app:lottie_speed="0.3"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="Posted on: "
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/eventPostedOn"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
+        <!--EMAIL-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="user_icon_animation.json"
+                app:lottie_loop="true"
+                app:lottie_speed="0.3"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="Posted by: "
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/eventPostedBy"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+        </LinearLayout>
+
     </LinearLayout>
 
     <Button
@@ -304,6 +303,15 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:text="Open navigation map to Location"/>
+
+    <Button
+        android:id="@+id/doubt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:text="Have a doubt? write to us"/>
     </LinearLayout>
 </ScrollView>
 

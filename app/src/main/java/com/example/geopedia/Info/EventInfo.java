@@ -1,5 +1,7 @@
 package com.example.geopedia.Info;
 
+import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.example.geopedia.Feedback;
 import com.example.geopedia.R;
 import com.example.geopedia.usermenu.Uevents;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -61,7 +64,7 @@ public class EventInfo extends AppCompatActivity implements OnMapReadyCallback, 
     final String current_user_id = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
     private Double latitude,longitude;
     private String event_id;
-    private Button launchMaps;
+    private Button launchMaps,doubt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +82,7 @@ public class EventInfo extends AppCompatActivity implements OnMapReadyCallback, 
         eventStatus = findViewById(R.id.eventStatus);
         eventAddress = findViewById(R.id.eventAddress);
         eventStatusLottie = findViewById(R.id.eventStatusLottie);
-        
+        doubt = findViewById(R.id.doubt);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync( this);
 
@@ -96,6 +99,11 @@ public class EventInfo extends AppCompatActivity implements OnMapReadyCallback, 
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
+        });
+
+        doubt.setOnClickListener(view -> {
+            Intent intent = new Intent(EventInfo.this, Feedback.class);
+            startActivity(intent);
         });
 
         //Get the event info

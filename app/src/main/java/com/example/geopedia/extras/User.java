@@ -10,6 +10,7 @@ public class User {
     private String LName;
     private String Email;
     private String Dob;
+    private String JoinedOn;
 
     //Other parameters
     private String IsAdmin;
@@ -21,7 +22,7 @@ public class User {
 
     public User(){ }
 
-    public User(String uid, String FName, String LName, String email, String dob, String isAdmin, String isPaid, double lastLongitude, double lastLatitude) {
+    public User(String uid, String FName, String LName, String email, String dob, String isAdmin, String isPaid, double lastLongitude, double lastLatitude, String joinedOn) {
         this.Uid = uid;
         this.FName = FName;
         this.LName = LName;
@@ -31,6 +32,7 @@ public class User {
         this.IsPaid = isPaid;
         this.LastLatitude = lastLatitude;
         this.LastLongitude = lastLongitude;
+        this.JoinedOn = joinedOn;
     }
 
     public String getUid() {
@@ -103,6 +105,14 @@ public class User {
 
     public void setLastLatitude(double lastLatitude) {
         LastLatitude = lastLatitude;
+    }
+
+    public String getJoinedOn() {
+        return JoinedOn;
+    }
+
+    public void setJoinedOn(String joinedOn) {
+        JoinedOn = joinedOn;
     }
 
 }

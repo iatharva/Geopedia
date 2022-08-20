@@ -96,17 +96,13 @@ public class showLocations extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull FiltersViewHolder viewHolder, int position, @NonNull CustomLocation model) {
 
-                /*
-                if(model.getLocationLatitude() >= currentLatitude - 0.01 && model.getLocationLatitude() <= currentLatitude + 0.01 && model.getLocationLongitude() >= currentLongitude - 0.01 && model.getLocationLongitude() <= currentLongitude + 0.01)
-                    viewHolder.locationCard.setVisibility(View.VISIBLE);
-                else
+                /* 
+                if (model.getLocationLatitude() >= currentLatitude - 0.01 && model.getLocationLatitude() <= currentLatitude + 0.01 && model.getLocationLongitude() >= currentLongitude - 0.01 && model.getLocationLongitude() <= currentLongitude + 0.01)
                 {
-                    viewHolder.locationCard.setVisibility(View.INVISIBLE);
-                    viewHolder.locationCard.getLayoutParams().height = 0;
-                    viewHolder.locationCard.requestLayout();
+                    viewHolder.away.setText("Within 10 kms");
+                    viewHolder.away.setTextColor(getResources().getColor(R.color.Green));
                 }
-
-                 */
+                */
 
                 viewHolder.locationName.setText(model.getLocationTitle());
                 viewHolder.locationCategory.setText(model.getLocationCategory());
@@ -114,6 +110,17 @@ public class showLocations extends AppCompatActivity {
                 double dis = calculateDistance(currentLatitude,currentLongitude,Double.valueOf(model.getLocationLatitude()), Double.valueOf(model.getLocationLongitude()));
                 //convert double value into 0.00 format
                 String distance = String.format("%.2f", dis);
+                //if dis is less than 10 then set text as within 10 kms else set text as x kms away
+                if(dis < 10)
+                {
+                    viewHolder.away.setText("Within 10 kms");
+                    viewHolder.away.setTextColor(getResources().getColor(R.color.Green));
+                }
+                else
+                {
+                    viewHolder.away.setText(distance + " kms away");
+                    viewHolder.away.setTextColor(getResources().getColor(R.color.Red));
+                }
                 viewHolder.distanceFromYou.setText(distance + " km(s) away");
 
                 if(model.isApproved.equals("0") && model.isDeclined.equals("0") && model.isDeleted.equals("0"))
@@ -163,7 +170,7 @@ public class showLocations extends AppCompatActivity {
 
     public static class FiltersViewHolder extends RecyclerView.ViewHolder {
         View mView;
-        TextView locationName,locationCategory,locationStatus,distanceFromYou;
+        TextView locationName,locationCategory,locationStatus,distanceFromYou,away;
         LottieAnimationView lottieAnimationLocation;
         LinearLayout locationCard;
 
@@ -176,6 +183,7 @@ public class showLocations extends AppCompatActivity {
             distanceFromYou = mView.findViewById(R.id.distanceFromYou);
             lottieAnimationLocation = mView.findViewById(R.id.lottieAnimationLocation);
             locationCard = mView.findViewById(R.id.locationCard);
+            away = mView.findViewById(R.id.away);
         }
     }
 
