@@ -16,12 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.geopedia.CommentFeed;
 import com.example.geopedia.HomeUser;
 import com.example.geopedia.R;
@@ -155,6 +157,15 @@ public class HomeFragment extends Fragment {
                     db.collection("Locations").document(model.getLocationId()).update("isDeclined", "1", "updatedBy", current_user_id);
                 });
 
+                viewHolder.cardadminLocation.setOnClickListener(view -> {
+                    //Show dialog for info
+                    showLocationInfo(model.getLocationTitle(), model.getLocationDescription(), model.getLocationCategory());
+                });
+                viewHolder.animationLocation.setOnClickListener(view -> {
+                    //Show dialog for info
+                    showLocationInfo(model.getLocationTitle(), model.getLocationDescription(), model.getLocationCategory());
+                });
+
             }
         };
         adapter.startListening();
@@ -165,6 +176,8 @@ public class HomeFragment extends Fragment {
         View mView;
         TextView submittedBy,locationName;
         ImageButton declineButton,acceptButton;
+        RelativeLayout cardadminLocation;
+        LottieAnimationView animationLocation;
 
         FiltersViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -173,6 +186,8 @@ public class HomeFragment extends Fragment {
             locationName = mView.findViewById(R.id.locationName);
             declineButton = mView.findViewById(R.id.declineButton);
             acceptButton = mView.findViewById(R.id.acceptButton);
+            cardadminLocation = mView.findViewById(R.id.cardadminLocation);
+            animationLocation = mView.findViewById(R.id.animationLocation);
             
         }
     }
@@ -188,5 +203,16 @@ public class HomeFragment extends Fragment {
     {
         super.onResume();
         getData();
+    }
+
+    public void showLocationInfo(String locationTitle,String locationDescription,String locationCategory)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(locationTitle);
+        builder.setMessage(locationDescription);
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            dialog.dismiss();
+        });
+        builder.show();
     }
 }
