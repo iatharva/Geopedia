@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.geopedia.CommentFeed;
+import com.example.geopedia.EventInfoAdmin;
 import com.example.geopedia.Info.EventInfo;
 import com.example.geopedia.Info.QuestionInfo;
 import com.example.geopedia.R;
@@ -166,11 +167,8 @@ public class EventsFragment extends Fragment {
     //Function required for action show details
     private void showDetails(String eventId, Double latitude,Double longitude)
     {
-        Intent intent = new Intent(requireActivity(), EventInfo.class);
-        intent.putExtra("eventId", eventId);
-        //Convert double to string
-        intent.putExtra("latitude", latitude);
-        intent.putExtra("longitude", longitude);
+        Intent intent = new Intent(requireActivity(), EventInfoAdmin.class);
+        intent.putExtra("event_id", eventId);
         startActivity(intent);
     }
 
