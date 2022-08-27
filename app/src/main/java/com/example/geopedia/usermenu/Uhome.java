@@ -113,9 +113,11 @@ public class Uhome extends Fragment implements OnMapReadyCallback, PermissionsLi
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        //double currentLatitude = location.getLatitude();
+        //double currentLongitude = location.getLongitude();
         //18.512608; 433.780374;
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
+        double currentLatitude = 18.512608;
+        double currentLongitude = 433.780374;
         String url = "http://dev.virtualearth.net/REST/v1/Locations/" + currentLatitude + "," + currentLongitude + "?includeEntityTypes=Address&includeNeighborhood=1&key=AsfRPflcWB10ZLk1CpTZxq3MEItpjodmsZ1VhhpUSgZjPEHHHKAlY93bL5e5GdtR";
         Uri uri = Uri.parse(url);
         Uri.Builder builder = uri.buildUpon();
