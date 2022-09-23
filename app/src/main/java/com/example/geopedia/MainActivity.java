@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -95,12 +97,25 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Please enable location and relaunch app", Toast.LENGTH_SHORT).show();
             System.exit(1);
         }
+        else if (!isNetworkAvailable())
+        {
+            MainActivity.this.startActivity(new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS));
+            Toast.makeText(MainActivity.this, "Please enable internet connection and relaunch app", Toast.LENGTH_SHORT).show();
+            System.exit(1);
+        }
         else
         {
             //Check signed in or not
             CheckAndRedirect();
         }
         //Finished permissions
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager != null ? connectivityManager.getActiveNetworkInfo() : null;
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private void CheckAndRedirect() {

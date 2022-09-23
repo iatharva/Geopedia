@@ -87,13 +87,25 @@ public class HomeFragment extends Fragment {
         });
 
         //Get the current latitude and longitude
+        double currentLatitude=0;
+        double currentLongitude=0;
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
+        if(location!=null)
+        {
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+        }
+        //18.512608; 433.780374;
+        if(currentLatitude==0)
+            currentLatitude = 18.504313680152485;
+        if(currentLongitude==0)
+            currentLongitude = 73.81741762161256;
 
         //write a query to get the Users where LastLongitude and latitude is in 10 km diameter from currentLatitude and currentLongitude
+        double finalCurrentLatitude = currentLatitude;
+        double finalCurrentLongitude = currentLongitude;
         db.collection("Users").whereGreaterThanOrEqualTo("LastLongitude", currentLongitude - 0.01)
         .whereLessThanOrEqualTo("LastLongitude", currentLongitude + 0.01)
         .get().addOnCompleteListener(task -> {
@@ -102,7 +114,7 @@ public class HomeFragment extends Fragment {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                         double lastLatitude = document.getDouble("LastLatitude");
                         double lastLongitude = document.getDouble("LastLongitude");
-                        if (lastLatitude >= currentLatitude - 0.01 && lastLatitude <= currentLatitude + 0.01 && lastLongitude >= currentLongitude - 0.01 && lastLongitude <= currentLongitude + 0.01) {
+                        if (lastLatitude >= finalCurrentLatitude - 0.01 && lastLatitude <= finalCurrentLatitude + 0.01 && lastLongitude >= finalCurrentLongitude - 0.01 && lastLongitude <= finalCurrentLongitude + 0.01) {
                             count++;
                         }
                     inTheArea.setText("0" + String.valueOf(count));

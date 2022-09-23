@@ -97,16 +97,28 @@ public class HomeUser extends AppCompatActivity {
     }
     public void getUserLocation()
     {
-        LocationManager locationManager = (LocationManager) HomeUser.this.getSystemService(Context.LOCATION_SERVICE);
+        double currentLatitude=0;
+        double currentLongitude=0;
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(location!=null)
+        {
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+        }
+        //18.512608; 433.780374;
+        if(currentLatitude==0)
+            currentLatitude = 18.504313680152485;
+        if(currentLongitude==0)
+            currentLongitude = 73.81741762161256;
         //double currentLatitude = location.getLatitude();
         //double currentLongitude = location.getLongitude();
         //double currentLatitude = location.getLatitude();
         //double currentLongitude = location.getLongitude();
         //18.512608; 433.780374;
-        double currentLatitude = 18.512608;
-        double currentLongitude = 433.780374;
+        //double currentLatitude = 18.512608;
+        //double currentLongitude = 433.780374;
         //Update the Users collection with currentLatitude and currentLongitude
         db.collection("Users").document(current_user_id).update("LastLatitude",currentLatitude);
         db.collection("Users").document(current_user_id).update("LastLongitude",currentLongitude);

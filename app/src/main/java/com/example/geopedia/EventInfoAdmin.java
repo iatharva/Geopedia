@@ -54,10 +54,6 @@ public class EventInfoAdmin extends AppCompatActivity {
         eventStatusLottie = findViewById(R.id.eventStatusLottie);
         doubt = findViewById(R.id.doubt);
 
-        LocationManager locationManager = (LocationManager) EventInfoAdmin.this.getSystemService(Context.LOCATION_SERVICE);
-        @SuppressLint("MissingPermission")
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
         event_id = getIntent().getStringExtra("event_id");
 
         launchMaps.setOnClickListener(view -> {

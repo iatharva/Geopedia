@@ -211,11 +211,21 @@ public class LocationsFragment extends Fragment {
     //Function required for action show details
     private void showDetails(String locationId, Double latitude,Double longitude)
     {
+        double currentLatitude=0;
+        double currentLongitude=0;
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
+        if(location!=null)
+        {
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+        }
+        //18.512608; 433.780374;
+        if(currentLatitude==0)
+            currentLatitude = 18.504313680152485;
+        if(currentLongitude==0)
+            currentLongitude = 73.81741762161256;
         Intent intent = new Intent(requireActivity(), EventInfo.class);
         intent.putExtra("location_id", locationId);
         double dis = calculateDistance(currentLatitude,currentLongitude,latitude,longitude);

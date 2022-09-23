@@ -66,11 +66,21 @@ public class showLocations extends AppCompatActivity {
     {
         Query query;
         //Get the current latitude and longitude
-        LocationManager locationManager = (LocationManager) showLocations.this.getSystemService(Context.LOCATION_SERVICE);
+        double currentLatitude=0;
+        double currentLongitude=0;
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
+        if(location!=null)
+        {
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+        }
+        //18.512608; 433.780374;
+        if(currentLatitude==0)
+            currentLatitude = 18.504313680152485;
+        if(currentLongitude==0)
+            currentLongitude = 73.81741762161256;
         if(filter.equals("All"))
         {
             query = db.collection("Locations").whereEqualTo("isApproved","1");
@@ -84,6 +94,8 @@ public class showLocations extends AppCompatActivity {
                 .setQuery(query, CustomLocation.class)
                 .build();
 
+        double finalCurrentLatitude = currentLatitude;
+        double finalCurrentLongitude = currentLongitude;
         adapter = new FirestoreRecyclerAdapter<CustomLocation, FiltersViewHolder>(options) {
             @NotNull
             @Override
@@ -107,7 +119,7 @@ public class showLocations extends AppCompatActivity {
                 viewHolder.locationName.setText(model.getLocationTitle());
                 viewHolder.locationCategory.setText(model.getLocationCategory());
 
-                double dis = calculateDistance(currentLatitude,currentLongitude,Double.valueOf(model.getLocationLatitude()), Double.valueOf(model.getLocationLongitude()));
+                double dis = calculateDistance(finalCurrentLatitude, finalCurrentLongitude,Double.valueOf(model.getLocationLatitude()), Double.valueOf(model.getLocationLongitude()));
                 //convert double value into 0.00 format
                 String distance = String.format("%.2f", dis);
                 //if dis is less than 10 then set text as within 10 kms else set text as x kms away

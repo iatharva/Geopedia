@@ -219,11 +219,21 @@ public class CommentFeed extends AppCompatActivity {
 
     private void showMoreInfo(String commentId, String date, String time, String fname, String lname, String comment, Double latitude, Double longitude) 
     {
-        LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        double currentLatitude=0;
+        double currentLongitude=0;
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
+        if(location!=null)
+        {
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+        }
+        //18.512608; 433.780374;
+        if(currentLatitude==0)
+            currentLatitude = 18.504313680152485;
+        if(currentLongitude==0)
+            currentLongitude = 73.81741762161256;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(CommentFeed.this);
         builder.setTitle("More information");

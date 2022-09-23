@@ -66,11 +66,21 @@ final FirebaseFirestore db = FirebaseFirestore.getInstance();
         String currentTime = sdf2.format(date);
 
         //get latitude and longitude
+        double currentLatitude=0;
+        double currentLongitude=0;
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
+        if(location!=null)
+        {
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+        }
+        //18.512608; 433.780374;
+        if(currentLatitude==0)
+            currentLatitude = 18.504313680152485;
+        if(currentLongitude==0)
+            currentLongitude = 73.81741762161256;
 
         //Generate a random 28 character string
         String randomString = "";

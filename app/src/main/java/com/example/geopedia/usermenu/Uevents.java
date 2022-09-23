@@ -171,11 +171,21 @@ public class Uevents extends Fragment {
 
     private void showEvents(boolean isPresent, String searchEvent) {
         Query query;
+        double currentLatitude=0;
+        double currentLongitude=0;
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        currentLatitude = location.getLatitude();
-        currentLongitude = location.getLongitude();
+        if(location!=null)
+        {
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+        }
+        //18.512608; 433.780374;
+        if(currentLatitude==0)
+            currentLatitude = 18.504313680152485;
+        if(currentLongitude==0)
+            currentLongitude = 73.81741762161256;
         if(isPresent)
         {
             query = firebaseFirestore.collection("Events").whereEqualTo("eventStatus", "Pending").whereEqualTo("isDeleted","0");
@@ -261,11 +271,21 @@ public class Uevents extends Fragment {
     public void onStart() {
         super.onStart();
         adapter.startListening();
+        currentLatitude=0;
+        currentLongitude=0;
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        currentLatitude = location.getLatitude();
-        currentLongitude = location.getLongitude();
+        if(location!=null)
+        {
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+        }
+        //18.512608; 433.780374;
+        if(currentLatitude==0)
+            currentLatitude = 18.504313680152485;
+        if(currentLongitude==0)
+            currentLongitude = 73.81741762161256;
     }
 
     @SuppressLint("NotifyDataSetChanged")

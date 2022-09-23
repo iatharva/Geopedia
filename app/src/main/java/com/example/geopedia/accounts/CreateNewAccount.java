@@ -47,11 +47,21 @@ public class CreateNewAccount extends AppCompatActivity {
         DateField = findViewById(R.id.DateField);
         AddAccountBtn = findViewById(R.id.AddAccountBtn);
 
-        LocationManager locationManager = (LocationManager) CreateNewAccount.this.getSystemService(Context.LOCATION_SERVICE);
+        double currentLatitude=0;
+        double currentLongitude=0;
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
+        if(location!=null)
+        {
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+        }
+        //18.512608; 433.780374;
+        if(currentLatitude==0)
+            currentLatitude = 18.504313680152485;
+        if(currentLongitude==0)
+            currentLongitude = 73.81741762161256;
 
         //Get Date DialogBox
         DateField.setOnClickListener(v -> {
@@ -77,6 +87,8 @@ public class CreateNewAccount extends AppCompatActivity {
         };
 
         //Add Account in Firebase
+        double finalCurrentLongitude = currentLongitude;
+        double finalCurrentLatitude = currentLatitude;
         AddAccountBtn.setOnClickListener(view -> {
 
             //Get all the data from UI
@@ -129,8 +141,8 @@ public class CreateNewAccount extends AppCompatActivity {
                     user.put("Dob", DateOfBirth);
                     user.put("IsPaid", "0");
                     user.put("IsAdmin", "0");
-                    user.put("LastLongitude",currentLongitude);
-                    user.put("LastLatitude",currentLatitude);
+                    user.put("LastLongitude", finalCurrentLongitude);
+                    user.put("LastLatitude", finalCurrentLatitude);
                     user.put("JoinedOn",currentDate+" "+currentTime);
                     //Insert and check if user is data is inserted successfully and user is created
                     db.collection("Users").document(UID).set(user).addOnCompleteListener(task1 -> {

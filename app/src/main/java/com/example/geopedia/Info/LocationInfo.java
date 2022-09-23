@@ -71,12 +71,24 @@ public class LocationInfo extends AppCompatActivity implements OnMapReadyCallbac
         doubt = findViewById(R.id.doubt);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync( this);
-        LocationManager locationManager = (LocationManager) LocationInfo.this.getSystemService(Context.LOCATION_SERVICE);
+        double currentLatitude=0;
+        double currentLongitude=0;
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if(location!=null)
+        {
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+        }
+        //18.512608; 433.780374;
+        if(currentLatitude==0)
+            currentLatitude = 18.504313680152485;
+        if(currentLongitude==0)
+            currentLongitude = 73.81741762161256;
 
-        latitude = getIntent().getDoubleExtra("latitude",location.getLatitude());
-        longitude = getIntent().getDoubleExtra("longitude",location.getLongitude());
+        latitude = getIntent().getDoubleExtra("latitude",currentLatitude);
+        longitude = getIntent().getDoubleExtra("longitude",currentLongitude);
         location_id = getIntent().getStringExtra("location_id");
         distance = getIntent().getStringExtra("distance");
         rating.setText(distance+" kms away");

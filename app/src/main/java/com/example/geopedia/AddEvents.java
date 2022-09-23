@@ -116,21 +116,35 @@ public class AddEvents extends AppCompatActivity {
             timePickerDialog.show();
         });
 
+        double currentLatitude=0;
+        double currentLongitude=0;
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         @SuppressLint("MissingPermission")
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
+        if(location!=null)
+        {
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+        }
+        //18.512608; 433.780374;
+        if(currentLatitude==0)
+            currentLatitude = 18.504313680152485;
+        if(currentLongitude==0)
+            currentLongitude = 73.81741762161256;
 
         //if custom location is checked, open maps app to select location
+        double finalCurrentLatitude = currentLatitude;
+        double finalCurrentLongitude = currentLongitude;
         customLocationCheckbox.setOnClickListener(v -> {
             if(customLocationCheckbox.isChecked()){
                 //Launch Placepicker activity
-                goToPickerActivity(currentLatitude,currentLongitude);
+                goToPickerActivity(finalCurrentLatitude, finalCurrentLongitude);
             }
         });
 
         //Save the event request and save to database.
+        double finalCurrentLatitude1 = currentLatitude;
+        double finalCurrentLongitude1 = currentLongitude;
         submitEventBtn.setOnClickListener(v -> {
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             String eventTitle = eventTitleFld.getText().toString();
@@ -159,8 +173,8 @@ public class AddEvents extends AppCompatActivity {
                 eventLongitude = eventlongitude.getText().toString().trim();
             }
             else{
-                eventLatitude = String.valueOf(currentLatitude);
-                eventLongitude = String.valueOf(currentLongitude);
+                eventLatitude = String.valueOf(finalCurrentLatitude1);
+                eventLongitude = String.valueOf(finalCurrentLongitude1);
             }
 
             String eventType = eventTypeSpinner.getSelectedItem().toString();
